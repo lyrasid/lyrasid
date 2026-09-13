@@ -1,7 +1,7 @@
 # Painel visual (Sveltia CMS). Acesse /admin/ no site publicado.
 backend:
   name: github
-  repo: SEU_USUARIO/SEU_REPOSITORIO # troque pelo seu repositório
+  repo: lyrasid/lyrasid
   branch: main
 
 media_folder: src/midia
