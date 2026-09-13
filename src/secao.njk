@@ -1,0 +1,61 @@
+---
+layout: base.njk
+pagination:
+  data: secoes
+  size: 1
+  alias: secao
+permalink: "/{{ secao.slug }}/"
+eleventyComputed:
+  title: "{{ secao.titulo }}"
+---
+<h1>{{ secao.titulo }}</h1>
+
+{% for item in collections.itens | daSecao(secao.slug) %}
+{% set d = item.data %}
+<details name="subtitulos" id="{{ item.fileSlug }}">
+  <summary><h2>{{ d.title }}</h2></summary>
+  <div class="item">
+    {% if d.nome_cientifico %}<p class="cientifico">{{ d.nome_cientifico }}</p>{% endif %}
+
+    {% if d.rendimento or d.tempo or d.luz or d.rega %}
+    <dl class="ficha">
+      {% if d.rendimento %}<dt>Rendimento</dt><dd>{{ d.rendimento }}</dd>{% endif %}
+      {% if d.tempo %}<dt>Tempo</dt><dd>{{ d.tempo }}</dd>{% endif %}
+      {% if d.luz %}<dt>Luz</dt><dd>{{ d.luz }}</dd>{% endif %}
+      {% if d.rega %}<dt>Rega</dt><dd>{{ d.rega }}</dd>{% endif %}
+    </dl>
+    {% endif %}
+
+    {% if d.ingredientes %}
+    <h3>Ingredientes</h3>
+    <ul>{% for i in d.ingredientes %}<li>{{ i }}</li>{% endfor %}</ul>
+    {% endif %}
+
+    {% if d.links %}
+    <p class="links">{% for l in d.links %}<a href="{{ l.url }}" target="_blank" rel="noopener">{{ l.texto or l.url }} ↗</a>{% endfor %}</p>
+    {% endif %}
+
+    {% for b in d.blocos %}
+      {% if b.texto %}<div class="texto">{{ b.texto | md | safe }}</div>{% endif %}
+      {% if b.imagem or b.youtube %}
+      <figure class="midia{% if b.lado == 'esquerda' %} legenda-esquerda{% endif %}">
+        {% if b.youtube %}
+        <iframe src="https://www.youtube-nocookie.com/embed/{{ b.youtube | youtubeId }}" title="{{ b.titulo or 'Vídeo do YouTube' }}" loading="lazy" allowfullscreen></iframe>
+        {% else %}
+        <img src="{{ b.imagem | url }}" alt="{{ b.alt or b.titulo }}" loading="lazy">
+        {% endif %}
+        {% if b.titulo or b.ano or b.descricao %}
+        <figcaption>
+          {% if b.titulo %}<strong>{{ b.titulo }}</strong>{% endif %}
+          {% if b.ano %}<span class="ano">{{ b.ano }}</span>{% endif %}
+          {% if b.descricao %}<p>{{ b.descricao }}</p>{% endif %}
+        </figcaption>
+        {% endif %}
+      </figure>
+      {% endif %}
+    {% endfor %}
+  </div>
+</details>
+{% else %}
+<p class="vazio">Em breve.</p>
+{% endfor %}

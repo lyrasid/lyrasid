@@ -1,0 +1,159 @@
+:root {
+  --vinho: #6e2437;
+  --tinta: #111;
+  --papel: #fff;
+  --barra: #fff;
+  --quadricula: rgba(0, 0, 0, 0.16);
+  --aberta: 15rem;
+  --fechada: 3.25rem;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Narnoor", system-ui, sans-serif;
+  line-height: 1.6;
+  color: var(--tinta);
+  background: var(--barra);
+}
+
+h1, h2, .logo, figcaption strong { font-family: "Schoolbell", cursive; font-weight: 400; }
+a { color: var(--vinho); }
+img { max-width: 100%; }
+
+/* ---------- barra lateral ---------- */
+.barra {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 10;
+  width: var(--fechada);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1rem 0 1rem .5rem;
+  background: var(--barra);
+  border-right: 2px solid var(--tinta);
+  overflow: hidden;
+  transition: width .2s;
+}
+.menu-aberto .barra { width: var(--aberta); padding-right: 1rem; overflow-y: auto; }
+
+.logo { font-size: 2.2rem; line-height: 1; color: var(--tinta); text-decoration: none; padding-left: .5rem; }
+
+/* pastas vistas de cima: aba com o nome sobre a borda da pasta, abas em degraus */
+.pastas { display: flex; flex-direction: column; gap: .3rem; }
+.pastas a { display: flex; align-items: flex-end; color: var(--tinta); text-decoration: none; white-space: nowrap; }
+.pastas a::before, .pastas a::after { content: ""; border-bottom: 1.5px solid var(--tinta); }
+.pastas a::before { width: .5rem; transition: width .15s; }
+.pastas a::after { flex: 1; }
+.pastas a:nth-child(3n + 2)::before { width: 1.75rem; }
+.pastas a:nth-child(3n + 3)::before { width: 3rem; }
+.pastas span {
+  padding: .3rem .75rem .15rem;
+  font-size: .95rem;
+  border: 1.5px solid var(--tinta);
+  border-bottom: 0;
+  border-radius: .5rem .5rem 0 0;
+  transition: background .15s;
+}
+.pastas a:hover span { background: rgba(0, 0, 0, .07); }
+.pastas a[aria-current] span { color: var(--papel); background: var(--tinta); }
+
+.busca input {
+  width: 100%;
+  padding: .35rem .8rem;
+  font: inherit;
+  border: 2px solid var(--tinta);
+  border-radius: 999px;
+  background: #fff;
+}
+.resultados { list-style: none; margin: .5rem 0 0; padding: 0; font-size: .9rem; }
+.resultados li { margin: .35rem 0; }
+.resultados a { color: var(--tinta); }
+.resultados small { display: block; font-size: .8rem; opacity: .6; }
+
+.alternar {
+  align-self: flex-start;
+  padding: .2rem .4rem;
+  font-size: 1.1rem;
+  color: var(--tinta);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.alternar .hamburguer { display: none; }
+
+.redes { margin-top: auto; display: flex; gap: .75rem; padding-left: .5rem; }
+.redes a { color: var(--tinta); }
+.redes svg { width: 1.5rem; height: 1.5rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+
+/* barra fechada: só o botão */
+html:not(.menu-aberto) :is(.logo, .pastas, .busca, .redes) { display: none; }
+html:not(.menu-aberto) .alternar .seta { display: inline-block; transform: rotate(180deg); }
+
+/* ---------- conteúdo ---------- */
+main {
+  min-height: 100vh;
+  margin-left: var(--fechada);
+  padding: 3rem clamp(1rem, 5vw, 4rem) 5rem;
+  background-color: var(--papel);
+  background-image:
+    linear-gradient(var(--quadricula) 1px, transparent 1px),
+    linear-gradient(90deg, var(--quadricula) 1px, transparent 1px);
+  background-size: 22px 22px;
+  transition: margin-left .2s;
+}
+.menu-aberto main { margin-left: var(--aberta); }
+
+h1 { margin: 0 0 1.5rem; font-size: clamp(2.6rem, 6vw, 4.5rem); line-height: 1.1; }
+
+details { max-width: 62rem; }
+summary { display: flex; gap: .6rem; align-items: baseline; list-style: none; cursor: pointer; }
+summary::-webkit-details-marker { display: none; }
+summary::before { content: ">"; width: 1rem; font-family: "Schoolbell", cursive; font-size: 1.7rem; }
+details[open] > summary::before { content: "–"; }
+summary h2 { margin: .3rem 0; font-size: clamp(1.6rem, 3.2vw, 2.2rem); }
+
+.item { padding: 0 0 2.5rem 1.6rem; }
+.texto { max-width: 44rem; }
+.cientifico { font-style: italic; }
+.ficha { display: grid; grid-template-columns: max-content 1fr; gap: .2rem 1rem; }
+.ficha dt { font-weight: 700; }
+.ficha dd { margin: 0; }
+.links { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; }
+.vazio { font-style: italic; }
+
+.midia {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(10rem, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+  margin: 1.5rem 0;
+}
+.midia:not(:has(figcaption)) { grid-template-columns: minmax(0, 3fr); }
+.midia.legenda-esquerda { grid-template-columns: minmax(10rem, 1fr) minmax(0, 3fr); }
+.midia.legenda-esquerda figcaption { order: -1; text-align: right; }
+.midia img, .midia iframe { display: block; width: 100%; border: 2px solid var(--tinta); border-radius: 4px; background: #fff; }
+.midia iframe { aspect-ratio: 16 / 9; height: auto; }
+figcaption strong { display: block; font-size: 1.4rem; line-height: 1.2; }
+figcaption .ano { font-size: .85rem; font-weight: 700; }
+figcaption p { margin: .4rem 0 0; }
+
+.sobre { max-width: 44rem; }
+.sobre .foto { float: right; width: 9rem; aspect-ratio: 1; margin: 0 0 1rem 1.5rem; object-fit: cover; border: 2px solid var(--tinta); border-radius: 50%; }
+
+.topo { position: fixed; right: 1rem; bottom: 1rem; font-size: 1.2rem; color: var(--tinta); text-decoration: none; }
+
+/* ---------- celular ---------- */
+@media (max-width: 768px) {
+  main, .menu-aberto main { margin-left: 0; padding-top: 4rem; }
+  .barra { width: 0; padding: 0; border: 0; }
+  .menu-aberto .barra { width: min(80vw, 16rem); padding: 1rem 1rem 1rem .5rem; border-right: 2px solid var(--tinta); box-shadow: 4px 0 20px rgba(0, 0, 0, .15); }
+  html:not(.menu-aberto) .alternar { position: fixed; top: .75rem; left: .75rem; background: var(--papel); border: 2px solid var(--tinta); border-radius: 6px; }
+  html:not(.menu-aberto) .alternar .seta { display: none; }
+  html:not(.menu-aberto) .alternar .hamburguer { display: inline; }
+  .midia, .midia.legenda-esquerda { grid-template-columns: minmax(0, 1fr); }
+  .midia.legenda-esquerda figcaption { order: 0; text-align: left; }
+  .item { padding-left: 0; }
+}

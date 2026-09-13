@@ -1,0 +1,103 @@
+# Painel visual (Sveltia CMS). Acesse /admin/ no site publicado.
+backend:
+  name: github
+  repo: SEU_USUARIO/SEU_REPOSITORIO # troque pelo seu repositório
+  branch: main
+
+media_folder: src/midia
+public_folder: /midia
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  - name: paginas
+    label: Sobre mim e redes
+    files:
+      - name: sobre
+        label: Sobre mim (página inicial)
+        file: src/index.md
+        fields:
+          - { name: layout, widget: hidden, default: sobre.njk }
+          - { name: title, label: Nome, widget: string }
+          - { name: foto, label: Foto, widget: image, required: false }
+          - { name: body, label: Texto, widget: markdown }
+      - name: redes
+        label: Redes sociais
+        file: src/_data/site.json
+        fields:
+          - { name: nome, label: Nome do site, widget: string }
+          - { name: instagram, label: Instagram (link), widget: string, required: false }
+          - { name: linkedin, label: LinkedIn (link), widget: string, required: false }
+          - { name: email, label: E-mail, widget: string, required: false }
+
+  - name: divulgacao-cientifica
+    label: Divulgação científica
+    folder: src/conteudo/divulgacao-cientifica
+    create: true
+    extension: md
+    format: frontmatter
+    sortable_fields: [ordem, title]
+    fields: &campos
+      - &titulo { name: title, label: Título, widget: string }
+      - &ordem { name: ordem, label: Ordem, widget: number, value_type: int, required: false, hint: "Números menores aparecem primeiro." }
+      - &links
+        name: links
+        label: Links externos
+        widget: list
+        required: false
+        fields:
+          - { name: texto, label: Texto do link, widget: string }
+          - { name: url, label: Endereço, widget: string }
+      - &blocos
+        name: blocos
+        label: Blocos (texto, imagem ou vídeo)
+        widget: list
+        required: false
+        fields:
+          - { name: texto, label: Texto, widget: markdown, required: false }
+          - { name: imagem, label: Imagem, widget: image, required: false }
+          - { name: youtube, label: Link do YouTube, widget: string, required: false }
+          - { name: alt, label: Descrição da imagem (acessibilidade), widget: string, required: false }
+          - { name: titulo, label: Título da mídia, widget: string, required: false }
+          - { name: ano, label: Ano, widget: string, required: false }
+          - { name: descricao, label: Descrição da mídia, widget: text, required: false }
+          - { name: lado, label: Legenda do lado, widget: select, required: false, default: direita, options: [{ label: Direita, value: direita }, { label: Esquerda, value: esquerda }] }
+
+  - { name: textos, label: Textos, folder: src/conteudo/textos, create: true, extension: md, format: frontmatter, sortable_fields: [ordem, title], fields: *campos }
+  - { name: fotografias, label: Fotografias, folder: src/conteudo/fotografias, create: true, extension: md, format: frontmatter, sortable_fields: [ordem, title], fields: *campos }
+  - { name: desenhos, label: Desenhos, folder: src/conteudo/desenhos, create: true, extension: md, format: frontmatter, sortable_fields: [ordem, title], fields: *campos }
+  - { name: apps, label: Apps, folder: src/conteudo/apps, create: true, extension: md, format: frontmatter, sortable_fields: [ordem, title], fields: *campos }
+  - { name: jogos, label: Jogos, folder: src/conteudo/jogos, create: true, extension: md, format: frontmatter, sortable_fields: [ordem, title], fields: *campos }
+  - { name: trabalhos, label: Trabalhos, folder: src/conteudo/trabalhos, create: true, extension: md, format: frontmatter, sortable_fields: [ordem, title], fields: *campos }
+
+  - name: receitas
+    label: Receitas
+    folder: src/conteudo/receitas
+    create: true
+    extension: md
+    format: frontmatter
+    sortable_fields: [ordem, title]
+    fields:
+      - *titulo
+      - *ordem
+      - { name: rendimento, label: Rendimento, widget: string, required: false }
+      - { name: tempo, label: Tempo de preparo, widget: string, required: false }
+      - { name: ingredientes, label: Ingredientes (um por linha), widget: list, required: false }
+      - *blocos
+
+  - name: plantas
+    label: Plantas
+    folder: src/conteudo/plantas
+    create: true
+    extension: md
+    format: frontmatter
+    sortable_fields: [ordem, title]
+    fields:
+      - *titulo
+      - *ordem
+      - { name: nome_cientifico, label: Nome científico, widget: string, required: false }
+      - { name: luz, label: Luz, widget: string, required: false }
+      - { name: rega, label: Rega, widget: string, required: false }
+      - *blocos

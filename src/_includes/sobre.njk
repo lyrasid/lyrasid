@@ -1,0 +1,8 @@
+---
+layout: base.njk
+---
+<article class="sobre">
+  {% if foto %}<img class="foto" src="{{ foto | url }}" alt="Foto de {{ title }}">{% endif %}
+  <h1>{{ title }}</h1>
+  {{ content | safe }}
+</article>
