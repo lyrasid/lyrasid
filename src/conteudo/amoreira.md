@@ -5,14 +5,16 @@ ordem: null
 oculto: false
 links: []
 blocos:
-  - texto: ''
+  - texto: |-
+      # Teste de texto
+
+      Exemplo lorem ipsulum abacateiro e amora de qualidade. Perto do rio tem um veranico, perto do juruna tem outra juruna. Pá!
     imagem: /midia/amoreira.png
     youtube: ''
     alt: ''
-    titulo: Floração da Amoreira
-    ano: '2026'
+    titulo: 1ª colheita
+    ano: 08 de março de 2026
     descricao: |-
-      08 de março de 2026
       A amoreira sempre dá amoras
       Hoje tem cerca de 20 amoras madurando ou florescendo
     lado: direita
@@ -20,10 +22,13 @@ blocos:
     imagem: /midia/WhatsApp Image 2026-09-14 at 17.46.12.jpeg
     youtube: ''
     alt: ''
-    titulo: ''
-    ano: ''
-    descricao: ''
-    lado: direita
+    titulo: 2ª colheita
+    ano: 14 de setembro de 2026
+    descricao: Hoje colhi cerca de 25 amoras e ainda tem umas 15 para amadurecer.
+    lado: esquerda
 receita: null
-planta: null
+planta:
+  nome_cientifico: Morus nigra
+  luz: sol pleno
+  rega: regular
 ---
