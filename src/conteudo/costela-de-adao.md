@@ -10,4 +10,5 @@ blocos:
     imagem: /midia/exemplo.svg
     alt: Imagem provisória
     ao_lado: true
+ordem: 3
 ---

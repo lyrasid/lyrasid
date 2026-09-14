@@ -1,7 +1,7 @@
 ---
 title: Pimenta dedo-de-moça
 pagina: plantas
-ordem: null
+ordem: 2
 oculto: false
 links: []
 blocos:
@@ -20,5 +20,5 @@ blocos:
       - Flor branca com 5 pétalas, sem manchas roxas
       - Folhas lisas, formato lanceolado comum em dedo-de-moça
     lado: direita
-    largura: 50
+    largura: 47
 ---

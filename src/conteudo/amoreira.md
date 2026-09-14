@@ -1,7 +1,7 @@
 ---
 title: Amoreira
 pagina: plantas
-ordem: null
+ordem: 1
 oculto: false
 links: []
 blocos:
@@ -20,6 +20,7 @@ blocos:
       A amoreira sempre dá amoras.
       Tem cerca de 20 amoras madurando ou florescendo.
     lado: direita
+    largura: 53
   - type: imagem
     imagem: /midia/WhatsApp Image 2026-09-14 at 17.46.12.jpeg
     alt: ''
@@ -27,4 +28,5 @@ blocos:
     ano: 14 de setembro de 2026
     descricao: Colhi cerca de 25 amoras e ainda tem umas 15 para amadurecer.
     lado: esquerda
+    largura: 53
 ---
