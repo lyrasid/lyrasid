@@ -14,7 +14,7 @@ blocos:
     ao_lado: false
     imagem: /midia/IMG_2370.jpeg
     alt: ''
-    titulo: ''
+    titulo: Florescendo
     ano: 01 de fevereiro, 2026
     descricao: |-
       - Flor branca com 5 pétalas, sem manchas roxas

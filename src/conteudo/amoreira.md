@@ -16,11 +16,9 @@ blocos:
     alt: ''
     titulo: 1ª colheita
     ano: 08 de março de 2026
-    descricao: |-
-      A amoreira sempre dá amoras.
-      Tem cerca de 20 amoras madurando ou florescendo.
+    descricao: A amoreira sempre dá amoras. Tem cerca de 20 amoras madurando ou florescendo.
     lado: direita
-    largura: 53
+    largura: 74
   - type: imagem
     imagem: /midia/WhatsApp Image 2026-09-14 at 17.46.12.jpeg
     alt: ''
@@ -28,5 +26,6 @@ blocos:
     ano: 14 de setembro de 2026
     descricao: Colhi cerca de 25 amoras e ainda tem umas 15 para amadurecer.
     lado: esquerda
-    largura: 53
+    largura: 56
+    ao_lado: true
 ---
