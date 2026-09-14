@@ -5,7 +5,7 @@ import markdownIt from "https://cdn.jsdelivr.net/npm/markdown-it@15.0.2/+esm";
 
 const REPO = "lyrasid/lyrasid";
 const RAMO = "main";
-const md = markdownIt({ html: true, linkify: true });
+const md = markdownIt({ linkify: true }); // mesmas opções do site (eleventy.config.js): HTML no texto não é renderizado
 document.documentElement.classList.add("edicao");
 
 // ---------- GitHub ----------
@@ -23,6 +23,7 @@ async function gh(caminho, metodo = "GET", corpo) {
   const t = token(metodo !== "GET");
   const r = await fetch(`https://api.github.com/repos/${REPO}${caminho}`, {
     method: metodo,
+    cache: "no-store", // a API manda guardar leituras por 60s; ler versão velha desfazia o último Salvar
     headers: { Accept: "application/vnd.github+json", ...(t && { Authorization: `Bearer ${t}` }) },
     body: corpo && JSON.stringify(corpo),
   });
@@ -40,7 +41,7 @@ function abrir(caminho) {
     arquivos.set(caminho, gh(`/contents/${encodeURI(caminho)}?ref=${RAMO}`).then((r) => {
       const bytes = Uint8Array.from(atob(r.content.replace(/\n/g, "")), (c) => c.charCodeAt(0));
       const [, fm, corpo] = new TextDecoder().decode(bytes).match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
-      return { dados: yaml.load(fm) || {}, corpo };
+      return { dados: yaml.load(fm) || {}, corpo, sha: r.sha };
     }));
   }
   return arquivos.get(caminho);
@@ -61,9 +62,24 @@ async function alterar(caminho, campo, valor) {
   atualizarBarra();
 }
 
-// ponytail: grava por cima do que estiver no GitHub; se o mesmo arquivo foi editado no painel
-// depois de abrir o modo de edição, a versão do painel se perde. Comparar SHAs se isso acontecer.
+// Antes de gravar, confere se algum arquivo mudou no GitHub (painel, outra aba) desde que foi aberto aqui.
+async function conferirConflitos() {
+  const mudaram = [];
+  await Promise.all([...alterados].map(async (path) => {
+    const [atual, aberto] = await Promise.all([gh(`/contents/${encodeURI(path)}?ref=${RAMO}`), abrir(path)]);
+    if (atual.sha !== aberto.sha) mudaram.push(path);
+  }));
+  if (!mudaram.length) return;
+  const sobrescrever = confirm(
+    "Estes arquivos foram alterados em outro lugar (painel ou outra aba) depois que você começou a editar:\n\n" +
+    mudaram.join("\n") +
+    "\n\nOK: salvar mesmo assim e substituir a outra versão.\nCancelar: não salvar. Recarregue a página para ver a versão nova (as mudanças feitas aqui se perdem)."
+  );
+  if (!sobrescrever) throw new Error("arquivo alterado em outro lugar");
+}
+
 async function salvar() {
+  await conferirConflitos();
   const ref = await gh(`/git/ref/heads/${RAMO}`);
   const base = await gh(`/git/commits/${ref.object.sha}`);
   const tree = await Promise.all([...alterados].map(async (path) => {

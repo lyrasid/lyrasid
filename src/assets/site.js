@@ -15,13 +15,20 @@ botao.addEventListener("click", () => {
   sincronizar();
 });
 
+// celular: tocar fora do menu ou apertar Esc fecha o menu
+const fecharMenu = () => { html.classList.remove("menu-aberto"); sincronizar(); };
+document.addEventListener("click", (e) => {
+  if (celular.matches && html.classList.contains("menu-aberto") && !e.target.closest(".barra")) fecharMenu();
+});
+document.addEventListener("keydown", (e) => e.key === "Escape" && celular.matches && fecharMenu());
+
 // subtítulos: o link com #id abre o subtítulo; abrir um atualiza o link
 const abrirDoLink = () => {
   const d = document.getElementById(decodeURIComponent(location.hash.slice(1)));
   if (d?.tagName !== "DETAILS") return;
   d.open = true;
   d.scrollIntoView();
-  if (celular.matches) { html.classList.remove("menu-aberto"); sincronizar(); }
+  if (celular.matches) fecharMenu();
 };
 addEventListener("hashchange", abrirDoLink);
 abrirDoLink();

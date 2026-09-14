@@ -235,5 +235,7 @@ main { position: relative; }
   .midia, .midia.legenda-esquerda { width: 100%; grid-template-columns: minmax(0, 1fr); }
   .midia.legenda-esquerda figcaption { order: 0; text-align: left; }
   .item { padding-left: 0; }
-  .adesivo { width: calc(var(--w) * .6); top: calc(var(--y) * .6); }
+  /* adesivos viram uma faixa no topo da página: menores e sem cobrir o texto */
+  .adesivos { position: static; display: flex; flex-wrap: wrap; gap: .5rem 1rem; justify-content: flex-end; margin-bottom: 1rem; overflow: visible; }
+  .adesivo { position: relative; left: auto; top: auto; width: calc(var(--w) * .5); transform: rotate(var(--r)); }
 }

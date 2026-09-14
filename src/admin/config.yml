@@ -7,6 +7,17 @@ backend:
 media_folder: src/midia
 public_folder: /midia
 
+# Fotos enviadas pelo painel são reduzidas antes de ir para o repositório (máx. 2048px, WebP).
+media_libraries:
+  default:
+    config:
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2048
+          height: 2048
+
 slug:
   encoding: ascii
   clean_accents: true

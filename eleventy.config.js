@@ -14,16 +14,17 @@ export const config = {
 
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets");
-  eleventyConfig.addPassthroughCopy("src/midia");
   eleventyConfig.addPassthroughCopy("src/admin");
+  // src/midia não é copiada: o site usa só as versões comprimidas geradas abaixo (em /img).
 
   // Prefixo do endereço (/lyrasid/) aplicado em todos os links e imagens do HTML final.
   eleventyConfig.addPlugin(HtmlBasePlugin);
 
-  // Toda <img> do site é comprimida na publicação: WebP + formato original, em até 3 larguras.
+  // Toda <img> do site é comprimida na publicação: WebP + JPEG de reserva, em até 3 larguras.
+  // (JPEG em vez do formato original: PNG de foto gerava reservas de 12 MB.)
   // ponytail: reprocessa todas as imagens a cada publicação; guardar cache no GitHub Actions se ficar lento.
   eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
-    formats: ["webp", "auto"],
+    formats: ["svg", "webp", "jpeg"], // "svg" só vale para SVG de origem: adesivos vetoriais continuam vetoriais
     widths: [600, 1200, 2000],
     svgShortCircuit: true,
     htmlOptions: {
