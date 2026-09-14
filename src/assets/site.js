@@ -46,3 +46,30 @@ campo.addEventListener("input", () => {
   );
   if (!achados.length) lista.append(Object.assign(document.createElement("li"), { textContent: "Nada encontrado." }));
 });
+
+// adesivos: arrastáveis (volta ao lugar ao recarregar); clique sem arrastar abre o link
+let camada = 2;
+document.querySelectorAll(".adesivo").forEach((el) => {
+  let inicio = null;
+  let arrastou = false;
+  el.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    inicio = { dx: e.clientX - el.offsetLeft, dy: e.clientY - el.offsetTop, x: e.clientX, y: e.clientY };
+    arrastou = false;
+    el.setPointerCapture(e.pointerId);
+    el.style.zIndex = camada++;
+  });
+  el.addEventListener("pointermove", (e) => {
+    if (!inicio) return;
+    if (Math.hypot(e.clientX - inicio.x, e.clientY - inicio.y) > 5) arrastou = true;
+    if (!arrastou) return;
+    el.classList.add("arrastando");
+    el.style.left = e.clientX - inicio.dx + "px";
+    el.style.top = e.clientY - inicio.dy + "px";
+  });
+  el.addEventListener("pointerup", () => {
+    inicio = null;
+    el.classList.remove("arrastando");
+  });
+  el.addEventListener("click", (e) => arrastou && e.preventDefault());
+});

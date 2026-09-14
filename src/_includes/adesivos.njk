@@ -1,0 +1,10 @@
+{% if adesivos %}
+<div class="adesivos">
+  {%- for a in adesivos %}
+  {% set destino = a.link | linkDoTexto(collections.textos, collections.paginas) %}
+  <a class="adesivo" draggable="false" style="--x: {{ a.x | default(80) }}%; --y: {{ a.y | default(40) }}px; --w: {{ a.largura | default(140) }}px; --r: {{ a.rotacao | default(0) }}deg"{% if destino %} href="{{ destino }}"{% endif %}>
+    <img src="{{ a.imagem | url }}" alt="{{ a.descricao }}" draggable="false">
+  </a>
+  {%- endfor %}
+</div>
+{% endif %}

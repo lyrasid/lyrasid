@@ -1,12 +1,14 @@
 ---
 title: Pão de queijo (exemplo)
-rendimento: 30 unidades
-tempo: 50 min
-ingredientes:
-  - 500 g de polvilho azedo
-  - 250 ml de leite
-  - 2 ovos
-  - 200 g de queijo meia cura ralado
+pagina: receitas
+receita:
+  rendimento: 30 unidades
+  tempo: 50 min
+  ingredientes:
+    - 500 g de polvilho azedo
+    - 250 ml de leite
+    - 2 ovos
+    - 200 g de queijo meia cura ralado
 blocos:
   - texto: |
       1. Escalde o polvilho com o leite quente.

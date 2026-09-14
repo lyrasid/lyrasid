@@ -1,34 +1,29 @@
 ---
 layout: base.njk
-pagination:
-  data: secoes
-  size: 1
-  alias: secao
-permalink: "/{{ secao.slug }}/"
-eleventyComputed:
-  title: "{{ secao.titulo }}"
 ---
-<h1>{{ secao.titulo }}</h1>
+<h1>{{ title }}</h1>
 
-{% for item in collections.itens | daSecao(secao.slug) %}
+{% for item in collections.textos | daPagina(page.fileSlug) %}
 {% set d = item.data %}
+{% set r = d.receita or {} %}
+{% set pl = d.planta or {} %}
 <details name="subtitulos" id="{{ item.fileSlug }}">
   <summary><h2>{{ d.title }}</h2></summary>
   <div class="item">
-    {% if d.nome_cientifico %}<p class="cientifico">{{ d.nome_cientifico }}</p>{% endif %}
+    {% if pl.nome_cientifico %}<p class="cientifico">{{ pl.nome_cientifico }}</p>{% endif %}
 
-    {% if d.rendimento or d.tempo or d.luz or d.rega %}
+    {% if r.rendimento or r.tempo or pl.luz or pl.rega %}
     <dl class="ficha">
-      {% if d.rendimento %}<dt>Rendimento</dt><dd>{{ d.rendimento }}</dd>{% endif %}
-      {% if d.tempo %}<dt>Tempo</dt><dd>{{ d.tempo }}</dd>{% endif %}
-      {% if d.luz %}<dt>Luz</dt><dd>{{ d.luz }}</dd>{% endif %}
-      {% if d.rega %}<dt>Rega</dt><dd>{{ d.rega }}</dd>{% endif %}
+      {% if r.rendimento %}<dt>Rendimento</dt><dd>{{ r.rendimento }}</dd>{% endif %}
+      {% if r.tempo %}<dt>Tempo</dt><dd>{{ r.tempo }}</dd>{% endif %}
+      {% if pl.luz %}<dt>Luz</dt><dd>{{ pl.luz }}</dd>{% endif %}
+      {% if pl.rega %}<dt>Rega</dt><dd>{{ pl.rega }}</dd>{% endif %}
     </dl>
     {% endif %}
 
-    {% if d.ingredientes %}
+    {% if r.ingredientes %}
     <h3>Ingredientes</h3>
-    <ul>{% for i in d.ingredientes %}<li>{{ i }}</li>{% endfor %}</ul>
+    <ul>{% for i in r.ingredientes %}<li>{{ i }}</li>{% endfor %}</ul>
     {% endif %}
 
     {% if d.links %}

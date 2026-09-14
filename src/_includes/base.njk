@@ -16,8 +16,8 @@
     <a class="logo" href="{{ '/' | url }}">Sidcley<br>Lyra</a>
 
     <nav class="pastas" aria-label="Seções">
-      {%- for s in secoes %}
-      <a href="{{ ('/' + s.slug + '/') | url }}" title="{{ s.titulo }}"{% if page.url == '/' + s.slug + '/' %} aria-current="page"{% endif %}><span>{{ s.titulo }}</span></a>
+      {%- for p in collections.paginas %}
+      <a href="{{ p.url | url }}"{% if page.url == p.url %} aria-current="page"{% endif %}><span>{{ p.data.title }}</span></a>
       {%- endfor %}
     </nav>
 
@@ -40,9 +40,10 @@
 
   <main>
     {{ content | safe }}
+    {% include "adesivos.njk" %}
   </main>
 
   <a class="topo" href="#topo" aria-label="Voltar ao topo">▲</a>
-  <script type="application/json" id="indice-busca">{{ collections.itens | indiceBusca | safe }}</script>
+  <script type="application/json" id="indice-busca">{{ collections.textos | indiceBusca(collections.paginas) | safe }}</script>
 </body>
 </html>

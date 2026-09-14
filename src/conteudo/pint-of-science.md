@@ -1,5 +1,6 @@
 ---
 title: Pint of Science
+pagina: divulgacao-cientifica
 ordem: 5
 links:
   - texto: Site do Pint of Science

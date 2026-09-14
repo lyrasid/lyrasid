@@ -1,5 +1,6 @@
 ---
 title: 4º Encontro Brasileiro de Divulgação de Ciência
+pagina: divulgacao-cientifica
 ordem: null
 links:
   - texto: EBDC 2026 - O Sul como Centro

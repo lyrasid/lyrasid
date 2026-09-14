@@ -145,6 +145,28 @@ figcaption p { margin: .4rem 0 0; }
 
 .topo { position: fixed; right: 1rem; bottom: 1rem; font-size: 1.2rem; color: var(--tinta); text-decoration: none; }
 
+/* ---------- adesivos ---------- */
+main { position: relative; }
+.adesivos { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+.adesivo {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  transform: translateX(-50%) rotate(var(--r));
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  /* borda branca recortada + sombra de adesivo, segue o contorno do PNG */
+  filter: drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 3px 5px rgba(0, 0, 0, .25));
+  transition: scale .15s;
+}
+.adesivo img { display: block; width: 100%; }
+.adesivo[href]:hover { scale: 1.06; }
+.adesivo.arrastando { cursor: grabbing; scale: 1.1; }
+
 /* ---------- celular ---------- */
 @media (max-width: 768px) {
   main, .menu-aberto main { margin-left: 0; padding-top: 4rem; }
@@ -156,4 +178,5 @@ figcaption p { margin: .4rem 0 0; }
   .midia, .midia.legenda-esquerda { grid-template-columns: minmax(0, 1fr); }
   .midia.legenda-esquerda figcaption { order: 0; text-align: left; }
   .item { padding-left: 0; }
+  .adesivo { width: calc(var(--w) * .6); top: calc(var(--y) * .6); }
 }
