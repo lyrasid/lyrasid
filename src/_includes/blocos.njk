@@ -1,15 +1,18 @@
 {#- Blocos de conteúdo com tipo: texto, imagem, video, receita, planta.
-    Blocos marcados "ao lado do anterior" dividem a mesma linha (até 3 colunas). -#}
+    Blocos marcados "ao lado do anterior" dividem a mesma linha (até 3 colunas).
+    Campos vazios são renderizados com .campo-vazio: escondidos no site, visíveis no modo de edição.
+    data-editar marca campos de texto simples editáveis no modo de edição (linha, texto ou lista). -#}
 {% macro mostrarBlocos(lista, arquivo) %}
+<div class="blocos" data-arquivo="{{ arquivo }}">
 {% for linha in lista | emLinhas %}
 <div class="linha{% if linha.length > 1 %} colunas{% endif %}" style="--colunas: {{ linha.length }}">
 {% for item in linha %}
   {% set b = item.bloco %}
   {% set campo = "blocos." + item.indice %}
-  <div class="bloco">
+  <div class="bloco" data-indice="{{ item.indice }}">
 
-  {% if b.type == "texto" and b.texto %}
-  <div class="texto" data-arquivo="{{ arquivo }}" data-campo="{{ campo }}.texto">{{ b.texto | md | safe }}</div>
+  {% if b.type == "texto" %}
+  <div class="texto{% if not b.texto %} campo-vazio{% endif %}" data-arquivo="{{ arquivo }}" data-campo="{{ campo }}.texto" data-rotulo="Texto">{% if b.texto %}{{ b.texto | md | safe }}{% endif %}</div>
 
   {% elif (b.type == "imagem" and b.imagem) or (b.type == "video" and b.youtube) %}
   <figure class="midia{% if b.lado == 'esquerda' %} legenda-esquerda{% endif %}" data-arquivo="{{ arquivo }}" data-campo="{{ campo }}.largura"{% if b.largura %} style="--largura: {{ b.largura }}%"{% endif %}>
@@ -18,39 +21,36 @@
     {% else %}
     <img src="{{ b.imagem }}" alt="{{ b.alt or b.titulo }}">
     {% endif %}
-    {% if b.titulo or b.ano or b.descricao %}
-    <figcaption>
-      {% if b.titulo %}<strong>{{ b.titulo }}</strong>{% endif %}
-      {% if b.ano %}<span class="ano">{{ b.ano }}</span>{% endif %}
-      {% if b.descricao %}<p>{{ b.descricao }}</p>{% endif %}
+    <figcaption{% if not (b.titulo or b.ano or b.descricao) %} class="campo-vazio"{% endif %}>
+      <strong class="{% if not b.titulo %}campo-vazio{% endif %}" data-campo="{{ campo }}.titulo" data-editar="linha" data-rotulo="Título">{{ b.titulo }}</strong>
+      <span class="ano{% if not b.ano %} campo-vazio{% endif %}" data-campo="{{ campo }}.ano" data-editar="linha" data-rotulo="Ano ou data">{{ b.ano }}</span>
+      <p class="{% if not b.descricao %}campo-vazio{% endif %}" data-campo="{{ campo }}.descricao" data-editar="texto" data-rotulo="Descrição">{{ b.descricao }}</p>
     </figcaption>
-    {% endif %}
   </figure>
 
   {% elif b.type == "receita" %}
-  {% if b.rendimento or b.tempo %}
-  <dl class="ficha">
-    {% if b.rendimento %}<dt>Rendimento</dt><dd>{{ b.rendimento }}</dd>{% endif %}
-    {% if b.tempo %}<dt>Tempo</dt><dd>{{ b.tempo }}</dd>{% endif %}
+  <dl class="ficha{% if not (b.rendimento or b.tempo) %} campo-vazio{% endif %}">
+    <dt{% if not b.rendimento %} class="campo-vazio"{% endif %}>Rendimento</dt>
+    <dd{% if not b.rendimento %} class="campo-vazio"{% endif %} data-campo="{{ campo }}.rendimento" data-editar="linha" data-rotulo="escrever…">{{ b.rendimento }}</dd>
+    <dt{% if not b.tempo %} class="campo-vazio"{% endif %}>Tempo</dt>
+    <dd{% if not b.tempo %} class="campo-vazio"{% endif %} data-campo="{{ campo }}.tempo" data-editar="linha" data-rotulo="escrever…">{{ b.tempo }}</dd>
   </dl>
-  {% endif %}
-  {% if b.ingredientes %}
-  <h3>Ingredientes</h3>
-  <ul>{% for i in b.ingredientes %}<li>{{ i }}</li>{% endfor %}</ul>
-  {% endif %}
+  <h3{% if not b.ingredientes %} class="campo-vazio"{% endif %}>Ingredientes</h3>
+  <ul{% if not b.ingredientes %} class="campo-vazio"{% endif %} data-campo="{{ campo }}.ingredientes" data-editar="lista" data-rotulo="Um ingrediente por linha">{% for i in b.ingredientes %}<li>{{ i }}</li>{% endfor %}</ul>
 
   {% elif b.type == "planta" %}
-  {% if b.nome_cientifico %}<p class="cientifico">{{ b.nome_cientifico }}</p>{% endif %}
-  {% if b.luz or b.rega %}
-  <dl class="ficha">
-    {% if b.luz %}<dt>Luz</dt><dd>{{ b.luz }}</dd>{% endif %}
-    {% if b.rega %}<dt>Rega</dt><dd>{{ b.rega }}</dd>{% endif %}
+  <p class="cientifico{% if not b.nome_cientifico %} campo-vazio{% endif %}" data-campo="{{ campo }}.nome_cientifico" data-editar="linha" data-rotulo="Nome científico">{{ b.nome_cientifico }}</p>
+  <dl class="ficha{% if not (b.luz or b.rega) %} campo-vazio{% endif %}">
+    <dt{% if not b.luz %} class="campo-vazio"{% endif %}>Luz</dt>
+    <dd{% if not b.luz %} class="campo-vazio"{% endif %} data-campo="{{ campo }}.luz" data-editar="linha" data-rotulo="escrever…">{{ b.luz }}</dd>
+    <dt{% if not b.rega %} class="campo-vazio"{% endif %}>Rega</dt>
+    <dd{% if not b.rega %} class="campo-vazio"{% endif %} data-campo="{{ campo }}.rega" data-editar="linha" data-rotulo="escrever…">{{ b.rega }}</dd>
   </dl>
-  {% endif %}
   {% endif %}
 
   </div>
 {% endfor %}
 </div>
 {% endfor %}
+</div>
 {% endmacro %}

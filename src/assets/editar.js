@@ -184,6 +184,138 @@ function ordenavel(itens, alca = (el) => el) {
 ordenavel([...document.querySelectorAll(".pastas a[data-arquivo]")]);
 ordenavel([...document.querySelectorAll("details[data-arquivo]")], (d) => d.querySelector("summary"));
 
+// ---------- campos de texto simples dos blocos: legendas e fichas ----------
+document.querySelectorAll("[data-editar]").forEach((el) => {
+  const tipo = el.dataset.editar;
+  el.contentEditable = tipo === "lista" ? "true" : "plaintext-only";
+  el.addEventListener("focus", () => {
+    if (tipo === "lista" && !el.querySelector("li")) el.innerHTML = "<li></li>";
+  });
+  el.addEventListener("keydown", (e) => {
+    if (tipo === "linha" && e.key === "Enter") { e.preventDefault(); el.blur(); }
+  });
+  el.addEventListener("input", () => {
+    const valor = tipo === "lista"
+      ? [...el.querySelectorAll("li")].map((li) => li.textContent.trim()).filter(Boolean)
+      : el.innerText.trim();
+    alterar(el.closest("[data-arquivo]").dataset.arquivo, el.dataset.campo, valor);
+  });
+});
+
+// ---------- blocos: arrastar acima/abaixo muda a ordem; na lateral coloca lado a lado ----------
+let blocoArrastado = null;
+const LADOS = ["esquerda", "direita", "acima", "abaixo"];
+const limparAlvo = () => document.querySelectorAll(".bloco").forEach((b) => b.classList.remove(...LADOS.map((l) => "alvo-" + l)));
+const novaLinha = () => Object.assign(document.createElement("div"), { className: "linha" });
+
+function posicao(e, el) {
+  const r = el.getBoundingClientRect();
+  const fx = (e.clientX - r.left) / r.width;
+  if (fx < 0.25) return "esquerda";
+  if (fx > 0.75) return "direita";
+  return e.clientY < r.top + r.height / 2 ? "acima" : "abaixo";
+}
+
+// Remonta as linhas a partir do DOM (máx. 3 por linha) e grava a nova ordem + "ao lado" no arquivo.
+function reorganizar(container) {
+  const itens = [...container.querySelectorAll(".bloco")].map((el) => ({ el, antigo: Number(el.dataset.indice), aoLado: !!el.previousElementSibling }));
+  container.replaceChildren();
+  let linha;
+  itens.forEach(({ el, aoLado }) => {
+    if (!aoLado || linha.children.length >= 3) container.append((linha = novaLinha()));
+    linha.append(el);
+  });
+  container.querySelectorAll(".linha").forEach((l) => {
+    l.style.setProperty("--colunas", l.children.length);
+    l.classList.toggle("colunas", l.children.length > 1);
+  });
+  const lados = itens.map(({ el }) => !!el.previousElementSibling);
+  itens.forEach(({ el }, i) => {
+    el.dataset.indice = i;
+    el.querySelectorAll("[data-campo]").forEach((c) => (c.dataset.campo = c.dataset.campo.replace(/^blocos\.\d+\./, `blocos.${i}.`)));
+  });
+  atualizarBotoes(container);
+
+  abrir(container.dataset.arquivo).then((a) => {
+    const antigos = a.dados.blocos;
+    if (itens.every(({ antigo }, i) => antigo === i && !!antigos[i].ao_lado === lados[i])) return;
+    a.dados.blocos = itens.map(({ antigo }, i) => {
+      const { ao_lado, ...bloco } = antigos[antigo];
+      return lados[i] ? { ...bloco, ao_lado: true } : bloco;
+    });
+    alterados.add(container.dataset.arquivo);
+    atualizarBarra();
+  });
+}
+
+function atualizarBotoes(container) {
+  container.querySelectorAll(".bloco").forEach((el, i) => {
+    const botao = el.querySelector(".edicao-ao-lado");
+    botao.hidden = i === 0;
+    botao.setAttribute("aria-pressed", !!el.previousElementSibling);
+  });
+}
+
+document.querySelectorAll(".blocos[data-arquivo]").forEach((container) => {
+  container.querySelectorAll(".bloco").forEach((bloco) => {
+    const ferramentas = document.createElement("div");
+    ferramentas.className = "edicao-ferramentas";
+    ferramentas.innerHTML = `<span class="edicao-mover" draggable="true" title="Solte acima ou abaixo de outro bloco para mudar a ordem, ou na lateral para ficar lado a lado">⠿ mover</span><button type="button" class="edicao-ao-lado" title="Ao lado do bloco anterior">ao lado</button>`;
+    bloco.append(ferramentas);
+    const [mover, aoLado] = ferramentas.children;
+
+    mover.addEventListener("dragstart", (e) => {
+      blocoArrastado = bloco;
+      e.dataTransfer.setData("text/plain", "");
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setDragImage(bloco, 20, 20);
+    });
+    mover.addEventListener("dragend", () => { blocoArrastado = null; limparAlvo(); });
+
+    aoLado.addEventListener("click", () => {
+      if (bloco.previousElementSibling) {
+        // tira da linha: este bloco e os seguintes começam uma linha nova
+        const linha = bloco.parentElement;
+        const nova = novaLinha();
+        for (let b = bloco, prox; b; b = prox) {
+          prox = b.nextElementSibling;
+          nova.append(b);
+        }
+        linha.after(nova);
+      } else {
+        bloco.parentElement.previousElementSibling?.append(bloco);
+      }
+      reorganizar(container);
+    });
+
+    const valido = () => blocoArrastado && blocoArrastado !== bloco && blocoArrastado.closest(".blocos") === container;
+    bloco.addEventListener("dragover", (e) => {
+      if (!valido()) return;
+      e.preventDefault();
+      e.stopPropagation();
+      limparAlvo();
+      bloco.classList.add("alvo-" + posicao(e, bloco));
+    });
+    bloco.addEventListener("drop", (e) => {
+      if (!valido()) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const lado = posicao(e, bloco);
+      if (lado === "esquerda") bloco.before(blocoArrastado);
+      else if (lado === "direita") bloco.after(blocoArrastado);
+      else {
+        const nova = novaLinha();
+        const linhaAlvo = bloco.parentElement;
+        nova.append(blocoArrastado);
+        linhaAlvo[lado === "acima" ? "before" : "after"](nova);
+      }
+      limparAlvo();
+      reorganizar(container);
+    });
+  });
+  atualizarBotoes(container);
+});
+
 // ---------- imagens e vídeos: alça no canto muda a largura ----------
 document.querySelectorAll(".midia[data-campo]").forEach((fig) => {
   const alca = document.createElement("span");

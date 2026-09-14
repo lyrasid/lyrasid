@@ -131,7 +131,8 @@ summary h2 { margin: .3rem 0; font-size: clamp(1.6rem, 3.2vw, 2.2rem); }
   align-items: start;
   margin: 1.5rem 0;
 }
-.midia:not(:has(figcaption)) { grid-template-columns: minmax(0, 3fr); }
+html:not(.edicao) .campo-vazio { display: none; }
+html:not(.edicao) .midia:has(> figcaption.campo-vazio) { grid-template-columns: minmax(0, 3fr); }
 .midia.legenda-esquerda { grid-template-columns: minmax(10rem, 1fr) minmax(0, 3fr); }
 .midia.legenda-esquerda figcaption { order: -1; text-align: right; }
 .midia img, .midia iframe { display: block; width: 100%; border: 2px solid var(--tinta); border-radius: 4px; background: #fff; }
@@ -201,6 +202,20 @@ main { position: relative; }
 .edicao :is(.pastas a, summary) { cursor: grab; }
 .edicao summary::after { content: "⠿"; margin-left: auto; opacity: .4; }
 .edicao-texto { display: block; box-sizing: border-box; width: 100%; max-width: 44rem; padding: .6rem; font: .9rem/1.5 ui-monospace, monospace; border: 1.5px solid var(--tinta); border-radius: .35rem; resize: none; }
+.edicao [data-editar] { min-width: 3rem; outline: 1.5px dashed rgba(0, 0, 0, .3); outline-offset: 2px; cursor: text; }
+.edicao [data-editar]:focus { outline: 1.5px solid var(--vinho); }
+.edicao [data-rotulo]:empty::before { content: attr(data-rotulo); opacity: .4; pointer-events: none; }
+.edicao [data-editar="lista"] { min-height: 1.6em; }
+.edicao .bloco { position: relative; min-height: 1.5rem; }
+.edicao-ferramentas { position: absolute; top: -1.2rem; right: 0; z-index: 3; display: none; gap: .3rem; }
+.edicao .bloco:hover > .edicao-ferramentas { display: flex; }
+.edicao-ferramentas > * { padding: .15rem .55rem; font: inherit; font-size: .75rem; line-height: 1.4; color: var(--papel); background: var(--tinta); border: 0; border-radius: .3rem; cursor: pointer; }
+.edicao-mover { cursor: grab; }
+.edicao-ao-lado[aria-pressed="true"] { background: var(--vinho); }
+.bloco.alvo-esquerda { box-shadow: -6px 0 0 var(--vinho); }
+.bloco.alvo-direita { box-shadow: 6px 0 0 var(--vinho); }
+.bloco.alvo-acima { box-shadow: 0 -6px 0 var(--vinho); }
+.bloco.alvo-abaixo { box-shadow: 0 6px 0 var(--vinho); }
 .edicao-alca { position: absolute; right: -9px; bottom: -9px; z-index: 2; width: 18px; height: 18px; background: var(--tinta); border: 3px solid var(--papel); border-radius: 50%; cursor: ew-resize; touch-action: none; }
 
 /* ---------- celular ---------- */
