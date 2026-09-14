@@ -7,7 +7,7 @@ links: []
 blocos:
   - type: texto
     texto: |-
-      23 de novembro de 2023
+      #### 23 de novembro de 2023
 
       Inauguração da Exposição “Passa a visão” do Laboratório de Imagens do Maré de Notícias.
 
@@ -17,7 +17,7 @@ blocos:
     ao_lado: false
     imagem: /midia/01_Barbearia.JPG
     alt: ''
-    titulo: Barbearia
+    titulo: 'Favela & Navalha: Um corte, uma identidade'
     ano: '2023'
     descricao: ''
     lado: direita
@@ -26,7 +26,7 @@ blocos:
     ao_lado: false
     imagem: /midia/02_Barbearia.JPG
     alt: ''
-    titulo: Barbearia
+    titulo: 'Favela & Navalha: Um corte, uma identidade'
     ano: '2023'
     descricao: ''
     lado: direita
@@ -42,7 +42,9 @@ blocos:
       > Um passeio por várias favelas cariocas e um aprofundamento na ideia de um olhar cotidiano, que descreve sensações e encatamentos que fazem da fotografia popular um caminho para a produção de novas narrativas sobre estes territórios.
 
       > Ao longo de três meses, o Lab de Imagem e Narrativa do Maré de Notícias provocou os fotógrafos a refletirem sobre as narrativas imagétivas das favelas e periferias, com exercícios e discussão que resultaram na exposição **"Passa a visão"** que nasce do desejo de falar destes territórios a partir do olhar de quem vive nelas.
-
+    ao_lado: false
+  - type: texto
+    texto: |-
       **Texto curatorial**
 
       - Affonso Dalua
@@ -69,5 +71,5 @@ blocos:
       - Redes da Maré
       - Maré de Notícias
       - Areninha Cultural Herbert Vianna
-    ao_lado: false
+    ao_lado: true
 ---
