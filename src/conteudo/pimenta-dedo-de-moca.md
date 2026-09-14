@@ -6,10 +6,12 @@ oculto: false
 links: []
 blocos:
   - type: planta
-    nome_cientifico: Sedum morganianum
+    ao_lado: false
+    nome_cientifico: Capsicum pendulum
     luz: sol pleno
-    rega: moderado
+    rega: regular
   - type: imagem
+    ao_lado: false
     imagem: /midia/IMG_2370.jpeg
     alt: ''
     titulo: ''
@@ -18,4 +20,5 @@ blocos:
       - Flor branca com 5 pétalas, sem manchas roxas
       - Folhas lisas, formato lanceolado comum em dedo-de-moça
     lado: direita
+    largura: 50
 ---
