@@ -19,7 +19,9 @@ blocos:
     alt: ''
     titulo: 'Favela & Navalha: Um corte, uma identidade'
     ano: '2023'
-    descricao: ''
+    descricao: |-
+      Mandela, Rio de Janeiro, 2023. Sidcley S. de Lyra.
+      Fotografia selecionada para a exposição "Passa a Visão", do Laboratório de Imagens do Maré de Notícias.
     lado: direita
     largura: null
   - type: imagem
@@ -28,7 +30,9 @@ blocos:
     alt: ''
     titulo: 'Favela & Navalha: Um corte, uma identidade'
     ano: '2023'
-    descricao: ''
+    descricao: |-
+      Mandela, Rio de Janeiro, 2023. Sidcley S. de Lyra.
+      Fotografia selecionada para a exposição "Passa a Visão", do Laboratório de Imagens do Maré de Notícias.
     lado: direita
     largura: null
   - type: texto
@@ -72,4 +76,13 @@ blocos:
       - Maré de Notícias
       - Areninha Cultural Herbert Vianna
     ao_lado: true
+  - type: imagem
+    ao_lado: false
+    imagem: /midia/IMG_9986.JPG
+    alt: ''
+    titulo: ''
+    ano: ''
+    descricao: ''
+    lado: direita
+    largura: null
 ---
