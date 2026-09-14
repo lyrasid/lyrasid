@@ -3,10 +3,13 @@
   --tinta: #111;
   --papel: #fff;
   --barra: #fff;
-  --quadricula: rgba(0, 0, 0, 0.16);
+  --quadricula: rgba(0, 0, 0, 0.07);
   --aberta: 15rem;
   --fechada: 3.25rem;
 }
+
+/* base de 19px: a Narnoor tem letras baixas; todos os tamanhos em rem crescem junto */
+html { font-size: 118.75%; }
 
 * { box-sizing: border-box; }
 
@@ -193,14 +196,16 @@ main { position: relative; }
   border-radius: 999px;
   transform: translateX(-50%);
 }
-.edicao-barra small { opacity: .7; }
+.edicao-barra { font-size: .75rem; }
+.edicao-barra strong { white-space: nowrap; }
+.edicao-barra small { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: .7; }
 .edicao-barra button { padding: .2rem .9rem; font: inherit; color: inherit; background: none; border: 1.5px solid var(--papel); border-radius: 999px; cursor: pointer; }
 .edicao-barra button:disabled { opacity: .35; cursor: default; }
 .edicao :is(.texto[data-campo], .midia) { outline: 1.5px dashed rgba(0, 0, 0, .3); outline-offset: 4px; }
 .edicao .texto[data-campo] { cursor: text; }
 .edicao .midia { position: relative; }
-.edicao :is(.pastas a, summary) { cursor: grab; }
-.edicao summary::after { content: "⠿"; margin-left: auto; opacity: .4; }
+.edicao .pastas a { cursor: grab; }
+.edicao-alca-subtitulo { margin-left: auto; padding: 0 .4rem; opacity: .4; cursor: grab; user-select: none; }
 .edicao-texto { display: block; box-sizing: border-box; width: 100%; max-width: 44rem; padding: .6rem; font: .9rem/1.5 ui-monospace, monospace; border: 1.5px solid var(--tinta); border-radius: .35rem; resize: none; }
 .edicao [data-editar] { min-width: 3rem; outline: 1.5px dashed rgba(0, 0, 0, .3); outline-offset: 2px; cursor: text; }
 .edicao [data-editar]:focus { outline: 1.5px solid var(--vinho); }

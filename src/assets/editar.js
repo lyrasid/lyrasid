@@ -182,7 +182,12 @@ function ordenavel(itens, alca = (el) => el) {
   });
 }
 ordenavel([...document.querySelectorAll(".pastas a[data-arquivo]")]);
-ordenavel([...document.querySelectorAll("details[data-arquivo]")], (d) => d.querySelector("summary"));
+ordenavel([...document.querySelectorAll("details[data-arquivo]")], (d) => {
+  const alca = Object.assign(document.createElement("span"), { className: "edicao-alca-subtitulo", textContent: "⠿", title: "Arraste para mudar a ordem" });
+  alca.addEventListener("click", (e) => e.preventDefault());
+  d.querySelector("summary").append(alca);
+  return alca;
+});
 
 // ---------- campos de texto simples dos blocos: legendas e fichas ----------
 document.querySelectorAll("[data-editar]").forEach((el) => {
@@ -194,11 +199,27 @@ document.querySelectorAll("[data-editar]").forEach((el) => {
   el.addEventListener("keydown", (e) => {
     if (tipo === "linha" && e.key === "Enter") { e.preventDefault(); el.blur(); }
   });
+  if (el.dataset.campo === "title") {
+    // título apagado volta ao último valor ao sair do campo
+    let ultimo = el.innerText.trim();
+    el.addEventListener("input", () => el.innerText.trim() && (ultimo = el.innerText.trim()));
+    el.addEventListener("blur", () => !el.innerText.trim() && (el.textContent = ultimo));
+  }
+  if (el.closest("summary")) {
+    // subtítulo: clicar ou dar espaço edita o texto em vez de abrir/fechar
+    el.addEventListener("click", (e) => e.preventDefault());
+    el.addEventListener("keyup", (e) => e.key === " " && e.preventDefault());
+  }
   el.addEventListener("input", () => {
+    const arquivo = el.closest("[data-arquivo]").dataset.arquivo;
     const valor = tipo === "lista"
       ? [...el.querySelectorAll("li")].map((li) => li.textContent.trim()).filter(Boolean)
       : el.innerText.trim();
-    alterar(el.closest("[data-arquivo]").dataset.arquivo, el.dataset.campo, valor);
+    if (el.dataset.campo === "title") {
+      if (!valor) return; // título vazio quebraria a ordenação do site; mantém o anterior
+      document.querySelectorAll(`.pastas a[data-arquivo="${arquivo}"] span`).forEach((s) => (s.textContent = valor));
+    }
+    alterar(arquivo, el.dataset.campo, valor);
   });
 });
 

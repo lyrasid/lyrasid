@@ -2,12 +2,12 @@
 layout: base.njk
 ---
 {% from "blocos.njk" import mostrarBlocos %}
-<h1>{{ title }}</h1>
+<h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Título da página">{{ title }}</h1>
 
 {% for item in collections.textos | daPagina(page.fileSlug) %}
 {% set d = item.data %}
 <details name="subtitulos" id="{{ item.fileSlug }}" data-arquivo="{{ item.inputPath | arquivo }}">
-  <summary><h2>{{ d.title }}</h2></summary>
+  <summary><h2 data-arquivo="{{ item.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Subtítulo">{{ d.title }}</h2></summary>
   <div class="item">
     {% if d.links %}
     <p class="links">{% for l in d.links %}<a href="{{ l.url }}" target="_blank" rel="noopener">{{ l.texto or l.url }} ↗</a>{% endfor %}</p>
