@@ -5,5 +5,6 @@ links:
   - texto: Google Play
     url: https://play.google.com
 blocos:
-  - texto: Descrição provisória do app.
+  - type: texto
+    texto: Descrição provisória do app.
 ---

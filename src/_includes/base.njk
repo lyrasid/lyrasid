@@ -8,16 +8,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Narnoor:wght@400;700&family=Schoolbell&display=swap">
-  <link rel="stylesheet" href="{{ '/assets/estilo.css' | url }}">
-  <script src="{{ '/assets/site.js' | url }}" defer></script>
+  <link rel="stylesheet" href="/assets/estilo.css">
+  <script src="/assets/site.js" defer></script>
 </head>
 <body id="topo">
   <aside class="barra">
-    <a class="logo" href="{{ '/' | url }}">Sidcley<br>Lyra</a>
+    <a class="logo" href="/">Sidcley<br>Lyra</a>
 
     <nav class="pastas" aria-label="Seções">
       {%- for p in collections.paginas %}
-      <a href="{{ p.url | url }}"{% if page.url == p.url %} aria-current="page"{% endif %}><span>{{ p.data.title }}</span></a>
+      <a href="{{ p.url }}" data-arquivo="{{ p.inputPath | arquivo }}"{% if page.url == p.url %} aria-current="page"{% endif %}><span>{{ p.data.title }}</span></a>
       {%- endfor %}
     </nav>
 

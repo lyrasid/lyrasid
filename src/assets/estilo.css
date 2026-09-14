@@ -167,6 +167,42 @@ main { position: relative; }
 .adesivo[href]:hover { scale: 1.06; }
 .adesivo.arrastando { cursor: grabbing; scale: 1.1; }
 
+/* ---------- linhas de blocos (até 3 colunas) ---------- */
+.linha { display: grid; grid-template-columns: repeat(var(--colunas), minmax(0, 1fr)); gap: 1.5rem; align-items: start; }
+.colunas .midia, .colunas .midia.legenda-esquerda { grid-template-columns: minmax(0, 1fr); }
+.colunas .midia.legenda-esquerda figcaption { order: 0; text-align: left; }
+.midia picture, .adesivo picture { display: block; }
+.midia img, .adesivo img { height: auto; }
+
+/* ---------- modo de edição ---------- */
+.midia { width: var(--largura, 100%); }
+.edicao-barra {
+  position: fixed;
+  left: 50%;
+  bottom: 1rem;
+  z-index: 20;
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+  max-width: calc(100vw - 2rem);
+  padding: .45rem .5rem .45rem 1.1rem;
+  font-size: .85rem;
+  color: var(--papel);
+  background: var(--tinta);
+  border-radius: 999px;
+  transform: translateX(-50%);
+}
+.edicao-barra small { opacity: .7; }
+.edicao-barra button { padding: .2rem .9rem; font: inherit; color: inherit; background: none; border: 1.5px solid var(--papel); border-radius: 999px; cursor: pointer; }
+.edicao-barra button:disabled { opacity: .35; cursor: default; }
+.edicao :is(.texto[data-campo], .midia) { outline: 1.5px dashed rgba(0, 0, 0, .3); outline-offset: 4px; }
+.edicao .texto[data-campo] { cursor: text; }
+.edicao .midia { position: relative; }
+.edicao :is(.pastas a, summary) { cursor: grab; }
+.edicao summary::after { content: "⠿"; margin-left: auto; opacity: .4; }
+.edicao-texto { display: block; box-sizing: border-box; width: 100%; max-width: 44rem; padding: .6rem; font: .9rem/1.5 ui-monospace, monospace; border: 1.5px solid var(--tinta); border-radius: .35rem; resize: none; }
+.edicao-alca { position: absolute; right: -9px; bottom: -9px; z-index: 2; width: 18px; height: 18px; background: var(--tinta); border: 3px solid var(--papel); border-radius: 50%; cursor: ew-resize; touch-action: none; }
+
 /* ---------- celular ---------- */
 @media (max-width: 768px) {
   main, .menu-aberto main { margin-left: 0; padding-top: 4rem; }
@@ -175,7 +211,8 @@ main { position: relative; }
   html:not(.menu-aberto) .alternar { position: fixed; top: .75rem; left: .75rem; background: var(--papel); border: 2px solid var(--tinta); border-radius: 6px; }
   html:not(.menu-aberto) .alternar .seta { display: none; }
   html:not(.menu-aberto) .alternar .hamburguer { display: inline; }
-  .midia, .midia.legenda-esquerda { grid-template-columns: minmax(0, 1fr); }
+  .linha { grid-template-columns: minmax(0, 1fr); }
+  .midia, .midia.legenda-esquerda { width: 100%; grid-template-columns: minmax(0, 1fr); }
   .midia.legenda-esquerda figcaption { order: 0; text-align: left; }
   .item { padding-left: 0; }
   .adesivo { width: calc(var(--w) * .6); top: calc(var(--y) * .6); }

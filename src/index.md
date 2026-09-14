@@ -23,5 +23,7 @@ adesivos:
     y: 240
     largura: 130
     rotacao: -6
+blocos:
+  - type: texto
+    texto: Texto provisório. Escreva aqui quem você é, o que faz e o que vai encontrar neste caderno.
 ---
-Texto provisório. Escreva aqui quem você é, o que faz e o que vai encontrar neste caderno.

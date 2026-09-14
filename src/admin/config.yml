@@ -22,7 +22,60 @@ collections:
           - { name: layout, widget: hidden, default: sobre.njk }
           - { name: title, label: Nome, widget: string }
           - { name: foto, label: Foto, widget: image, required: false }
-          - { name: body, label: Texto, widget: markdown }
+          - &blocos
+            name: blocos
+            label: Blocos
+            label_singular: Bloco
+            widget: list
+            required: false
+            types:
+              - name: texto
+                label: Texto
+                widget: object
+                fields:
+                  - { name: texto, label: Texto, widget: markdown }
+                  - &ao_lado { name: ao_lado, label: Ao lado do bloco anterior, widget: boolean, default: false, required: false, hint: "Até 3 blocos lado a lado. No celular ficam um embaixo do outro." }
+              - name: imagem
+                label: Imagem
+                widget: object
+                summary: "{{fields.titulo}}"
+                fields:
+                  - { name: imagem, label: Imagem, widget: image }
+                  - { name: alt, label: Descrição da imagem (acessibilidade), widget: string, required: false }
+                  - &titulo_midia { name: titulo, label: Título, widget: string, required: false }
+                  - &ano { name: ano, label: Ano ou data, widget: string, required: false }
+                  - &descricao { name: descricao, label: Descrição, widget: text, required: false }
+                  - &lado { name: lado, label: Legenda do lado, widget: select, required: false, default: direita, options: [{ label: Direita, value: direita }, { label: Esquerda, value: esquerda }] }
+                  - &largura { name: largura, label: Largura (%), widget: number, value_type: int, min: 20, max: 100, required: false, hint: "Vazio = largura total. No celular é sempre 100%." }
+                  - *ao_lado
+              - name: video
+                label: Vídeo do YouTube
+                widget: object
+                summary: "{{fields.titulo}}"
+                fields:
+                  - { name: youtube, label: Link do YouTube, widget: string }
+                  - *titulo_midia
+                  - *ano
+                  - *descricao
+                  - *lado
+                  - *largura
+                  - *ao_lado
+              - name: receita
+                label: Ficha de receita
+                widget: object
+                fields:
+                  - { name: rendimento, label: Rendimento, widget: string, required: false }
+                  - { name: tempo, label: Tempo de preparo, widget: string, required: false }
+                  - { name: ingredientes, label: Ingredientes (um por linha), widget: list, required: false }
+                  - *ao_lado
+              - name: planta
+                label: Ficha de planta
+                widget: object
+                fields:
+                  - { name: nome_cientifico, label: Nome científico, widget: string, required: false }
+                  - { name: luz, label: Luz, widget: string, required: false }
+                  - { name: rega, label: Rega, widget: string, required: false }
+                  - *ao_lado
           - &adesivos
             name: adesivos
             label: Adesivos
@@ -82,34 +135,4 @@ collections:
         fields:
           - { name: texto, label: Texto do link, widget: string }
           - { name: url, label: Endereço, widget: string }
-      - name: blocos
-        label: Blocos (texto, imagem ou vídeo)
-        widget: list
-        required: false
-        fields:
-          - { name: texto, label: Texto, widget: markdown, required: false }
-          - { name: imagem, label: Imagem, widget: image, required: false }
-          - { name: youtube, label: Link do YouTube, widget: string, required: false }
-          - { name: alt, label: Descrição da imagem (acessibilidade), widget: string, required: false }
-          - { name: titulo, label: Título da mídia, widget: string, required: false }
-          - { name: ano, label: Ano, widget: string, required: false }
-          - { name: descricao, label: Descrição da mídia, widget: text, required: false }
-          - { name: lado, label: Legenda do lado, widget: select, required: false, default: direita, options: [{ label: Direita, value: direita }, { label: Esquerda, value: esquerda }] }
-      - name: receita
-        label: Ficha de receita (opcional)
-        widget: object
-        collapsed: true
-        required: false
-        fields:
-          - { name: rendimento, label: Rendimento, widget: string, required: false }
-          - { name: tempo, label: Tempo de preparo, widget: string, required: false }
-          - { name: ingredientes, label: Ingredientes (um por linha), widget: list, required: false }
-      - name: planta
-        label: Ficha de planta (opcional)
-        widget: object
-        collapsed: true
-        required: false
-        fields:
-          - { name: nome_cientifico, label: Nome científico, widget: string, required: false }
-          - { name: luz, label: Luz, widget: string, required: false }
-          - { name: rega, label: Rega, widget: string, required: false }
+      - *blocos

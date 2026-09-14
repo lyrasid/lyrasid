@@ -1,8 +1,9 @@
 ---
 layout: base.njk
 ---
+{% from "blocos.njk" import mostrarBlocos %}
 <article class="sobre">
-  {% if foto %}<img class="foto" src="{{ foto | url }}" alt="Foto de {{ title }}">{% endif %}
+  {% if foto %}<img class="foto" src="{{ foto }}" alt="Foto de {{ title }}">{% endif %}
   <h1>{{ title }}</h1>
-  {{ content | safe }}
+  {{ mostrarBlocos(blocos, page.inputPath | arquivo) }}
 </article>

@@ -1,3 +1,5 @@
+import { HtmlBasePlugin } from "@11ty/eleventy";
+import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 import markdownIt from "markdown-it";
 
 const md = markdownIt({ linkify: true });
@@ -15,10 +17,36 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/midia");
   eleventyConfig.addPassthroughCopy("src/admin");
 
+  // Prefixo do endereço (/lyrasid/) aplicado em todos os links e imagens do HTML final.
+  eleventyConfig.addPlugin(HtmlBasePlugin);
+
+  // Toda <img> do site é comprimida na publicação: WebP + formato original, em até 3 larguras.
+  // ponytail: reprocessa todas as imagens a cada publicação; guardar cache no GitHub Actions se ficar lento.
+  eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
+    formats: ["webp", "auto"],
+    widths: [600, 1200, 2000],
+    svgShortCircuit: true,
+    htmlOptions: {
+      imgAttributes: { loading: "lazy", decoding: "async", sizes: "(max-width: 768px) 100vw, 60vw" },
+    },
+  });
+
   eleventyConfig.addCollection("paginas", (api) => visiveis(api, "src/paginas/*.md"));
   eleventyConfig.addCollection("textos", (api) => visiveis(api, "src/conteudo/*.md"));
 
+  // caminho do arquivo no repositório, usado pelo modo de edição para salvar
+  eleventyConfig.addFilter("arquivo", (inputPath) => inputPath.replace(/^\.\//, ""));
   eleventyConfig.addFilter("daPagina", (textos, slug) => textos.filter((t) => t.data.pagina === slug));
+
+  // Agrupa blocos em linhas: "ao lado do bloco anterior" junta até 3 blocos na mesma linha.
+  eleventyConfig.addFilter("emLinhas", (blocos) =>
+    (blocos || []).reduce((linhas, bloco, indice) => {
+      const ultima = linhas.at(-1);
+      if (bloco.ao_lado && ultima?.length < 3) ultima.push({ bloco, indice });
+      else linhas.push([{ bloco, indice }]);
+      return linhas;
+    }, [])
+  );
   eleventyConfig.addFilter("md", (texto) => md.render(texto || ""));
   eleventyConfig.addFilter("youtubeId", (link) => String(link).match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/)?.[1] ?? link);
 
@@ -26,7 +54,7 @@ export default function (eleventyConfig) {
   const linkDoTexto = (slug, textos, paginas) => {
     const texto = textos.find((t) => t.fileSlug === slug);
     const pagina = texto && paginas.find((p) => p.fileSlug === texto.data.pagina);
-    return pagina ? eleventyConfig.getFilter("url")(pagina.url) + "#" + slug : "";
+    return pagina ? pagina.url + "#" + slug : "";
   };
   eleventyConfig.addFilter("linkDoTexto", linkDoTexto);
 
@@ -35,7 +63,7 @@ export default function (eleventyConfig) {
     const indice = textos.flatMap((t) => {
       const url = linkDoTexto(t.fileSlug, textos, paginas);
       if (!url) return [];
-      return [{ titulo: t.data.title, secao: paginas.find((p) => p.fileSlug === t.data.pagina).data.title, url }];
+      return [{ titulo: t.data.title, secao: paginas.find((p) => p.fileSlug === t.data.pagina).data.title, url: eleventyConfig.getFilter("url")(url) }];
     });
     return JSON.stringify(indice).replaceAll("<", "\\u003c");
   });

@@ -1,6 +1,10 @@
 const html = document.documentElement;
 const celular = matchMedia("(max-width: 768px)");
 
+// modo de edição: liga com ?editar no endereço, fica ligado até clicar em "Sair"
+if (new URLSearchParams(location.search).has("editar")) localStorage.setItem("editar", "1");
+if (localStorage.getItem("editar") === "1") import(new URL("editar.js", document.currentScript.src));
+
 // barra lateral: fechada por padrão, lembra a escolha (só no desktop)
 const botao = document.querySelector(".alternar");
 const sincronizar = () => botao.setAttribute("aria-expanded", html.classList.contains("menu-aberto"));

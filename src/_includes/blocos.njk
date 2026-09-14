@@ -1,0 +1,56 @@
+{#- Blocos de conteúdo com tipo: texto, imagem, video, receita, planta.
+    Blocos marcados "ao lado do anterior" dividem a mesma linha (até 3 colunas). -#}
+{% macro mostrarBlocos(lista, arquivo) %}
+{% for linha in lista | emLinhas %}
+<div class="linha{% if linha.length > 1 %} colunas{% endif %}" style="--colunas: {{ linha.length }}">
+{% for item in linha %}
+  {% set b = item.bloco %}
+  {% set campo = "blocos." + item.indice %}
+  <div class="bloco">
+
+  {% if b.type == "texto" and b.texto %}
+  <div class="texto" data-arquivo="{{ arquivo }}" data-campo="{{ campo }}.texto">{{ b.texto | md | safe }}</div>
+
+  {% elif (b.type == "imagem" and b.imagem) or (b.type == "video" and b.youtube) %}
+  <figure class="midia{% if b.lado == 'esquerda' %} legenda-esquerda{% endif %}" data-arquivo="{{ arquivo }}" data-campo="{{ campo }}.largura"{% if b.largura %} style="--largura: {{ b.largura }}%"{% endif %}>
+    {% if b.type == "video" %}
+    <iframe src="https://www.youtube-nocookie.com/embed/{{ b.youtube | youtubeId }}" title="{{ b.titulo or 'Vídeo do YouTube' }}" loading="lazy" allowfullscreen></iframe>
+    {% else %}
+    <img src="{{ b.imagem }}" alt="{{ b.alt or b.titulo }}">
+    {% endif %}
+    {% if b.titulo or b.ano or b.descricao %}
+    <figcaption>
+      {% if b.titulo %}<strong>{{ b.titulo }}</strong>{% endif %}
+      {% if b.ano %}<span class="ano">{{ b.ano }}</span>{% endif %}
+      {% if b.descricao %}<p>{{ b.descricao }}</p>{% endif %}
+    </figcaption>
+    {% endif %}
+  </figure>
+
+  {% elif b.type == "receita" %}
+  {% if b.rendimento or b.tempo %}
+  <dl class="ficha">
+    {% if b.rendimento %}<dt>Rendimento</dt><dd>{{ b.rendimento }}</dd>{% endif %}
+    {% if b.tempo %}<dt>Tempo</dt><dd>{{ b.tempo }}</dd>{% endif %}
+  </dl>
+  {% endif %}
+  {% if b.ingredientes %}
+  <h3>Ingredientes</h3>
+  <ul>{% for i in b.ingredientes %}<li>{{ i }}</li>{% endfor %}</ul>
+  {% endif %}
+
+  {% elif b.type == "planta" %}
+  {% if b.nome_cientifico %}<p class="cientifico">{{ b.nome_cientifico }}</p>{% endif %}
+  {% if b.luz or b.rega %}
+  <dl class="ficha">
+    {% if b.luz %}<dt>Luz</dt><dd>{{ b.luz }}</dd>{% endif %}
+    {% if b.rega %}<dt>Rega</dt><dd>{{ b.rega }}</dd>{% endif %}
+  </dl>
+  {% endif %}
+  {% endif %}
+
+  </div>
+{% endfor %}
+</div>
+{% endfor %}
+{% endmacro %}
