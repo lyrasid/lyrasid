@@ -40,6 +40,9 @@ export default function (eleventyConfig) {
     },
   });
 
+  // Endereço completo do site, para a prévia de compartilhamento (Open Graph). Na publicação vem do GitHub Pages.
+  eleventyConfig.addGlobalData("urlSite", (process.env.SITE_URL || "https://lyrasid.github.io/lyrasid").replace(/\/$/, ""));
+
   eleventyConfig.addCollection("paginas", (api) => visiveis(api, "src/paginas/*.md"));
   eleventyConfig.addCollection("textos", (api) => visiveis(api, "src/conteudo/*.md"));
 

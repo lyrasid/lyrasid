@@ -1,0 +1,28 @@
+<!doctype html>
+<!-- Desenho do favicon "SL". Para regerar: capturar esta página em 512x512 com fundo transparente
+     (ex.: msedge --headless=new --default-background-color=00000000 --window-size=512,512 --screenshot=favicon-512.png)
+     e reduzir com sharp para src/assets/favicon-32.png, favicon-192.png e apple-touch-icon.png (180px, fundo #111). -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: Schoolbell; src: url(../node_modules/@fontsource/schoolbell/files/schoolbell-latin-400-normal.woff2); }
+  html, body { margin: 0; background: transparent; }
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 512px;
+    height: 512px;
+    padding-top: 36px;
+    box-sizing: border-box;
+    font: 340px/1 Schoolbell, cursive;
+    letter-spacing: -12px;
+    color: #fff;
+    background: #111;
+    border-radius: 104px;
+  }
+</style>
+</head>
+<body><div>SL</div></body>
+</html>

@@ -64,6 +64,59 @@ campo.addEventListener("input", () => {
   if (!achados.length) lista.append(Object.assign(document.createElement("li"), { textContent: "Nada encontrado." }));
 });
 
+// fotos: clicar amplia em tela cheia; setas, teclado e deslizar navegam entre as fotos do mesmo subtítulo
+const visor = document.createElement("dialog");
+visor.className = "visor";
+visor.innerHTML = `<button type="button" class="visor-fechar" aria-label="Fechar">×</button><button type="button" class="visor-anterior" aria-label="Foto anterior">‹</button><figure><img alt=""><figcaption></figcaption></figure><button type="button" class="visor-proxima" aria-label="Próxima foto">›</button>`;
+document.body.append(visor);
+const [botaoFechar, botaoAnterior, figuraVisor, botaoProxima] = visor.children;
+const imagemVisor = figuraVisor.querySelector("img");
+const legendaVisor = figuraVisor.querySelector("figcaption");
+let fotos = [];
+let fotoAtual = 0;
+
+// maior versão gerada na publicação (último item do srcset WebP), ou a própria imagem
+const maiorVersao = (img) => img.closest("picture")?.querySelector("source")?.srcset.split(",").at(-1).trim().split(" ")[0] || img.currentSrc || img.src;
+
+function mostrarFoto(i) {
+  fotoAtual = (i + fotos.length) % fotos.length;
+  const img = fotos[fotoAtual];
+  imagemVisor.src = maiorVersao(img);
+  imagemVisor.alt = img.alt;
+  const legenda = img.closest("figure").querySelector("figcaption");
+  legendaVisor.textContent = legenda
+    ? [...legenda.children].filter((e) => !e.classList.contains("campo-vazio")).map((e) => e.textContent.trim()).filter(Boolean).join(" · ")
+    : "";
+  const sozinha = fotos.length < 2 ? "hidden" : "";
+  botaoAnterior.style.visibility = botaoProxima.style.visibility = sozinha;
+}
+
+document.addEventListener("click", (e) => {
+  const img = e.target.closest(".midia img");
+  if (!img || html.classList.contains("edicao")) return;
+  fotos = [...img.closest(".blocos").querySelectorAll(".midia img")];
+  mostrarFoto(fotos.indexOf(img));
+  visor.showModal();
+});
+botaoFechar.addEventListener("click", () => visor.close());
+botaoAnterior.addEventListener("click", () => mostrarFoto(fotoAtual - 1));
+botaoProxima.addEventListener("click", () => mostrarFoto(fotoAtual + 1));
+visor.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowLeft") mostrarFoto(fotoAtual - 1);
+  if (e.key === "ArrowRight") mostrarFoto(fotoAtual + 1);
+});
+let inicioToque = null;
+let deslizou = false;
+visor.addEventListener("pointerdown", (e) => { inicioToque = e.clientX; deslizou = false; });
+visor.addEventListener("pointerup", (e) => {
+  if (inicioToque === null) return;
+  const dx = e.clientX - inicioToque;
+  inicioToque = null;
+  if (Math.abs(dx) > 50 && fotos.length > 1) { deslizou = true; mostrarFoto(fotoAtual + (dx < 0 ? 1 : -1)); }
+});
+// clicar no fundo escuro fecha (Esc já fecha, é o comportamento nativo do <dialog>)
+visor.addEventListener("click", (e) => e.target === visor && !deslizou && visor.close());
+
 // adesivos: arrastáveis (volta ao lugar ao recarregar); clique sem arrastar abre o link
 let camada = 2;
 document.querySelectorAll(".adesivo").forEach((el) => {

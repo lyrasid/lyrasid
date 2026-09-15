@@ -185,6 +185,18 @@ main { position: relative; }
 .midia picture, .adesivo picture { display: block; }
 .midia img, .adesivo img { height: auto; }
 
+/* ---------- fotos em tela cheia ---------- */
+html:not(.edicao) .midia img { cursor: zoom-in; }
+.visor { width: 100vw; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; color: #fff; background: rgba(17, 17, 17, .95); border: 0; }
+.visor[open] { display: grid; grid-template-columns: 4rem minmax(0, 1fr) 4rem; align-items: center; }
+.visor::backdrop { background: transparent; }
+.visor figure { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .75rem; height: 100%; margin: 0; padding: 3.5rem 0 1.5rem; }
+.visor img { max-width: 100%; max-height: calc(100dvh - 8rem); object-fit: contain; }
+.visor figcaption { max-width: 50rem; padding: 0 1rem; font-size: .85rem; text-align: center; opacity: .85; }
+.visor button { padding: .5rem; font: inherit; font-size: 2.6rem; line-height: 1; color: inherit; background: none; border: 0; cursor: pointer; opacity: .8; }
+.visor button:hover, .visor button:focus-visible { opacity: 1; }
+.visor-fechar { position: absolute; top: .4rem; right: .8rem; }
+
 /* ---------- modo de edição ---------- */
 .midia { width: var(--largura, 100%); }
 .edicao-barra {
@@ -239,6 +251,8 @@ main { position: relative; }
   html:not(.menu-aberto) .alternar .seta { display: none; }
   html:not(.menu-aberto) .alternar .hamburguer { display: inline; }
   .linha { grid-template-columns: minmax(0, 1fr); }
+  .visor[open] { grid-template-columns: 2.5rem minmax(0, 1fr) 2.5rem; }
+  .visor button { font-size: 2rem; }
   .midia, .midia.legenda-esquerda { width: 100%; grid-template-columns: minmax(0, 1fr); }
   .midia.legenda-esquerda figcaption { order: 0; text-align: left; }
   .item { padding-left: 0; }
