@@ -1,20 +1,25 @@
 // Modo de edição visual. Carregado só quando o modo está ligado (ver site.js).
 // Lê e grava os arquivos direto no GitHub; todas as mudanças vão num único commit.
-import yaml from "https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/+esm";
-import markdownIt from "https://cdn.jsdelivr.net/npm/markdown-it@15.0.2/+esm";
+// Bibliotecas servidas pelo próprio site, sem CDN (gerado por: npm run vendor).
+import { load, dump, markdownIt } from "./vendor/editor-libs.js";
+import { abrirExternosEmNovaAba } from "./markdown.js";
 
+const yaml = { load, dump };
 const REPO = "lyrasid/lyrasid";
 const RAMO = "main";
-const md = markdownIt({ linkify: true }); // mesmas opções do site (eleventy.config.js): HTML no texto não é renderizado
+const md = abrirExternosEmNovaAba(markdownIt({ linkify: true })); // mesmas opções do site: HTML no texto não é renderizado
 document.documentElement.classList.add("edicao");
 
 // ---------- GitHub ----------
+// O token fica só nesta aba (sessionStorage) e some ao fechá-la. Guardar para sempre (localStorage) deixava
+// o token legível por qualquer outro projeto publicado em lyrasid.github.io.
+localStorage.removeItem("github-token"); // limpa o token guardado por versões anteriores do editor
 function token(pedir) {
-  let t = localStorage.getItem("github-token");
+  let t = sessionStorage.getItem("github-token");
   try { t ||= JSON.parse(localStorage.getItem("sveltia-cms.user"))?.token; } catch {}
   if (!t && pedir) {
-    t = prompt("Cole um token do GitHub com permissão de escrita (Contents) em " + REPO + ":")?.trim();
-    if (t) localStorage.setItem("github-token", t);
+    t = prompt("Cole um token do GitHub com permissão de escrita (Contents) em " + REPO + ".\nEle fica guardado só até você fechar esta aba.")?.trim();
+    if (t) sessionStorage.setItem("github-token", t);
   }
   return t;
 }
@@ -27,7 +32,7 @@ async function gh(caminho, metodo = "GET", corpo) {
     headers: { Accept: "application/vnd.github+json", ...(t && { Authorization: `Bearer ${t}` }) },
     body: corpo && JSON.stringify(corpo),
   });
-  if (r.status === 401) localStorage.removeItem("github-token");
+  if (r.status === 401) sessionStorage.removeItem("github-token");
   if (!r.ok) throw new Error(`GitHub respondeu ${r.status}`);
   return r.json();
 }

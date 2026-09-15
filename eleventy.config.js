@@ -1,8 +1,9 @@
 import { HtmlBasePlugin } from "@11ty/eleventy";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 import markdownIt from "markdown-it";
+import { abrirExternosEmNovaAba } from "./src/assets/markdown.js";
 
-const md = markdownIt({ linkify: true });
+const md = abrirExternosEmNovaAba(markdownIt({ linkify: true }));
 const porOrdem = (a, b) => (a.data.ordem ?? 999) - (b.data.ordem ?? 999) || a.data.title.localeCompare(b.data.title);
 const visiveis = (api, glob) => api.getFilteredByGlob(glob).filter((i) => !i.data.oculto).sort(porOrdem);
 
@@ -16,6 +17,13 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy("src/admin");
   // src/midia não é copiada: o site usa só as versões comprimidas geradas abaixo (em /img).
+
+  // Fontes e painel servidos pelo próprio site (sem Google Fonts nem CDN; versões fixas pelo package-lock).
+  const fontes = ["narnoor-latin-400", "narnoor-latin-ext-400", "narnoor-latin-700", "narnoor-latin-ext-700", "schoolbell-latin-400"];
+  eleventyConfig.addPassthroughCopy({
+    ...Object.fromEntries(fontes.map((f) => [`node_modules/@fontsource/${f.split("-")[0]}/files/${f}-normal.woff2`, `assets/fontes/${f}-normal.woff2`])),
+    "node_modules/@sveltia/cms/dist/sveltia-cms.js": "admin/sveltia-cms.js",
+  });
 
   // Prefixo do endereço (/lyrasid/) aplicado em todos os links e imagens do HTML final.
   eleventyConfig.addPlugin(HtmlBasePlugin);
@@ -49,6 +57,8 @@ export default function (eleventyConfig) {
     }, [])
   );
   eleventyConfig.addFilter("md", (texto) => md.render(texto || ""));
+  // Links digitados no painel: só http(s) e mailto (bloqueia javascript: e afins).
+  eleventyConfig.addFilter("urlSegura", (url) => (/^(https?:|mailto:)/i.test(String(url ?? "").trim()) ? url : "#"));
   eleventyConfig.addFilter("youtubeId", (link) => String(link).match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/)?.[1] ?? link);
 
   // Endereço de um texto: página dele + #subtítulo. Vazio se o texto ou a página estiverem ocultos.

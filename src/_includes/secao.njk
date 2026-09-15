@@ -10,7 +10,7 @@ layout: base.njk
   <summary><h2 data-arquivo="{{ item.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Subtítulo">{{ d.title }}</h2></summary>
   <div class="item">
     {% if d.links %}
-    <p class="links">{% for l in d.links %}<a href="{{ l.url }}" target="_blank" rel="noopener">{{ l.texto or l.url }} ↗</a>{% endfor %}</p>
+    <p class="links">{% for l in d.links %}<a href="{{ l.url | urlSegura }}" target="_blank" rel="noopener">{{ l.texto or l.url }} ↗</a>{% endfor %}</p>
     {% endif %}
     {{ mostrarBlocos(d.blocos, item.inputPath | arquivo) }}
   </div>

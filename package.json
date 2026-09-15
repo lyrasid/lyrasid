@@ -4,11 +4,17 @@
   "type": "module",
   "scripts": {
     "start": "eleventy --serve",
-    "build": "eleventy"
+    "build": "eleventy",
+    "vendor": "esbuild scripts/editor-libs.js --bundle --format=esm --minify --legal-comments=eof --outfile=src/assets/vendor/editor-libs.js"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",
     "@11ty/eleventy-img": "^7.0.0",
+    "@fontsource/narnoor": "^5.3.0",
+    "@fontsource/schoolbell": "^5.3.0",
+    "@sveltia/cms": "^0.212.1",
+    "esbuild": "^0.28.2",
+    "js-yaml": "^4.3.2",
     "markdown-it": "^15.0.2"
   }
 }

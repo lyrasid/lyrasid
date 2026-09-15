@@ -36,6 +36,12 @@ document.querySelectorAll("details[id]").forEach((d) =>
   d.addEventListener("toggle", () => d.open && history.replaceState(null, "", "#" + d.id))
 );
 
+// e-mail montado só quando alguém vai clicar: robôs que leem o HTML não encontram o endereço
+document.querySelectorAll("a.email").forEach((a) => {
+  const montar = () => (a.href = `mailto:${a.dataset.usuario}@${a.dataset.dominio}`);
+  for (const evento of ["pointerenter", "focus", "touchstart"]) a.addEventListener(evento, montar, { once: true });
+});
+
 // busca por título e seção, ignorando acentos
 const indice = JSON.parse(document.getElementById("indice-busca").textContent);
 const campo = document.querySelector(".busca input");
