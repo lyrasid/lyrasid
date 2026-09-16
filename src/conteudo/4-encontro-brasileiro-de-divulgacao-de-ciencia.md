@@ -13,5 +13,5 @@ blocos:
 
       O evento aconteceu entre os dias 5 a 7 de setembro de 2026, no Instituto Princípia, em São Paulo.
 
-      Partipei como ouvinte, avaliador de pôsteres e na oficina "[Ilustrando o Wikipédia - Ilustratona temática](https://outreachdashboard.wmflabs.org/courses/HumaniData/Ilustrando_a_Wikip%C3%A9dia_-_ilustratona_tem%C3%A1tica)"
+      Partipei como ouvinte, avaliador de pôsteres e na oficina "[Ilustrando o Wikipédia - Ilustratona temática](https://pt.wikipedia.org/wiki/Biopirataria)"
 ---
