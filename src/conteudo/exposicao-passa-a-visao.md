@@ -1,5 +1,5 @@
 ---
-title: Exposição “Passa a visão”
+title: Exposição “Passa a visão” - 2023
 pagina: fotografias
 ordem: null
 oculto: false
