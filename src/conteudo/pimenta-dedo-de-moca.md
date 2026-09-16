@@ -1,5 +1,5 @@
 ---
-title: Pimenta dedo-de-moça
+title: Pimenta dedo-de-moça ☠
 pagina: plantas
 ordem: 2
 oculto: false

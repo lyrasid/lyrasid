@@ -1,5 +1,5 @@
 ---
-title: Amoreira
+title: Amoreira 🍇
 pagina: plantas
 ordem: 1
 oculto: false
