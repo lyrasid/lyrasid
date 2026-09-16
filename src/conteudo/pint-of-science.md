@@ -1,26 +1,19 @@
 ---
-title: Pint of Science
+title: Pint of Science 2026 - Barretos
 pagina: divulgacao-cientifica
 ordem: 5
+oculto: false
 links:
-  - texto: Site do Pint of Science
-    url: https://pintofscience.com.br
+  - texto: Site do Pint of Science - Barretos
+    url: https://www.pintofscience.com.br/events/barretos/
 blocos:
   - type: texto
-    texto: |
-      Texto provisório. Um parágrafo de apresentação do **Pint of Science**, com [um link](https://pintofscience.com.br) no meio.
-  - type: imagem
-    imagem: /midia/exemplo.svg
-    titulo: Título da imagem
-    ano: "2026"
-    descricao: Descrição provisória, com a legenda à direita.
-    lado: direita
-  - type: texto
-    texto: Mais um parágrafo entre as mídias.
-  - type: imagem
-    imagem: /midia/exemplo.svg
-    titulo: Outra imagem
-    ano: "2025"
-    descricao: Esta com a legenda à esquerda.
-    lado: esquerda
+    texto: |-
+      - Primeira edição do Pint of Science em Barretos/SP. 
+      - Tema: Polilaminina: promessa ou ciência em construção?
+      - Participei colaborando no design, comunicação e elaborando a pesquisa/artigo
+      - Pesquisa de público e relato de caso em desenvolvimento
+
+      ###
+    ao_lado: false
 ---
