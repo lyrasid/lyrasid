@@ -1,7 +1,7 @@
 ---
 title: Pint of Science 2026 - Barretos
 pagina: divulgacao-cientifica
-ordem: 5
+ordem: 2
 oculto: false
 links:
   - texto: Site do Pint of Science - Barretos
