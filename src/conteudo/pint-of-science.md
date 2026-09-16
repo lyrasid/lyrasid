@@ -9,11 +9,9 @@ links:
 blocos:
   - type: texto
     texto: |-
-      - Primeira edição do Pint of Science em Barretos/SP. 
+      - 1ª edição do Pint of Science em Barretos/SP. 
       - Tema: Polilaminina: promessa ou ciência em construção?
       - Participei colaborando no design, comunicação e elaborando a pesquisa/artigo
       - Pesquisa de público e relato de caso em desenvolvimento
-
-      ###
     ao_lado: false
 ---
