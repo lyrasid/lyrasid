@@ -4,10 +4,10 @@ tipo: filme
 autor: Nolan
 ano: '2026'
 nota: 5
-data: ''
+data: yyyy-09-Tu
 favorito: false
 capa: /midia/A odisseia.webp
-comentario: ''
+comentario: a
 link: ''
 oculto: false
 ---
