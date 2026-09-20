@@ -2,7 +2,7 @@
 layout: base.njk
 ---
 {% from "blocos.njk" import mostrarBlocos %}
-{% from "filtros.njk" import grupo, grupoFixo %}
+{% from "filtros.njk" import grupo %}
 <h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Título da página">{{ title }}</h1>
 
 {% if intro %}<div class="texto intro">{{ intro | md | safe }}</div>{% endif %}
@@ -24,7 +24,7 @@ layout: base.njk
   {% endif %}
   {% if temPlantas or anos.length %}
   <div class="filtros-linha">
-    {% if temPlantas %}{{ grupoFixo("estado", "estado", [{ valor: "vivas", rotulo: "vivas" }, { valor: "no céu das plantas", rotulo: "no céu das plantas" }]) }}{% endif %}
+    {% if temPlantas %}{{ grupo("estado", "estado", [{ valor: "vivas", rotulo: "vivas" }, { valor: "no céu das plantas", rotulo: "no céu das plantas" }]) }}{% endif %}
     {{ grupo("ano", "ano", anos) }}
   </div>
   {% endif %}
