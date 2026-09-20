@@ -5,7 +5,7 @@ ordem: null
 oculto: false
 capa: ''
 ano: '2026'
-local: Insituto Principia, São Paulo - SP
+local: Instiuto Principia, São Paulo - SP
 resumo: ''
 links:
   - texto: EBDC 2026 - O Sul como Centro
