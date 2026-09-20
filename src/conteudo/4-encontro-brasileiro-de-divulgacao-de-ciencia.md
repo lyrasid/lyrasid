@@ -3,6 +3,10 @@ title: 4º Encontro Brasileiro de Divulgação de Ciência
 pagina: divulgacao-cientifica
 ordem: null
 oculto: false
+capa: ''
+ano: '2026'
+local: Insituto Principia, São Paulo - SP
+resumo: ''
 links:
   - texto: EBDC 2026 - O Sul como Centro
     url: https://ebdc.com.br/
