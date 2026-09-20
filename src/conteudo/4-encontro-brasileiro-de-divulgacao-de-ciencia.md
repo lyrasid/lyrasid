@@ -3,11 +3,7 @@ title: 4º Encontro Brasileiro de Divulgação de Ciência
 pagina: divulgacao-cientifica
 ordem: null
 oculto: false
-capa: ''
 ano: '2026'
-comida: ''
-planta: ''
-viva: true
 local: Instiuto Principia, São Paulo - SP
 resumo: teste
 links:

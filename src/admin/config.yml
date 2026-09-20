@@ -1,4 +1,13 @@
 # Painel visual (Sveltia CMS). Acesse /admin/ no site publicado.
+#
+# Uma coleção por página do site, todas gravando na mesma pasta (src/conteudo) e separadas
+# pelo campo "pagina". Assim você escolhe onde o texto vai antes de escrever, e o formulário
+# já abre só com os campos daquela página — o Sveltia não tem campo que aparece conforme
+# outro campo (sveltia/sveltia-cms#139), então é assim que se faz.
+#
+# As âncoras (&nome) são definidas na primeira coleção que usa cada peça e reaproveitadas
+# depois com *nome. YAML exige que a definição venha antes do uso, então a ordem das
+# coleções aqui embaixo também é a ordem do menu lateral do painel.
 backend:
   name: github
   repo: lyrasid/lyrasid
@@ -23,197 +32,261 @@ slug:
   clean_accents: true
 
 collections:
-  - name: fixas
-    label: Sobre mim e redes
-    files:
-      - name: sobre
-        label: Sobre mim (página inicial)
-        file: src/index.md
-        fields:
-          - { name: layout, widget: hidden, default: sobre.njk }
-          - { name: title, label: Nome, widget: string }
-          - { name: foto, label: Foto, widget: image, required: false }
-          - &papel
-            name: papel
-            label: Papel do fundo
-            widget: select
-            required: false
-            default: quadriculado
-            options:
-              - { label: Quadriculado, value: quadriculado }
-              - { label: Pautado (com margem), value: pautado }
-              - { label: Liso (sem linhas), value: liso }
-          - &blocos
-            name: blocos
-            label: Blocos
-            label_singular: Bloco
-            widget: list
-            required: false
-            types:
-              - name: texto
-                label: Texto
-                widget: object
-                fields:
-                  - { name: texto, label: Texto, widget: markdown, hint: "Grife um trecho com ==assim==. Para trocar a cor: ==verde: assim== ou ==vermelho: assim==." }
-                  - &ao_lado { name: ao_lado, label: Ao lado do bloco anterior, widget: boolean, default: false, required: false, hint: "Até 3 blocos lado a lado. No celular ficam um embaixo do outro." }
-              - name: imagem
-                label: Imagem
-                widget: object
-                summary: "{{fields.titulo}}"
-                fields:
-                  - { name: imagem, label: Imagem, widget: image }
-                  - { name: alt, label: Descrição da imagem (acessibilidade), widget: string, required: false }
-                  - &titulo_midia { name: titulo, label: Título, widget: string, required: false }
-                  - &ano { name: ano, label: Ano ou data, widget: string, required: false }
-                  - &descricao { name: descricao, label: Descrição, widget: text, required: false }
-                  - &lado { name: lado, label: Legenda do lado, widget: select, required: false, default: direita, options: [{ label: Direita, value: direita }, { label: Esquerda, value: esquerda }] }
-                  - &largura { name: largura, label: Largura (%), widget: number, value_type: int, min: 20, max: 100, required: false, hint: "Vazio = largura total. No celular é sempre 100%." }
-                  - *ao_lado
-              - name: video
-                label: Vídeo do YouTube
-                widget: object
-                summary: "{{fields.titulo}}"
-                fields:
-                  - { name: youtube, label: Link do YouTube, widget: string }
-                  - *titulo_midia
-                  - *ano
-                  - *descricao
-                  - *lado
-                  - *largura
-                  - *ao_lado
-              - name: receita
-                label: Ficha de receita
-                widget: object
-                fields:
-                  - { name: rendimento, label: Rendimento, widget: string, required: false }
-                  - { name: tempo, label: Tempo de preparo, widget: string, required: false }
-                  - { name: ingredientes, label: Ingredientes (um por linha), widget: list, required: false, hint: "Aparecem no modo cozinha para riscar com um toque." }
-                  - *ao_lado
-              - name: planta
-                label: Ficha de planta
-                widget: object
-                fields:
-                  - { name: nome_cientifico, label: Nome científico, widget: string, required: false }
-                  - { name: luz, label: Luz, widget: string, required: false }
-                  - { name: rega, label: Rega, widget: string, required: false }
-                  - *ao_lado
-          - &adesivos
-            name: adesivos
-            label: Adesivos
-            widget: list
-            required: false
-            summary: "{{fields.descricao}}"
-            fields:
-              - { name: imagem, label: Imagem (PNG sem fundo), widget: image }
-              - { name: descricao, label: Descrição (acessibilidade), widget: string, required: false }
-              - { name: link, label: Ao clicar, abre o texto, widget: relation, collection: textos, value_field: "{{slug}}", search_fields: [title], display_fields: [title], required: false }
-              - name: segredo
-                label: Segredo
-                widget: select
-                required: false
-                options:
-                  - { label: Nenhum, value: "" }
-                  - { label: Gato que mia com 5 cliques, value: miar }
-                  - { label: Cadeado da área restrita, value: cadeado }
-                hint: "O cadeado ignora o campo acima e leva para a área restrita."
-              - { name: x, label: Posição horizontal (%), widget: number, value_type: int, min: 0, max: 100, default: 80, hint: "0 = borda esquerda do conteúdo, 100 = borda direita." }
-              - { name: y, label: Distância do topo (px), widget: number, value_type: int, min: 0, default: 40 }
-              - { name: largura, label: Largura (px), widget: number, value_type: int, min: 40, max: 600, default: 140, hint: "No celular aparece com 60% do tamanho." }
-              - { name: rotacao, label: Rotação (graus), widget: number, value_type: int, min: -45, max: 45, default: 0 }
-              - { name: oculto, label: Ocultar adesivo, widget: boolean, default: false, required: false, hint: "Some do site sem apagar: é só desligar isto para ele voltar." }
-      - name: redes
-        label: Redes sociais
-        file: src/_data/site.json
-        fields:
-          - { name: nome, label: Nome do site, widget: string }
-          - { name: instagram, label: Instagram (link), widget: string, required: false }
-          - { name: linkedin, label: LinkedIn (link), widget: string, required: false }
-          - { name: email, label: E-mail, widget: string, required: false }
-      - name: secreto
-        label: Área restrita (easter egg)
-        file: src/_data/secreto.json
-        fields:
-          - name: video
-            label: Vídeo do susto
-            widget: file
-            required: false
-            hint: "Toca sozinho, com som, assim que a senha certa é digitada. Envie um arquivo .mp4 ou .webm curto."
-          - { name: titulo, label: Título da sala, widget: string, required: false }
-          - { name: conteudo, label: O que aparece depois da senha, widget: markdown, required: false }
+  # ============ o que vai dentro de cada página ============
 
-  - name: paginas
-    label: Páginas do menu
-    folder: src/paginas
-    create: true
-    delete: true
-    extension: md
-    format: frontmatter
-    sortable_fields: [ordem, title]
-    fields:
-      - { name: title, label: Título, widget: string, hint: "O endereço da página é criado a partir do primeiro título e não muda depois." }
-      - &ordem { name: ordem, label: Ordem, widget: number, value_type: int, required: false, hint: "Números menores aparecem primeiro." }
-      - name: tipo
-        label: Tipo de página
-        widget: select
-        required: false
-        options:
-          - { label: "Caderno (subtítulos que abrem)", value: "" }
-          - { label: "Galeria (capas que abrem em página própria)", value: galeria }
-          - { label: "Estante (livros, filmes, séries e jogos)", value: estante }
-          - { label: "Pastas (abrem em janela de computador antigo)", value: pastas }
-        hint: "A estante usa a lista própria dela; os outros tipos usam os textos ligados a esta página."
-      - *papel
-      - { name: intro, label: Texto de abertura, widget: markdown, required: false }
-      - { name: oculto, label: Ocultar página, widget: boolean, default: false, required: false }
-      - *adesivos
-
-  - name: textos
-    label: Textos (subtítulos e coleções)
+  - name: divulgacao-cientifica
+    label: Divulgação científica
+    label_singular: Trabalho de divulgação
+    icon: science
+    description: Palestras, eventos e projetos de divulgação. Ano, local e resumo alimentam o filtro e o topo da página.
     folder: src/conteudo
+    filter: { field: pagina, value: divulgacao-cientifica }
     create: true
     delete: true
     extension: md
     format: frontmatter
     sortable_fields: [ordem, title]
-    view_groups:
-      - { label: Página, field: pagina }
     fields:
       - { name: title, label: Título, widget: string }
-      - { name: pagina, label: Página, widget: relation, collection: paginas, value_field: "{{slug}}", search_fields: [title], display_fields: [title] }
-      - *ordem
-      - { name: oculto, label: Ocultar texto, widget: boolean, default: false, required: false }
-      - name: capa
-        label: Capa (só em páginas de galeria)
-        widget: image
-        required: false
-        hint: "Vazio = usa a primeira imagem dos blocos."
-      - { name: ano, label: Ano, widget: string, required: false, hint: "Alimenta o filtro de ano da página. Aceita intervalo: 2023–2026." }
-      - name: comida
-        label: Tipo de comida (só em Receitas)
-        widget: select
-        required: false
-        options: [massas, carnes, peixes, saladas, sopas, pães, bolos, doces, geleias, bebidas, molhos, salgados]
-        hint: "Alimenta o filtro da página de receitas. Peça para acrescentar tipos à lista."
-      - name: planta
-        label: Tipo de planta (só em Plantas)
-        widget: select
-        required: false
-        options: [ervas, temperos, frutíferas, árvores, suculentas, cactos, flores, hortaliças, trepadeiras, folhagens]
-        hint: "Alimenta o filtro da página de plantas. Peça para acrescentar tipos à lista."
-      - { name: viva, label: Planta viva (só em Plantas), widget: boolean, default: true, required: false, hint: "Desligado = foi para o céu das plantas." }
-      - { name: local, label: Local, widget: string, required: false }
-      - { name: resumo, label: Resumo (aparece no topo da coleção), widget: text, required: false }
-      - name: links
+      - { name: pagina, widget: hidden, default: divulgacao-cientifica }
+      - &ano_texto { name: ano, label: Ano, widget: string, required: false, hint: "Alimenta o filtro de ano da página. Aceita intervalo: 2023–2026." }
+      - &local { name: local, label: Local, widget: string, required: false }
+      - &resumo { name: resumo, label: Resumo (aparece no topo), widget: text, required: false }
+      - &links
+        name: links
         label: Links externos
         widget: list
         required: false
         fields:
           - { name: texto, label: Texto do link, widget: string }
           - { name: url, label: Endereço, widget: string }
-      - *blocos
+      - &blocos_comuns
+        name: blocos
+        label: Blocos
+        label_singular: Bloco
+        widget: list
+        required: false
+        types:
+          - &bloco_texto
+            name: texto
+            label: Texto
+            widget: object
+            fields:
+              - { name: texto, label: Texto, widget: markdown, hint: "Grife um trecho com ==assim==. Para trocar a cor: ==verde: assim== ou ==vermelho: assim==." }
+              - &ao_lado { name: ao_lado, label: Ao lado do bloco anterior, widget: boolean, default: false, required: false, hint: "Até 3 blocos lado a lado. No celular ficam um embaixo do outro." }
+          - &bloco_imagem
+            name: imagem
+            label: Imagem
+            widget: object
+            summary: "{{fields.titulo}}"
+            fields:
+              - { name: imagem, label: Imagem, widget: image }
+              - { name: alt, label: Descrição da imagem (acessibilidade), widget: string, required: false }
+              - &titulo_midia { name: titulo, label: Título, widget: string, required: false }
+              - &ano_midia { name: ano, label: Ano ou data, widget: string, required: false }
+              - &descricao_midia { name: descricao, label: Descrição, widget: text, required: false }
+              - &lado { name: lado, label: Legenda do lado, widget: select, required: false, default: direita, options: [{ label: Direita, value: direita }, { label: Esquerda, value: esquerda }] }
+              - &largura { name: largura, label: Largura (%), widget: number, value_type: int, min: 20, max: 100, required: false, hint: "Vazio = largura total. No celular é sempre 100%." }
+              - *ao_lado
+          - &bloco_video
+            name: video
+            label: Vídeo do YouTube
+            widget: object
+            summary: "{{fields.titulo}}"
+            fields:
+              - { name: youtube, label: Link do YouTube, widget: string }
+              - *titulo_midia
+              - *ano_midia
+              - *descricao_midia
+              - *lado
+              - *largura
+              - *ao_lado
+      - &ordem { name: ordem, label: Ordem, widget: number, value_type: int, required: false, hint: "Números menores aparecem primeiro." }
+      - &oculto_texto { name: oculto, label: Ocultar do site, widget: boolean, default: false, required: false }
+
+  - name: fotografias
+    label: Fotografias
+    label_singular: Ensaio
+    icon: photo_camera
+    description: Cada ensaio vira uma página própria, com capa na grade. Sem capa escolhida, entra a primeira imagem dos blocos.
+    folder: src/conteudo
+    filter: { field: pagina, value: fotografias }
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    sortable_fields: [ordem, title]
+    fields:
+      - { name: title, label: Título, widget: string }
+      - { name: pagina, widget: hidden, default: fotografias }
+      - &capa
+        name: capa
+        label: Capa da galeria
+        widget: image
+        required: false
+        hint: "Vazio = usa a primeira imagem dos blocos."
+      - *ano_texto
+      - *local
+      - *resumo
+      - *blocos_comuns
+      - *ordem
+      - *oculto_texto
+
+  - name: pinturas
+    label: Pinturas
+    label_singular: Pintura
+    icon: palette
+    description: Mesma estrutura das fotografias. A página está oculta no site até você mostrá-la em Páginas do menu.
+    folder: src/conteudo
+    filter: { field: pagina, value: pinturas }
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    sortable_fields: [ordem, title]
+    fields:
+      - { name: title, label: Título, widget: string }
+      - { name: pagina, widget: hidden, default: pinturas }
+      - *capa
+      - *ano_texto
+      - *local
+      - *resumo
+      - *blocos_comuns
+      - *ordem
+      - *oculto_texto
+
+  - name: plantas
+    label: Plantas
+    label_singular: Planta
+    icon: potted_plant
+    description: O tipo e o estado alimentam os filtros da página. Use o bloco Ficha de planta para nome científico, luz e rega.
+    folder: src/conteudo
+    filter: { field: pagina, value: plantas }
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    sortable_fields: [ordem, title]
+    fields:
+      - { name: title, label: Título, widget: string }
+      - { name: pagina, widget: hidden, default: plantas }
+      - name: planta
+        label: Tipo de planta
+        widget: select
+        required: false
+        options: [ervas, temperos, frutíferas, árvores, suculentas, cactos, flores, hortaliças, trepadeiras, folhagens]
+        hint: "Alimenta o filtro da página. Peça para acrescentar tipos à lista."
+      - { name: viva, label: Planta viva, widget: boolean, default: true, required: false, hint: "Desligado = foi para o céu das plantas." }
+      - name: blocos
+        label: Blocos
+        label_singular: Bloco
+        widget: list
+        required: false
+        types:
+          - *bloco_texto
+          - *bloco_imagem
+          - *bloco_video
+          - name: planta
+            label: Ficha de planta
+            widget: object
+            fields:
+              - { name: nome_cientifico, label: Nome científico, widget: string, required: false }
+              - { name: luz, label: Luz, widget: string, required: false }
+              - { name: rega, label: Rega, widget: string, required: false }
+              - *ao_lado
+      - *ordem
+      - *oculto_texto
+
+  - name: receitas
+    label: Receitas
+    label_singular: Receita
+    icon: restaurant
+    description: O tipo de comida alimenta o filtro da página. Use o bloco Ficha de receita para render o modo cozinha.
+    folder: src/conteudo
+    filter: { field: pagina, value: receitas }
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    sortable_fields: [ordem, title]
+    fields:
+      - { name: title, label: Título, widget: string }
+      - { name: pagina, widget: hidden, default: receitas }
+      - name: comida
+        label: Tipo de comida
+        widget: select
+        required: false
+        options: [massas, carnes, peixes, saladas, sopas, pães, bolos, doces, geleias, bebidas, molhos, salgados]
+        hint: "Alimenta o filtro da página. Peça para acrescentar tipos à lista."
+      - name: blocos
+        label: Blocos
+        label_singular: Bloco
+        widget: list
+        required: false
+        types:
+          - *bloco_texto
+          - *bloco_imagem
+          - *bloco_video
+          - name: receita
+            label: Ficha de receita
+            widget: object
+            fields:
+              - { name: rendimento, label: Rendimento, widget: string, required: false }
+              - { name: tempo, label: Tempo de preparo, widget: string, required: false }
+              - { name: ingredientes, label: Ingredientes (um por linha), widget: list, required: false, hint: "Aparecem no modo cozinha para riscar com um toque." }
+              - *ao_lado
+      - *ordem
+      - *oculto_texto
+
+  - name: outros-projetos
+    label: Outros projetos
+    label_singular: Projeto
+    icon: folder
+    description: Abrem em janela de computador antigo. O ano aceita intervalo, para projeto que durou anos.
+    folder: src/conteudo
+    filter: { field: pagina, value: outros-projetos }
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    sortable_fields: [ordem, title]
+    fields:
+      - { name: title, label: Título, widget: string }
+      - { name: pagina, widget: hidden, default: outros-projetos }
+      - *ano_texto
+      - *links
+      - *blocos_comuns
+      - *ordem
+      - *oculto_texto
+
+  - name: trabalhos
+    label: Trabalhos
+    label_singular: Trabalho
+    icon: work
+    description: Mesma estrutura da divulgação científica — ano, local, resumo e links.
+    folder: src/conteudo
+    filter: { field: pagina, value: trabalhos }
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    sortable_fields: [ordem, title]
+    fields:
+      - { name: title, label: Título, widget: string }
+      - { name: pagina, widget: hidden, default: trabalhos }
+      - *ano_texto
+      - *local
+      - *resumo
+      - *links
+      - *blocos_comuns
+      - *ordem
+      - *oculto_texto
 
   - name: estante
-    label: Estante (o que li, assisti e joguei)
+    label: Estante
+    label_singular: Item da estante
+    icon: auto_stories
+    description: O que você leu, assistiu e jogou. Livro, série e jogo levam tempo — preencha também "Quando comecei" para o item entrar em todos os meses do período.
     folder: src/estante
     create: true
     delete: true
@@ -244,3 +317,117 @@ collections:
       - { name: comentario, label: Comentário, widget: markdown, required: false }
       - { name: link, label: Link (onde ver ou comprar), widget: string, required: false }
       - { name: oculto, label: Ocultar da estante, widget: boolean, default: false, required: false }
+
+  - divider: true
+    name: divisor-estrutura
+
+  # ============ a estrutura do site ============
+
+  - name: paginas
+    label: Páginas do menu
+    label_singular: Página
+    icon: menu_book
+    description: Cria e ordena as páginas do menu. O tipo escolhido aqui decide o formato — e é o que define quais campos a coleção daquela página oferece.
+    folder: src/paginas
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    sortable_fields: [ordem, title]
+    fields:
+      - { name: title, label: Título, widget: string, hint: "O endereço da página é criado a partir do primeiro título e não muda depois." }
+      - *ordem
+      - name: tipo
+        label: Tipo de página
+        widget: select
+        required: false
+        options:
+          - { label: "Caderno (subtítulos que abrem)", value: "" }
+          - { label: "Galeria (capas que abrem em página própria)", value: galeria }
+          - { label: "Estante (livros, filmes, séries e jogos)", value: estante }
+          - { label: "Pastas (abrem em janela de computador antigo)", value: pastas }
+        hint: "Página nova precisa de uma coleção própria no painel para receber textos. Peça e eu crio."
+      - &papel
+        name: papel
+        label: Papel do fundo
+        widget: select
+        required: false
+        default: quadriculado
+        options:
+          - { label: Quadriculado, value: quadriculado }
+          - { label: Pautado (com margem), value: pautado }
+          - { label: Liso (sem linhas), value: liso }
+      - { name: intro, label: Texto de abertura, widget: markdown, required: false }
+      - { name: oculto, label: Ocultar página, widget: boolean, default: false, required: false }
+      - &adesivos
+        name: adesivos
+        label: Adesivos
+        widget: list
+        required: false
+        summary: "{{fields.descricao}}"
+        fields:
+          - { name: imagem, label: Imagem (PNG sem fundo), widget: image }
+          - { name: descricao, label: Descrição (acessibilidade), widget: string, required: false }
+          - { name: link, label: Ao clicar, abre o texto, widget: relation, collection: textos, value_field: "{{slug}}", search_fields: [title], display_fields: [title], required: false }
+          - name: segredo
+            label: Segredo
+            widget: select
+            required: false
+            options:
+              - { label: Nenhum, value: "" }
+              - { label: Gato que mia com 5 cliques, value: miar }
+              - { label: Cadeado da área restrita, value: cadeado }
+            hint: "O cadeado ignora o campo acima e leva para a área restrita."
+          - { name: x, label: Posição horizontal (%), widget: number, value_type: int, min: 0, max: 100, default: 80, hint: "0 = borda esquerda do conteúdo, 100 = borda direita." }
+          - { name: y, label: Distância do topo (px), widget: number, value_type: int, min: 0, default: 40 }
+          - { name: largura, label: Largura (px), widget: number, value_type: int, min: 40, max: 600, default: 140, hint: "No celular aparece com 60% do tamanho." }
+          - { name: rotacao, label: Rotação (graus), widget: number, value_type: int, min: -45, max: 45, default: 0 }
+          - { name: oculto, label: Ocultar adesivo, widget: boolean, default: false, required: false, hint: "Some do site sem apagar: é só desligar isto para ele voltar." }
+
+  - name: fixas
+    label: Sobre mim e redes
+    icon: person
+    files:
+      - name: sobre
+        label: Sobre mim (página inicial)
+        file: src/index.md
+        fields:
+          - { name: layout, widget: hidden, default: sobre.njk }
+          - { name: title, label: Nome, widget: string }
+          - { name: foto, label: Foto, widget: image, required: false }
+          - *papel
+          - *blocos_comuns
+          - *adesivos
+      - name: redes
+        label: Redes sociais
+        file: src/_data/site.json
+        fields:
+          - { name: nome, label: Nome do site, widget: string }
+          - { name: instagram, label: Instagram (link), widget: string, required: false }
+          - { name: linkedin, label: LinkedIn (link), widget: string, required: false }
+          - { name: email, label: E-mail, widget: string, required: false }
+      - name: secreto
+        label: Área restrita (easter egg)
+        file: src/_data/secreto.json
+        fields:
+          - name: video
+            label: Vídeo do susto
+            widget: file
+            required: false
+            hint: "Toca sozinho, com som, assim que a senha certa é digitada. Envie um arquivo .mp4 ou .webm curto."
+          - { name: titulo, label: Título da sala, widget: string, required: false }
+          - { name: conteudo, label: O que aparece depois da senha, widget: markdown, required: false }
+
+  # Lista de todos os textos, escondida do menu. Existe só para o campo "Ao clicar, abre o
+  # texto" dos adesivos poder escolher qualquer texto do site, de qualquer página.
+  - name: textos
+    label: Todos os textos
+    folder: src/conteudo
+    hide: true
+    create: false
+    delete: false
+    extension: md
+    format: frontmatter
+    fields:
+      - { name: title, label: Título, widget: string }
+      - { name: pagina, widget: hidden }
