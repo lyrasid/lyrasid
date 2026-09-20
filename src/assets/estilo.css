@@ -529,21 +529,51 @@ mark.vermelho { --grifo: 255, 130, 120; }
 .cozinha .passos li { margin-bottom: .6rem; }
 
 
-/* ---------- adesivos: o canto descola ao passar o mouse ---------- */
-/* Os adesivos têm contornos recortados, então em vez de dobrar um cantinho de papel
-   o adesivo inteiro gira no eixo da diagonal: um canto sobe em direção a quem olha. */
-.adesivos { perspective: 700px; }
+/* ---------- adesivos: descolam do papel ao passar o mouse ---------- */
+/* Dobrar um cantinho, como se faz com papel, não serve aqui: o contorno é recortado e no
+   canto da caixa quase não há desenho (numa orelha de gato, só a ponta) — a dobra parecia
+   um pedaço arrancado. Então o adesivo levanta inteiro, preso por um canto, como vinil
+   sendo descolado: o canto de baixo à esquerda fica grudado e o lado oposto sobe.
+   A ilusão vem de três coisas juntas, nenhuma convence sozinha: o giro preso no canto,
+   a sombra que se alonga para o lado contrário e o brilho. O brilho é recortado na
+   silhueta do próprio adesivo (--img, posto pelo site.js), e é o que dá a leitura de
+   vinil pegando luz em vez de papel girando. */
 @media (hover: hover) {
-  .adesivo { transition: transform .25s cubic-bezier(.2, .8, .3, 1), scale .15s, filter .25s; }
+  /* o levantar fica na imagem, não no adesivo: assim não mexe na posição (translateX/rotate)
+     que o arrastar grava, nem precisa trocar o transform-origin do adesivo */
+  .adesivo img, .adesivo::after { transform-origin: 18% 82%; transition: transform .28s cubic-bezier(.2, .8, .3, 1); }
+  .adesivo:hover img, .adesivo:hover::after { transform: perspective(700px) translateZ(14px) rotate3d(1, -1, 0, 26deg); }
+
+  /* brilho: só no hover. Sem --img (script não rodou) a máscara transparente esconde o brilho. */
+  .adesivo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity .28s, transform .28s cubic-bezier(.2, .8, .3, 1);
+    background: linear-gradient(225deg, rgba(255, 255, 255, .5) 0%, rgba(255, 255, 255, .1) 38%, rgba(0, 0, 0, .05) 70%, rgba(0, 0, 0, .1) 100%);
+    -webkit-mask: var(--img, linear-gradient(#0000, #0000)) center / 100% 100% no-repeat;
+    mask: var(--img, linear-gradient(#0000, #0000)) center / 100% 100% no-repeat;
+  }
+  .adesivo:hover::after { opacity: 1; }
+
+  /* sombra dupla: uma curta no canto grudado, uma longa e mole embaixo do lado que subiu */
+  .adesivo { transition: filter .28s, scale .15s; }
   .adesivo:hover {
-    transform: translateX(-50%) rotate(var(--r)) rotate3d(1, -1, 0, 24deg);
-    scale: 1.04;
     filter:
       drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff)
-      drop-shadow(-7px 8px 7px rgba(0, 0, 0, .35));
+      drop-shadow(-2px 3px 1px rgba(0, 0, 0, .28)) drop-shadow(-12px 14px 11px rgba(0, 0, 0, .3));
   }
-  .adesivo.arrastando:hover { transform: translateX(-50%) rotate(var(--r)); }
+  /* enquanto arrasta, o adesivo está na mão e não na parede: volta a ser plano */
+  .adesivo.arrastando img, .adesivo.arrastando::after { transform: none; }
+  .adesivo.arrastando::after { opacity: 0; }
 }
+
+/* quem pediu menos movimento no sistema recebe só o brilho e a sombra, sem o giro */
+@media (hover: hover) and (prefers-reduced-motion: reduce) {
+  .adesivo:hover img, .adesivo:hover::after { transform: none; }
+}
+
 /* balãozinho do gato */
 .balao-miau {
   position: absolute;

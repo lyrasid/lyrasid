@@ -125,6 +125,11 @@ visor.addEventListener("click", (e) => e.target === visor && !deslizou && visor.
 // adesivos: arrastáveis (volta ao lugar ao recarregar); clique sem arrastar abre o link
 let camada = 2;
 document.querySelectorAll(".adesivo").forEach((el) => {
+  // silhueta do adesivo para o brilho do hover (estilo.css): o endereço final da imagem
+  // só o navegador sabe, porque a publicação renomeia e converte os arquivos.
+  const img = el.querySelector("img");
+  const silhueta = () => el.style.setProperty("--img", `url("${img.currentSrc || img.src}")`);
+  if (img) img.complete ? silhueta() : img.addEventListener("load", silhueta, { once: true });
   let inicio = null;
   let arrastou = false;
   el.addEventListener("pointerdown", (e) => {
