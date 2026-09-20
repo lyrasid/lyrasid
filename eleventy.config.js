@@ -89,7 +89,11 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("temBloco", (blocos, tipo) => (blocos || []).some((b) => b.type === tipo));
   // Datas do painel (2026-08-14) escritas por extenso. UTC para a data não voltar um dia.
   const formatoData = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric", timeZone: "UTC" });
-  eleventyConfig.addFilter("dataBr", (valor) => (valor ? formatoData.format(new Date(valor)) : ""));
+  // Data escrita torta no painel não derruba a publicação: o site sai sem a data.
+  eleventyConfig.addFilter("dataBr", (valor) => {
+    const data = valor ? new Date(valor) : null;
+    return data && !Number.isNaN(+data) ? formatoData.format(data) : "";
+  });
   // Nota de 0 a 5 em estrelas cheias e vazias.
   eleventyConfig.addFilter("estrelas", (nota) => "★".repeat(Math.round(nota || 0)) + "☆".repeat(Math.max(0, 5 - Math.round(nota || 0))));
 
