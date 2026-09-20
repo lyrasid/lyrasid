@@ -1,7 +1,6 @@
 ---
 title: 4º Encontro Brasileiro de Divulgação de Ciência
 pagina: divulgacao-cientifica
-ano: '2026'
 ordem: null
 oculto: false
 capa: ''
