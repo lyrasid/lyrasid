@@ -5,8 +5,11 @@ ordem: null
 oculto: false
 capa: ''
 ano: '2026'
+comida: ''
+planta: ''
+viva: true
 local: Instiuto Principia, São Paulo - SP
-resumo: ''
+resumo: teste
 links:
   - texto: EBDC 2026 - O Sul como Centro
     url: https://ebdc.com.br/
