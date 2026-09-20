@@ -187,7 +187,20 @@ collections:
         widget: image
         required: false
         hint: "Vazio = usa a primeira imagem dos blocos."
-      - { name: ano, label: Ano, widget: string, required: false }
+      - { name: ano, label: Ano, widget: string, required: false, hint: "Alimenta o filtro de ano da página. Aceita intervalo: 2023–2026." }
+      - name: comida
+        label: Tipo de comida (só em Receitas)
+        widget: select
+        required: false
+        options: [massas, carnes, peixes, saladas, sopas, pães, bolos, doces, geleias, bebidas, molhos, salgados]
+        hint: "Alimenta o filtro da página de receitas. Peça para acrescentar tipos à lista."
+      - name: planta
+        label: Tipo de planta (só em Plantas)
+        widget: select
+        required: false
+        options: [ervas, temperos, frutíferas, árvores, suculentas, cactos, flores, hortaliças, trepadeiras, folhagens]
+        hint: "Alimenta o filtro da página de plantas. Peça para acrescentar tipos à lista."
+      - { name: viva, label: Planta viva (só em Plantas), widget: boolean, default: true, required: false, hint: "Desligado = foi para o céu das plantas." }
       - { name: local, label: Local, widget: string, required: false }
       - { name: resumo, label: Resumo (aparece no topo da coleção), widget: text, required: false }
       - name: links
@@ -224,6 +237,7 @@ collections:
       - { name: autor, label: Autoria (autor, diretor, estúdio), widget: string, required: false }
       - { name: ano, label: Ano da obra, widget: string, required: false }
       - { name: nota, label: Nota (0 a 5), widget: number, value_type: int, min: 0, max: 5, required: false }
+      - { name: inicio, label: Quando comecei, widget: datetime, type: date, format: YYYY-MM-DD, required: false, hint: "Livro, série e jogo levam tempo: com esta data o item entra em todos os meses do período." }
       - { name: data, label: Quando terminei, widget: datetime, type: date, format: YYYY-MM-DD, required: false }
       - { name: favorito, label: Favorito, widget: boolean, default: false, required: false }
       - { name: capa, label: Capa, widget: image, required: false }

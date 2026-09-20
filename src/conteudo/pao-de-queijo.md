@@ -1,6 +1,7 @@
 ---
 title: Pão de queijo (exemplo)
 pagina: receitas
+comida: pães
 blocos:
   - type: receita
     rendimento: 30 unidades

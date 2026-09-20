@@ -2,17 +2,24 @@
 layout: base.njk
 ---
 {#- Página de galeria (fotografias, pinturas): cada item é uma coleção com página própria. -#}
+{% from "filtros.njk" import grupo %}
 <h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Título da página">{{ title }}</h1>
 
 {% if intro %}<div class="texto intro">{{ intro | md | safe }}</div>{% endif %}
 
 {% set itens = collections.textos | daPagina(page.fileSlug) %}
 {% if itens.length %}
+{%- set anos = itens | opcoesAno %}
+{% if anos.length %}
+<div class="filtros" role="group" aria-label="Filtrar">
+  {{ grupo("ano", "ano", anos) }}
+</div>
+{% endif %}
 <ul class="galeria">
   {%- for item in itens %}
   {%- set imagem = item | capa %}
   {%- set quantas = item | contarImagens %}
-  <li style="--atraso: {{ loop.index0 * 60 }}ms">
+  <li class="filtravel" style="--atraso: {{ loop.index0 * 60 }}ms" data-f-ano="{{ item | anosDoItem }}">
     <a href="{{ item.url }}">
       <span class="moldura">
         {% if imagem %}<img src="{{ imagem }}" alt="{{ item.data.title }}">{% else %}<span class="sem-capa">sem capa</span>{% endif %}
@@ -25,6 +32,7 @@ layout: base.njk
   </li>
   {%- endfor %}
 </ul>
+<p class="filtros-vazio" hidden>Nada com esse filtro.</p>
 {% else %}
 <p class="vazio">Em breve.</p>
 {% endif %}

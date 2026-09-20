@@ -355,8 +355,10 @@ mark.vermelho { --grifo: 255, 130, 120; }
 
 
 /* ---------- estante (livros, filmes, séries, jogos) ---------- */
-.estante-filtros { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem 1.1rem; max-width: 72rem; margin: 1.25rem 0 1.75rem; }
-.estante-filtros button {
+.filtros { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem 1.6rem; max-width: 72rem; margin: 1.25rem 0 1.75rem; }
+.filtro-grupo { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .9rem; }
+.filtro-rotulo { font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; opacity: .4; }
+.filtros button {
   padding: .1rem 0;
   font: inherit;
   font-size: .95rem;
@@ -368,9 +370,9 @@ mark.vermelho { --grifo: 255, 130, 120; }
   cursor: pointer;
   transition: opacity .15s;
 }
-.estante-filtros button:hover { opacity: .85; }
-.estante-filtros button[aria-pressed="true"] { opacity: 1; border-bottom-color: var(--tinta); }
-.estante-filtros .favoritos { margin-left: auto; }
+.filtros button:hover { opacity: .85; }
+.filtros button[aria-pressed="true"] { opacity: 1; border-bottom-color: var(--tinta); }
+.filtros .favoritos { margin-left: auto; }
 
 .estante {
   display: grid;
@@ -617,7 +619,7 @@ body.negado .console { color: #ff5f4e; animation: tremer .09s 4; }
   main[data-papel="pautado"] { --margem-papel: 1.1rem; padding-left: clamp(1rem, 5vw, 4rem); }
   .galeria { grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); justify-content: stretch; gap: 1.5rem 1rem; }
   .estante { grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr)); justify-content: stretch; gap: 1.5rem .9rem; }
-  .estante-filtros .favoritos { margin-left: 0; }
+  .filtros .favoritos { margin-left: 0; }
   .ficha-estante { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
   .ficha-estante .capa-grande { width: 9rem; }
   .area-pastas { gap: 1rem .5rem; }
@@ -635,7 +637,7 @@ body.negado .console { color: #ff5f4e; animation: tremer .09s 4; }
 @media print {
   @page { margin: 1.6cm; }
   body { color: #000; background: #fff; }
-  .barra, .topo, .adesivos, .acoes-receita, .edicao-barra, .visor, .cozinha, .janela, .estante-filtros, .vizinhos, .volta, .busca { display: none !important; }
+  .barra, .topo, .adesivos, .acoes-receita, .edicao-barra, .visor, .cozinha, .janela, .filtros, .vizinhos, .volta, .busca { display: none !important; }
   main { margin: 0 !important; padding: 0 !important; background: #fff !important; background-image: none !important; }
   summary::before, .edicao-alca-subtitulo { display: none !important; }
   details { max-width: none; }

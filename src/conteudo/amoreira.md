@@ -1,6 +1,8 @@
 ---
 title: Amoreira 🍇
 pagina: plantas
+planta: frutíferas
+viva: true
 ordem: 1
 oculto: false
 links: []

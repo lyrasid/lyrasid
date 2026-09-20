@@ -2,13 +2,33 @@
 layout: base.njk
 ---
 {% from "blocos.njk" import mostrarBlocos %}
+{% from "filtros.njk" import grupo, grupoFixo %}
 <h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Título da página">{{ title }}</h1>
 
 {% if intro %}<div class="texto intro">{{ intro | md | safe }}</div>{% endif %}
 
-{% for item in collections.textos | daPagina(page.fileSlug) %}
+{% set itens = collections.textos | daPagina(page.fileSlug) %}
+{%- set anos = itens | opcoesAno %}
+{%- set comidas = itens | opcoesCampo("comida") %}
+{%- set tiposPlanta = itens | opcoesCampo("planta") %}
+{#- a página é de plantas quando algum item tem ficha de planta: aí cabe o filtro vivas/no céu -#}
+{%- set temPlantas = itens | algumComBloco("planta") %}
+{% if anos.length or comidas.length or tiposPlanta.length or temPlantas %}
+<div class="filtros" role="group" aria-label="Filtrar">
+  {{ grupo("ano", "ano", anos) }}
+  {{ grupo("comida", "tipo", comidas) }}
+  {{ grupo("planta", "tipo", tiposPlanta) }}
+  {% if temPlantas %}{{ grupoFixo("estado", "estado", [{ valor: "vivas", rotulo: "vivas" }, { valor: "no céu das plantas", rotulo: "no céu das plantas" }]) }}{% endif %}
+</div>
+{% endif %}
+
+{% for item in itens %}
 {% set d = item.data %}
-<details name="subtitulos" id="{{ item.fileSlug }}" data-arquivo="{{ item.inputPath | arquivo }}">
+<details name="subtitulos" class="filtravel" id="{{ item.fileSlug }}" data-arquivo="{{ item.inputPath | arquivo }}"
+  data-f-ano="{{ item | anosDoItem }}"
+  data-f-comida="{{ item | campoDoItem('comida') }}"
+  data-f-planta="{{ item | campoDoItem('planta') }}"
+  data-f-estado="{% if d.viva == false %}no céu das plantas{% else %}vivas{% endif %}">
   <summary><h2 data-arquivo="{{ item.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Subtítulo">{{ d.title }}</h2></summary>
   <div class="item">
     {% if d.links %}
@@ -26,3 +46,5 @@ layout: base.njk
 {% else %}
 <p class="vazio">Em breve.</p>
 {% endfor %}
+
+{% if anos.length or comidas.length or tiposPlanta.length or temPlantas %}<p class="filtros-vazio" hidden>Nada com esse filtro.</p>{% endif %}

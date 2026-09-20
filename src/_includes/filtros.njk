@@ -1,0 +1,30 @@
+{#- Barra de filtros, a mesma em todas as páginas que filtram (estante, galerias e seções).
+
+    Um grupo por eixo (ano, mês, tipo...). Os botões de um grupo derivado saem do próprio
+    conteúdo: se nenhum item tem valor naquele campo, o grupo inteiro não aparece — filtro
+    com uma opção só é enfeite.
+
+    Quem filtra é o site.js, lendo data-grupo aqui e data-f-<grupo> em cada item. -#}
+
+{%- macro grupo(chave, rotulo, opcoes) -%}
+{%- if opcoes.length %}
+  <div class="filtro-grupo" data-grupo="{{ chave }}">
+    <span class="filtro-rotulo">{{ rotulo }}</span>
+    <button type="button" data-valor="" aria-pressed="true">tudo</button>
+    {%- for opcao in opcoes %}
+    <button type="button" data-valor="{{ opcao }}" aria-pressed="false">{{ opcao }}</button>
+    {%- endfor %}
+  </div>
+{%- endif %}
+{%- endmacro -%}
+
+{#- Grupo de opções fixas, escritas no modelo: [{ valor, rotulo }] -#}
+{%- macro grupoFixo(chave, rotulo, opcoes) -%}
+  <div class="filtro-grupo" data-grupo="{{ chave }}">
+    {%- if rotulo %}<span class="filtro-rotulo">{{ rotulo }}</span>{% endif %}
+    <button type="button" data-valor="" aria-pressed="true">tudo</button>
+    {%- for opcao in opcoes %}
+    <button type="button" data-valor="{{ opcao.valor }}" aria-pressed="false">{{ opcao.rotulo }}</button>
+    {%- endfor %}
+  </div>
+{%- endmacro -%}
