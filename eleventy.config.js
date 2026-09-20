@@ -1,5 +1,7 @@
 import { HtmlBasePlugin } from "@11ty/eleventy";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
+import fs from "node:fs";
+import crypto from "node:crypto";
 import markdownIt from "markdown-it";
 import { prepararMarkdown } from "./src/assets/markdown.js";
 
@@ -55,6 +57,14 @@ export default function (eleventyConfig) {
   );
 
   // caminho do arquivo no repositório, usado pelo modo de edição para salvar
+  // Marca de versão no endereço do CSS e do JS. Sem ela, o navegador segura a versão
+  // antiga por até 10 minutos depois de publicar (Cache-Control do GitHub Pages) — e se
+  // o nome de uma classe mudou nesse meio tempo, a página aparece sem estilo nenhum.
+  // O número sai do conteúdo do arquivo: só muda quando o arquivo muda.
+  eleventyConfig.addFilter("versao", (caminho) =>
+    crypto.createHash("sha1").update(fs.readFileSync("src" + caminho)).digest("hex").slice(0, 8)
+  );
+
   eleventyConfig.addFilter("arquivo", (inputPath) => inputPath.replace(/^\.\//, ""));
   eleventyConfig.addFilter("daPagina", (textos, slug) => textos.filter((t) => t.data.pagina === slug));
 

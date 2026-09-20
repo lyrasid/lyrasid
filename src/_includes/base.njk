@@ -20,8 +20,11 @@
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   {#- menu aberto no computador até o visitante fechar uma vez (a escolha fica guardada) #}
   <script>try { if (matchMedia("(min-width: 769px)").matches && localStorage.getItem("menu") !== "fechado") document.documentElement.classList.add("menu-aberto") } catch (e) {}</script>
-  <link rel="stylesheet" href="/assets/estilo.css">
-  <script src="/assets/site.js" defer></script>
+  {#- ?v= é a marca de versão do arquivo: sem ela o navegador segura o CSS antigo por até
+      10 minutos depois de publicar. ponytail: só o CSS e o site.js são marcados; editar.js e
+      as bibliotecas do editor não, então o modo de edição pode pedir recarregamento forte. -#}
+  <link rel="stylesheet" href="/assets/estilo.css?v={{ "/assets/estilo.css" | versao }}">
+  <script src="/assets/site.js?v={{ "/assets/site.js" | versao }}" defer></script>
 </head>
 <body id="topo">
   <aside class="barra">
