@@ -1,11 +1,13 @@
 ---
-title: Filme de exemplo
+title: A Odisseia
 tipo: filme
-autor: Nome do diretor
-ano: 2025
-nota: 3
-data: 2026-07-02
+autor: Nolan
+ano: '2026'
+nota: 5
+data: yyyy-09-Tu
 favorito: false
-capa: ''
-comentario: Comentário provisório sobre o filme.
+capa: /midia/A odisseia.webp
+comentario: ''
+link: ''
+oculto: false
 ---
