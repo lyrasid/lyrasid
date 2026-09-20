@@ -224,7 +224,7 @@ collections:
       - { name: autor, label: Autoria (autor, diretor, estúdio), widget: string, required: false }
       - { name: ano, label: Ano da obra, widget: string, required: false }
       - { name: nota, label: Nota (0 a 5), widget: number, value_type: int, min: 0, max: 5, required: false }
-      - { name: data, label: Quando terminei, widget: datetime, type: date, format: yyyy-MM-dd, required: false }
+      - { name: data, label: Quando terminei, widget: datetime, type: date, format: YYYY-MM-DD, required: false }
       - { name: favorito, label: Favorito, widget: boolean, default: false, required: false }
       - { name: capa, label: Capa, widget: image, required: false }
       - { name: comentario, label: Comentário, widget: markdown, required: false }
