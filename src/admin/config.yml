@@ -120,6 +120,7 @@ collections:
               - { name: y, label: Distância do topo (px), widget: number, value_type: int, min: 0, default: 40 }
               - { name: largura, label: Largura (px), widget: number, value_type: int, min: 40, max: 600, default: 140, hint: "No celular aparece com 60% do tamanho." }
               - { name: rotacao, label: Rotação (graus), widget: number, value_type: int, min: -45, max: 45, default: 0 }
+              - { name: oculto, label: Ocultar adesivo, widget: boolean, default: false, required: false, hint: "Some do site sem apagar: é só desligar isto para ele voltar." }
       - name: redes
         label: Redes sociais
         file: src/_data/site.json
