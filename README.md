@@ -41,7 +41,7 @@ As regras de cada pasta (endereço, modelo, ordem) ficam nos `*.11tydata.js` del
 
 - **Imagens** são comprimidas na publicação (WebP + JPEG de reserva, três larguras). `src/midia/` não é copiado como está — só vídeos passam direto.
 - **Fontes e painel** são servidos pelo próprio site, sem CDN, com versão fixada pelo `package-lock.json`.
-- **Texturas de papel** (`npm run texturas`) são geradas de fotos de papel de verdade em `scripts/papel/`. Só precisa rodar de novo se as fotos mudarem. Usa o `sharp` que já vem junto com o `@11ty/eleventy-img`.
+- **Texturas de papel** (`npm run texturas`) são geradas de fotos de papel de verdade em `scripts/papel/`. Só precisa rodar de novo se as fotos mudarem. Usa o `sharp`.
 - **`npm run vendor`** reempacota as bibliotecas do editor visual para `src/assets/vendor/`. Só depois de mexer em [scripts/editor-libs.js](scripts/editor-libs.js).
 - **`/secreto/`** é piada interna, não cofre: a senha é conferida no navegador. Nada sigiloso ali.
 - **`/papeis/`** são páginas de teste dos fundos, fora do menu. Dá para apagar depois de escolher.
