@@ -5,7 +5,6 @@ planta: temperos
 viva: false
 ordem: 2
 oculto: false
-links: []
 blocos:
   - type: planta
     ao_lado: false

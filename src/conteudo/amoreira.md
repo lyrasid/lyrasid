@@ -5,7 +5,6 @@ planta: frutíferas
 viva: true
 ordem: 1
 oculto: false
-links: []
 blocos:
   - type: planta
     nome_cientifico: Morus nigra
