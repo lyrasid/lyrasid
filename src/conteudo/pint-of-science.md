@@ -1,6 +1,7 @@
 ---
 title: Pint of Science 2026 - Barretos
 pagina: divulgacao-cientifica
+ano: '2026'
 ordem: 2
 oculto: false
 links:

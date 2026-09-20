@@ -208,45 +208,51 @@ document.querySelectorAll('.adesivo[data-segredo="miar"]').forEach((gato) => {
   });
 });
 
-// ---------- estante: filtros e ficha ----------
-const estante = document.querySelector(".estante");
-if (estante) {
-  const itens = [...estante.querySelectorAll("li")];
-  const vazia = document.querySelector(".estante-vazia");
-  const botoesTipo = [...document.querySelectorAll(".estante-filtros [data-tipo]")];
-  const botaoFavoritos = document.querySelector(".estante-filtros [data-favoritos]");
-  let tipo = "tudo";
-  let soFavoritos = false;
+// ---------- filtros das páginas ----------
+// Uma barra serve estante, galerias e seções. Cada grupo de botões é um eixo (ano, mês,
+// tipo...) e vale junto com os outros: escolher "2026" e "livros" mostra só livros de 2026.
+// Clicar de novo no botão aceso desliga aquele eixo, igual ao "tudo".
+const barraFiltros = document.querySelector(".filtros");
+if (barraFiltros) {
+  const itens = [...document.querySelectorAll(".filtravel")];
+  const vazio = document.querySelector(".filtros-vazio");
+  const escolhas = new Map(); // eixo -> valor escolhido ("" = todos)
 
   function aplicarFiltros() {
     let visiveis = 0;
-    itens.forEach((li) => {
-      const cabe = (tipo === "tudo" || li.dataset.tipo === tipo) && (!soFavoritos || li.hasAttribute("data-favorito"));
-      li.hidden = !cabe;
+    itens.forEach((item) => {
+      // getAttribute e não dataset: os nomes dos eixos vêm de dados, sem virar camelCase
+      const cabe = [...escolhas].every(([eixo, valor]) => !valor || (item.getAttribute("data-f-" + eixo) || "").split("|").includes(valor));
+      item.hidden = !cabe;
       if (!cabe) return;
       // reinicia a entrada em cascata só para quem continua na tela
-      li.style.setProperty("--atraso", visiveis * 35 + "ms");
-      li.style.animation = "none";
-      void li.offsetWidth;
-      li.style.animation = "";
+      item.style.setProperty("--atraso", visiveis * 35 + "ms");
+      item.style.animation = "none";
+      void item.offsetWidth;
+      item.style.animation = "";
       visiveis += 1;
     });
-    vazia.hidden = visiveis > 0;
+    if (vazio) vazio.hidden = visiveis > 0;
   }
 
-  botoesTipo.forEach((botao) =>
-    botao.addEventListener("click", () => {
-      tipo = botao.dataset.tipo;
-      botoesTipo.forEach((b) => b.setAttribute("aria-pressed", b === botao));
-      aplicarFiltros();
-    })
-  );
-  botaoFavoritos.addEventListener("click", () => {
-    soFavoritos = !soFavoritos;
-    botaoFavoritos.setAttribute("aria-pressed", soFavoritos);
-    aplicarFiltros();
+  barraFiltros.querySelectorAll(".filtro-grupo").forEach((grupo) => {
+    const eixo = grupo.dataset.grupo;
+    const botoes = [...grupo.querySelectorAll("button")];
+    escolhas.set(eixo, "");
+    botoes.forEach((botao) =>
+      botao.addEventListener("click", () => {
+        const valor = escolhas.get(eixo) === botao.dataset.valor ? "" : botao.dataset.valor;
+        escolhas.set(eixo, valor);
+        botoes.forEach((b) => b.setAttribute("aria-pressed", b.dataset.valor === valor));
+        aplicarFiltros();
+      })
+    );
   });
+}
 
+// ---------- estante: ficha de um item ----------
+const estante = document.querySelector(".estante");
+if (estante) {
   // ficha completa do item, aberta sobre a página
   const folha = document.createElement("dialog");
   folha.className = "folha";

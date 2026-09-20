@@ -1,6 +1,8 @@
 ---
 title: Pimenta dedo-de-moça ☠
 pagina: plantas
+planta: temperos
+viva: false
 ordem: 2
 oculto: false
 links: []

@@ -89,11 +89,56 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("temBloco", (blocos, tipo) => (blocos || []).some((b) => b.type === tipo));
   // Datas do painel (2026-08-14) escritas por extenso. UTC para a data não voltar um dia.
   const formatoData = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric", timeZone: "UTC" });
+  const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
   // Data escrita torta no painel não derruba a publicação: o site sai sem a data.
-  eleventyConfig.addFilter("dataBr", (valor) => {
+  const dataValida = (valor) => {
     const data = valor ? new Date(valor) : null;
-    return data && !Number.isNaN(+data) ? formatoData.format(data) : "";
+    return data && !Number.isNaN(+data) ? data : null;
+  };
+  eleventyConfig.addFilter("dataBr", (valor) => {
+    const data = dataValida(valor);
+    return data ? formatoData.format(data) : "";
   });
+
+  // ---------- filtros das páginas ----------
+  // As opções de cada filtro saem do próprio conteúdo: nada de lista fixa aqui.
+  // Vão para o HTML separadas por "|", que aguenta valor com espaço ("no céu das plantas").
+  const unicos = (lista) => [...new Set(lista.filter(Boolean))];
+  const anosEscritos = (valor) => String(valor ?? "").match(/\d{4}/g) ?? [];
+  const texto = (item, campo) => String(item.data[campo] ?? "").trim();
+
+  // Um livro ou uma série ocupam vários meses: o período vai de "comecei" a "terminei".
+  // Faltando um dos dois, vale só o outro; invertidos, a ordem se corrige sozinha.
+  const periodo = (item) => {
+    const a = dataValida(item.data.inicio) || dataValida(item.data.data);
+    const b = dataValida(item.data.data) || dataValida(item.data.inicio);
+    if (!a) return [];
+    const [de, ate] = a <= b ? [a, b] : [b, a];
+    const meses = [];
+    const passo = new Date(Date.UTC(de.getUTCFullYear(), de.getUTCMonth(), 1));
+    // ponytail: teto de 600 meses para um ano digitado errado não travar a publicação
+    while (passo <= ate && meses.length < 600) {
+      meses.push({ ano: String(passo.getUTCFullYear()), mes: MESES[passo.getUTCMonth()] });
+      passo.setUTCMonth(passo.getUTCMonth() + 1);
+    }
+    return meses;
+  };
+
+  // ano escrito à mão (divulgação científica, fotografias): aceita "2024" e "2023–2026"
+  eleventyConfig.addFilter("anosDoItem", (item) => anosEscritos(item.data.ano).join("|"));
+  eleventyConfig.addFilter("opcoesAno", (itens) => unicos(itens.flatMap((i) => anosEscritos(i.data.ano))).sort().reverse());
+  // campo de lista fixa: tipo de comida, tipo de planta
+  eleventyConfig.addFilter("campoDoItem", texto);
+  eleventyConfig.addFilter("opcoesCampo", (itens, campo) => unicos(itens.map((i) => texto(i, campo))).sort((a, b) => a.localeCompare(b, "pt-BR")));
+  // estante: todo ano e todo mês que o item atravessou
+  eleventyConfig.addFilter("anosDoPeriodo", (item) => unicos(periodo(item).map((m) => m.ano)).join("|"));
+  eleventyConfig.addFilter("mesesDoPeriodo", (item) => unicos(periodo(item).map((m) => m.mes)).join("|"));
+  eleventyConfig.addFilter("opcoesAnoPeriodo", (itens) => unicos(itens.flatMap((i) => periodo(i).map((m) => m.ano))).sort().reverse());
+  eleventyConfig.addFilter("opcoesMesPeriodo", (itens) => {
+    const presentes = new Set(itens.flatMap((i) => periodo(i).map((m) => m.mes)));
+    return MESES.filter((m) => presentes.has(m)); // ordem de calendário, não alfabética
+  });
+  eleventyConfig.addFilter("algumComBloco", (itens, tipo) => itens.some((i) => (i.data.blocos || []).some((b) => b.type === tipo)));
   // Nota de 0 a 5 em estrelas cheias e vazias.
   eleventyConfig.addFilter("estrelas", (nota) => "★".repeat(Math.round(nota || 0)) + "☆".repeat(Math.max(0, 5 - Math.round(nota || 0))));
 
