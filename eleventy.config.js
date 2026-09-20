@@ -142,11 +142,15 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("opcoesCampo", (itens, campo) => unicos(itens.map((i) => texto(i, campo))).sort((a, b) => a.localeCompare(b, "pt-BR")));
   // estante: todo ano e todo mês que o item atravessou
   eleventyConfig.addFilter("anosDoPeriodo", (item) => unicos(periodo(item).map((m) => m.ano)).join("|"));
-  eleventyConfig.addFilter("mesesDoPeriodo", (item) => unicos(periodo(item).map((m) => m.mes)).join("|"));
+  // O mês anda junto do ano a que pertence: "2026-janeiro". Separados, o filtro deixava
+  // escolher um mês de um ano e um ano de outro, e mostrava item que não era de nenhum dos dois.
+  eleventyConfig.addFilter("mesesDoPeriodo", (item) => unicos(periodo(item).map((m) => m.ano + "-" + m.mes)).join("|"));
   eleventyConfig.addFilter("opcoesAnoPeriodo", (itens) => unicos(itens.flatMap((i) => periodo(i).map((m) => m.ano))).sort().reverse());
   eleventyConfig.addFilter("opcoesMesPeriodo", (itens) => {
-    const presentes = new Set(itens.flatMap((i) => periodo(i).map((m) => m.mes)));
-    return MESES.filter((m) => presentes.has(m)); // ordem de calendário, não alfabética
+    const presentes = unicos(itens.flatMap((i) => periodo(i).map((m) => m.ano + "-" + m.mes)));
+    return presentes
+      .sort((a, b) => b.split("-")[0].localeCompare(a.split("-")[0]) || MESES.indexOf(a.split("-")[1]) - MESES.indexOf(b.split("-")[1]))
+      .map((par) => ({ valor: par, rotulo: par.split("-")[1], ano: par.split("-")[0] }));
   });
   eleventyConfig.addFilter("algumComBloco", (itens, tipo) => itens.some((i) => (i.data.blocos || []).some((b) => b.type === tipo)));
   // Nota de 0 a 5 em estrelas cheias e vazias.

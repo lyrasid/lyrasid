@@ -359,6 +359,10 @@ mark.vermelho { --grifo: 255, 130, 120; }
 .filtros { display: flex; flex-direction: column; gap: .55rem; max-width: 72rem; margin: 1.25rem 0 1.75rem; }
 .filtros-linha { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem 1.6rem; }
 .filtro-grupo { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .9rem; }
+/* grupo escondido pelo site.js: precisa vencer o display:flex de cima */
+.filtro-grupo[hidden] { display: none; }
+/* linha sem nenhum grupo à mostra não deixa buraco */
+.filtros-linha:not(:has(.filtro-grupo:not([hidden]))) { display: none; }
 .filtro-rotulo { font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; opacity: .4; }
 .filtros button {
   padding: .1rem 0;

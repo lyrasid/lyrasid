@@ -212,42 +212,86 @@ document.querySelectorAll('.adesivo[data-segredo="miar"]').forEach((gato) => {
 // Uma barra serve estante, galerias e seções. Cada grupo de botões é um eixo (ano, mês,
 // tipo...) e vale junto com os outros: escolher "2026" e "livros" mostra só livros de 2026.
 // Clicar de novo no botão aceso desliga aquele eixo, igual ao "tudo".
+//
+// As opções acompanham o que sobrou: um botão só aparece se ainda levar a algum item,
+// considerando os outros eixos. Se nenhum jogo foi jogado em janeiro, "janeiro" some ao
+// escolher "jogos" — e volta ao sair dali.
+//
+// Mês é gravado com o ano junto ("2026-janeiro"). Sem isso dava para pedir 2026 e janeiro
+// e receber um item que só existiu em janeiro de 2025.
 const barraFiltros = document.querySelector(".filtros");
 if (barraFiltros) {
   const itens = [...document.querySelectorAll(".filtravel")];
   const vazio = document.querySelector(".filtros-vazio");
-  const escolhas = new Map(); // eixo -> valor escolhido ("" = todos)
+  const grupos = [...barraFiltros.querySelectorAll(".filtro-grupo")];
+  const escolhas = new Map(grupos.map((g) => [g.dataset.grupo, ""])); // eixo -> escolha ("" = todos)
+
+  // getAttribute e não dataset: os nomes dos eixos vêm de dados, sem virar camelCase
+  const valoresDe = (item, eixo) => (item.getAttribute("data-f-" + eixo) || "").split("|");
+  const botoesDe = (grupo) => [...grupo.querySelectorAll("button")];
+  // passa por todos os eixos, menos o que estiver sendo ignorado
+  const passa = (item, ignorado) =>
+    [...escolhas].every(([eixo, valor]) => eixo === ignorado || !valor || valoresDe(item, eixo).includes(valor));
 
   function aplicarFiltros() {
     let visiveis = 0;
-    itens.forEach((item) => {
-      // getAttribute e não dataset: os nomes dos eixos vêm de dados, sem virar camelCase
-      const cabe = [...escolhas].every(([eixo, valor]) => !valor || (item.getAttribute("data-f-" + eixo) || "").split("|").includes(valor));
+    for (const item of itens) {
+      const cabe = passa(item, null);
       item.hidden = !cabe;
-      if (!cabe) return;
+      if (!cabe) continue;
       // reinicia a entrada em cascata só para quem continua na tela
       item.style.setProperty("--atraso", visiveis * 35 + "ms");
       item.style.animation = "none";
       void item.offsetWidth;
       item.style.animation = "";
       visiveis += 1;
-    });
+    }
     if (vazio) vazio.hidden = visiveis > 0;
+
+    // o ano que dá sentido aos meses: o escolhido, o do mês escolhido, ou o único à vista
+    const anosAVista = [...new Set(itens.filter((i) => !i.hidden).flatMap((i) => valoresDe(i, "ano")).filter(Boolean))];
+    const anoContexto = escolhas.get("ano") || (escolhas.get("mes") || "").split("-")[0] || (anosAVista.length === 1 ? anosAVista[0] : "");
+
+    let limpou = false;
+    for (const grupo of grupos) {
+      const eixo = grupo.dataset.grupo;
+      // a escolha do próprio eixo não conta, senão só ela sobraria
+      const alcancaveis = itens.filter((i) => passa(i, eixo));
+      let sobrou = false;
+      for (const botao of botoesDe(grupo)) {
+        if (!botao.dataset.valor) continue; // o "tudo" fica sempre
+        const leva = alcancaveis.some((i) => valoresDe(i, eixo).includes(botao.dataset.valor));
+        // sem um ano em foco os meses ficam ambíguos ("janeiro" de qual ano?): o grupo todo espera
+        const doAnoEmFoco = !botao.dataset.ano || botao.dataset.ano === anoContexto;
+        botao.hidden = !(leva && doAnoEmFoco);
+        if (!botao.hidden) sobrou = true;
+      }
+      grupo.hidden = !sobrou;
+
+      // escolha que deixou de existir (mês de outro ano, tipo sem itens) é descartada
+      const aceso = botoesDe(grupo).find((b) => b.dataset.valor === escolhas.get(eixo));
+      if (aceso && aceso.hidden) {
+        escolhas.set(eixo, "");
+        botoesDe(grupo).forEach((b) => b.setAttribute("aria-pressed", !b.dataset.valor));
+        limpou = true;
+      }
+    }
+    // soltar um eixo só abre opções, nunca fecha: não vira laço
+    if (limpou) aplicarFiltros();
   }
 
-  barraFiltros.querySelectorAll(".filtro-grupo").forEach((grupo) => {
+  for (const grupo of grupos) {
     const eixo = grupo.dataset.grupo;
-    const botoes = [...grupo.querySelectorAll("button")];
-    escolhas.set(eixo, "");
-    botoes.forEach((botao) =>
+    for (const botao of botoesDe(grupo)) {
       botao.addEventListener("click", () => {
         const valor = escolhas.get(eixo) === botao.dataset.valor ? "" : botao.dataset.valor;
         escolhas.set(eixo, valor);
-        botoes.forEach((b) => b.setAttribute("aria-pressed", b.dataset.valor === valor));
+        botoesDe(grupo).forEach((b) => b.setAttribute("aria-pressed", b.dataset.valor === valor));
         aplicarFiltros();
-      })
-    );
-  });
+      });
+    }
+  }
+  aplicarFiltros(); // já entra escondendo o que não leva a lugar nenhum
 }
 
 // ---------- estante: ficha de um item ----------

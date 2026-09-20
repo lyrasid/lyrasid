@@ -2,7 +2,7 @@
 layout: base.njk
 ---
 {#- Estante: livros, filmes, séries e jogos. A ficha completa abre sobre a página. -#}
-{% from "filtros.njk" import grupo, grupoFixo %}
+{% from "filtros.njk" import grupo %}
 {% set rotulos = { livro: "livro", filme: "filme", serie: "série", jogo: "jogo" } %}
 <h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Título da página">{{ title }}</h1>
 
@@ -11,7 +11,7 @@ layout: base.njk
 {% if collections.estante.length %}
 <div class="filtros" role="group" aria-label="Filtrar a estante">
   <div class="filtros-linha">
-    {{ grupoFixo("tipo", "", [
+    {{ grupo("tipo", "", [
       { valor: "livro", rotulo: "livros" },
       { valor: "filme", rotulo: "filmes" },
       { valor: "serie", rotulo: "séries" },
