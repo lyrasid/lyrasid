@@ -528,22 +528,6 @@ mark.vermelho { --grifo: 255, 130, 120; }
 .cozinha .passos :is(ol, ul) { padding-left: 1.3rem; }
 .cozinha .passos li { margin-bottom: .6rem; }
 
-
-/* ---------- adesivos: o canto descola ao passar o mouse ---------- */
-/* Os adesivos têm contornos recortados, então em vez de dobrar um cantinho de papel
-   o adesivo inteiro gira no eixo da diagonal: um canto sobe em direção a quem olha. */
-.adesivos { perspective: 700px; }
-@media (hover: hover) {
-  .adesivo { transition: transform .25s cubic-bezier(.2, .8, .3, 1), scale .15s, filter .25s; }
-  .adesivo:hover {
-    transform: translateX(-50%) rotate(var(--r)) rotate3d(1, -1, 0, 24deg);
-    scale: 1.04;
-    filter:
-      drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff)
-      drop-shadow(-7px 8px 7px rgba(0, 0, 0, .35));
-  }
-  .adesivo.arrastando:hover { transform: translateX(-50%) rotate(var(--r)); }
-}
 /* balãozinho do gato */
 .balao-miau {
   position: absolute;
