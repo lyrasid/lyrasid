@@ -4,10 +4,10 @@ tipo: jogo
 autor: Embark
 ano: '2025'
 nota: 4
-data: ''
+data: yyyy-08-Sa
 favorito: true
 capa: /midia/pasted-image-1789935324934.webp
-comentario: Jogo ótimo quando lançou. Se perdeu no caminho e hoje falta jogadores.
+comentario: Jogo ótimo quando lançou. Se perdeu no caminho e hoje falta jogadores.a
 link: ''
 oculto: false
 ---
