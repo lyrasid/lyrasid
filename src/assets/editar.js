@@ -2,12 +2,12 @@
 // Lê e grava os arquivos direto no GitHub; todas as mudanças vão num único commit.
 // Bibliotecas servidas pelo próprio site, sem CDN (gerado por: npm run vendor).
 import { load, dump, markdownIt } from "./vendor/editor-libs.js";
-import { abrirExternosEmNovaAba } from "./markdown.js";
+import { prepararMarkdown } from "./markdown.js";
 
 const yaml = { load, dump };
 const REPO = "lyrasid/lyrasid";
 const RAMO = "main";
-const md = abrirExternosEmNovaAba(markdownIt({ linkify: true })); // mesmas opções do site: HTML no texto não é renderizado
+const md = prepararMarkdown(markdownIt({ linkify: true })); // mesmas opções do site: HTML no texto não é renderizado
 document.documentElement.classList.add("edicao");
 
 // ---------- GitHub ----------

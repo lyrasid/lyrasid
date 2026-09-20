@@ -1,6 +1,6 @@
 ---
 title: Receitas
 ordem: 8
-oculto: true
+papel: quadriculado
 adesivos: []
 ---

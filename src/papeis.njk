@@ -1,0 +1,77 @@
+---
+# Páginas de avaliação dos fundos de papel: uma por tipo, fora do menu.
+# Quando você escolher os papéis, dá para apagar este arquivo e o papeis-indice.njk.
+layout: base.njk
+eleventyExcludeFromCollections: true
+papeisDemo:
+  - slug: quadriculado
+    nome: Quadriculado
+    sobre: Papel de caderno de matemática. É o fundo padrão do site.
+  - slug: pautado
+    nome: Pautado
+    sobre: Papel de fichário, com a margem vermelha à esquerda.
+  - slug: liso
+    nome: Liso
+    sobre: Só a textura do papel, sem nenhuma linha impressa.
+pagination:
+  data: papeisDemo
+  size: 1
+  alias: tipo
+permalink: "/papeis/{{ tipo.slug }}/"
+eleventyComputed:
+  papel: "{{ tipo.slug }}"
+  title: "Papel {{ tipo.nome }}"
+---
+<p class="volta"><a href="/papeis/">← todos os papéis</a></p>
+
+<h1>{{ tipo.nome }}</h1>
+
+<div class="texto intro">
+  <p>{{ tipo.sobre }}</p>
+  <p>Role a página até o fim para ver se a textura emenda sem costura e se o desenho se repete de um jeito perceptível. Compare também num monitor grande e no celular.</p>
+</div>
+
+<nav class="papeis-troca">
+  {%- for p in papeisDemo %}
+  <a href="/papeis/{{ p.slug }}/"{% if p.slug == tipo.slug %} aria-current="page"{% endif %}>{{ p.nome }}</a>
+  {%- endfor %}
+</nav>
+
+<details open>
+  <summary><h2>Como fica com texto por cima</h2></summary>
+  <div class="item">
+    <div class="texto">
+      <p>Este parágrafo existe para testar a leitura. O corpo do texto precisa continuar confortável com a textura atrás: se o papel roubar atenção, ele está forte demais. O marca-texto vem em <mark>amarelo</mark>, <mark class="verde">verde</mark> e <mark class="vermelho">vermelho</mark>, e ajuda a ver como as camadas se somam. Um <a href="https://example.com">link como este</a> mostra se a cor do link aguenta o fundo.</p>
+      <p>Uma segunda linha de texto, mais longa, para conferir o espaçamento entre linhas contra o pautado. Em papel pautado de verdade a escrita se apoia na linha; aqui as linhas são só decoração, então elas não precisam bater exatamente com o texto, mas não podem brigar com ele.</p>
+      <ul>
+        <li>Item de lista, para ver como marcadores caem sobre a textura.</li>
+        <li>Outro item, um pouco mais comprido, que quebra em mais de uma linha quando a janela está estreita.</li>
+      </ul>
+    </div>
+  </div>
+</details>
+
+<details>
+  <summary><h2>Com foto e legenda</h2></summary>
+  <div class="item">
+    <div class="blocos">
+      <div class="linha" style="--colunas: 1">
+        <div class="bloco">
+          <figure class="midia" style="--largura: 60%">
+            <img src="/midia/01_Barbearia.JPG" alt="Foto de teste">
+            <figcaption>
+              <strong>Foto de teste</strong>
+              <span class="ano">2023</span>
+              <p>A borda da foto precisa se separar bem do fundo, principalmente numa área clara.</p>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<div class="texto">
+  <p>Espaço em branco abaixo, de propósito, para a textura aparecer sozinha numa área grande.</p>
+</div>
+<div class="papeis-espaco"></div>

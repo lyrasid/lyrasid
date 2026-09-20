@@ -5,7 +5,8 @@
   "scripts": {
     "start": "eleventy --serve",
     "build": "eleventy",
-    "vendor": "esbuild scripts/editor-libs.js --bundle --format=esm --minify --legal-comments=eof --outfile=src/assets/vendor/editor-libs.js"
+    "vendor": "esbuild scripts/editor-libs.js --bundle --format=esm --minify --legal-comments=eof --outfile=src/assets/vendor/editor-libs.js",
+    "texturas": "node scripts/textura-papel.js"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",

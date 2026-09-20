@@ -33,6 +33,16 @@ collections:
           - { name: layout, widget: hidden, default: sobre.njk }
           - { name: title, label: Nome, widget: string }
           - { name: foto, label: Foto, widget: image, required: false }
+          - &papel
+            name: papel
+            label: Papel do fundo
+            widget: select
+            required: false
+            default: quadriculado
+            options:
+              - { label: Quadriculado, value: quadriculado }
+              - { label: Pautado (com margem), value: pautado }
+              - { label: Liso (sem linhas), value: liso }
           - &blocos
             name: blocos
             label: Blocos
@@ -44,7 +54,7 @@ collections:
                 label: Texto
                 widget: object
                 fields:
-                  - { name: texto, label: Texto, widget: markdown }
+                  - { name: texto, label: Texto, widget: markdown, hint: "Grife um trecho com ==assim==. Para trocar a cor: ==verde: assim== ou ==vermelho: assim==." }
                   - &ao_lado { name: ao_lado, label: Ao lado do bloco anterior, widget: boolean, default: false, required: false, hint: "Até 3 blocos lado a lado. No celular ficam um embaixo do outro." }
               - name: imagem
                 label: Imagem
@@ -77,7 +87,7 @@ collections:
                 fields:
                   - { name: rendimento, label: Rendimento, widget: string, required: false }
                   - { name: tempo, label: Tempo de preparo, widget: string, required: false }
-                  - { name: ingredientes, label: Ingredientes (um por linha), widget: list, required: false }
+                  - { name: ingredientes, label: Ingredientes (um por linha), widget: list, required: false, hint: "Aparecem no modo cozinha para riscar com um toque." }
                   - *ao_lado
               - name: planta
                 label: Ficha de planta
@@ -97,6 +107,15 @@ collections:
               - { name: imagem, label: Imagem (PNG sem fundo), widget: image }
               - { name: descricao, label: Descrição (acessibilidade), widget: string, required: false }
               - { name: link, label: Ao clicar, abre o texto, widget: relation, collection: textos, value_field: "{{slug}}", search_fields: [title], display_fields: [title], required: false }
+              - name: segredo
+                label: Segredo
+                widget: select
+                required: false
+                options:
+                  - { label: Nenhum, value: "" }
+                  - { label: Gato que mia com 5 cliques, value: miar }
+                  - { label: Cadeado da área restrita, value: cadeado }
+                hint: "O cadeado ignora o campo acima e leva para a área restrita."
               - { name: x, label: Posição horizontal (%), widget: number, value_type: int, min: 0, max: 100, default: 80, hint: "0 = borda esquerda do conteúdo, 100 = borda direita." }
               - { name: y, label: Distância do topo (px), widget: number, value_type: int, min: 0, default: 40 }
               - { name: largura, label: Largura (px), widget: number, value_type: int, min: 40, max: 600, default: 140, hint: "No celular aparece com 60% do tamanho." }
@@ -109,6 +128,17 @@ collections:
           - { name: instagram, label: Instagram (link), widget: string, required: false }
           - { name: linkedin, label: LinkedIn (link), widget: string, required: false }
           - { name: email, label: E-mail, widget: string, required: false }
+      - name: secreto
+        label: Área restrita (easter egg)
+        file: src/_data/secreto.json
+        fields:
+          - name: video
+            label: Vídeo do susto
+            widget: file
+            required: false
+            hint: "Toca sozinho, com som, assim que a senha certa é digitada. Envie um arquivo .mp4 ou .webm curto."
+          - { name: titulo, label: Título da sala, widget: string, required: false }
+          - { name: conteudo, label: O que aparece depois da senha, widget: markdown, required: false }
 
   - name: paginas
     label: Páginas do menu
@@ -121,11 +151,23 @@ collections:
     fields:
       - { name: title, label: Título, widget: string, hint: "O endereço da página é criado a partir do primeiro título e não muda depois." }
       - &ordem { name: ordem, label: Ordem, widget: number, value_type: int, required: false, hint: "Números menores aparecem primeiro." }
+      - name: tipo
+        label: Tipo de página
+        widget: select
+        required: false
+        options:
+          - { label: "Caderno (subtítulos que abrem)", value: "" }
+          - { label: "Galeria (capas que abrem em página própria)", value: galeria }
+          - { label: "Estante (livros, filmes, séries e jogos)", value: estante }
+          - { label: "Pastas (abrem em janela de computador antigo)", value: pastas }
+        hint: "A estante usa a lista própria dela; os outros tipos usam os textos ligados a esta página."
+      - *papel
+      - { name: intro, label: Texto de abertura, widget: markdown, required: false }
       - { name: oculto, label: Ocultar página, widget: boolean, default: false, required: false }
       - *adesivos
 
   - name: textos
-    label: Textos (subtítulos)
+    label: Textos (subtítulos e coleções)
     folder: src/conteudo
     create: true
     delete: true
@@ -139,6 +181,14 @@ collections:
       - { name: pagina, label: Página, widget: relation, collection: paginas, value_field: "{{slug}}", search_fields: [title], display_fields: [title] }
       - *ordem
       - { name: oculto, label: Ocultar texto, widget: boolean, default: false, required: false }
+      - name: capa
+        label: Capa (só em páginas de galeria)
+        widget: image
+        required: false
+        hint: "Vazio = usa a primeira imagem dos blocos."
+      - { name: ano, label: Ano, widget: string, required: false }
+      - { name: local, label: Local, widget: string, required: false }
+      - { name: resumo, label: Resumo (aparece no topo da coleção), widget: text, required: false }
       - name: links
         label: Links externos
         widget: list
@@ -147,3 +197,35 @@ collections:
           - { name: texto, label: Texto do link, widget: string }
           - { name: url, label: Endereço, widget: string }
       - *blocos
+
+  - name: estante
+    label: Estante (o que li, assisti e joguei)
+    folder: src/estante
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    sortable_fields: [data, title, nota]
+    view_groups:
+      - { label: Tipo, field: tipo }
+    summary: "{{title}} — {{tipo}}"
+    fields:
+      - { name: title, label: Título, widget: string }
+      - name: tipo
+        label: Tipo
+        widget: select
+        default: livro
+        options:
+          - { label: Livro, value: livro }
+          - { label: Filme, value: filme }
+          - { label: Série, value: serie }
+          - { label: Jogo, value: jogo }
+      - { name: autor, label: Autoria (autor, diretor, estúdio), widget: string, required: false }
+      - { name: ano, label: Ano da obra, widget: string, required: false }
+      - { name: nota, label: Nota (0 a 5), widget: number, value_type: int, min: 0, max: 5, required: false }
+      - { name: data, label: Quando terminei, widget: date, format: yyyy-MM-dd, required: false }
+      - { name: favorito, label: Favorito, widget: boolean, default: false, required: false }
+      - { name: capa, label: Capa, widget: image, required: false }
+      - { name: comentario, label: Comentário, widget: markdown, required: false }
+      - { name: link, label: Link (onde ver ou comprar), widget: string, required: false }
+      - { name: oculto, label: Ocultar da estante, widget: boolean, default: false, required: false }

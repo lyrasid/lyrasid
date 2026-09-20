@@ -1,8 +1,10 @@
 {% if adesivos %}
 <div class="adesivos" data-arquivo="{{ page.inputPath | arquivo }}">
   {%- for a in adesivos %}
-  {% set destino = a.link | linkDoTexto(collections.textos, collections.paginas) %}
-  <a class="adesivo" draggable="false" data-indice="{{ loop.index0 }}" style="--x: {{ a.x | default(80) }}%; --y: {{ a.y | default(40) }}px; --w: {{ a.largura | default(140) }}px; --r: {{ a.rotacao | default(0) }}deg"{% if destino %} href="{{ destino }}"{% endif %}>
+  {%- set destino = a.link | linkDoTexto(collections.textos, collections.paginas) %}
+  {#- o cadeado não aponta para um texto: leva para a área restrita #}
+  {%- if a.segredo == "cadeado" %}{% set destino = "/secreto/" %}{% endif %}
+  <a class="adesivo" draggable="false" data-indice="{{ loop.index0 }}"{% if a.segredo %} data-segredo="{{ a.segredo }}"{% endif %} style="--x: {{ a.x | default(80) }}%; --y: {{ a.y | default(40) }}px; --w: {{ a.largura | default(140) }}px; --r: {{ a.rotacao | default(0) }}deg"{% if destino %} href="{{ destino }}"{% endif %}>
     <img src="{{ a.imagem }}" alt="{{ a.descricao }}" draggable="false">
   </a>
   {%- endfor %}

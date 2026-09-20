@@ -1,0 +1,46 @@
+---
+layout: base.njk
+---
+{#- Outros projetos: cada item é uma pasta que abre numa janela quase do tamanho da tela. -#}
+{% from "blocos.njk" import mostrarBlocos %}
+<h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Título da página">{{ title }}</h1>
+
+{% if intro %}<div class="texto intro">{{ intro | md | safe }}</div>{% endif %}
+
+{% set itens = collections.textos | daPagina(page.fileSlug) %}
+{% if itens.length %}
+<ul class="area-pastas">
+  {%- for item in itens %}
+  <li id="{{ item.fileSlug }}" style="--atraso: {{ loop.index0 * 70 }}ms; --giro: {{ loop.index0 % 3 - 1 }}deg">
+    <button type="button" class="pasta" aria-haspopup="dialog" data-janela="janela-{{ item.fileSlug }}">
+      <img src="/midia/adesivos/pasta.svg" alt="" width="120" height="100">
+      <span>{{ item.data.title }}</span>
+    </button>
+  </li>
+  {%- endfor %}
+</ul>
+
+{%- for item in itens %}
+{%- set d = item.data %}
+<dialog class="janela" id="janela-{{ item.fileSlug }}" aria-label="{{ d.title }}">
+  <div class="janela-barra">
+    <span class="janela-titulo"><img src="/midia/adesivos/pasta.svg" alt="" width="16" height="14">{{ d.title }}</span>
+    <span class="janela-botoes">
+      <span aria-hidden="true">_</span>
+      <span aria-hidden="true">❐</span>
+      <button type="button" class="janela-fechar" aria-label="Fechar janela">✕</button>
+    </span>
+  </div>
+  <div class="janela-corpo" data-arquivo="{{ item.inputPath | arquivo }}">
+    {% if d.links %}
+    <p class="links">{% for l in d.links %}<a href="{{ l.url | urlSegura }}" target="_blank" rel="noopener">{{ l.texto or l.url }} ↗</a>{% endfor %}</p>
+    {% endif %}
+    {{ mostrarBlocos(d.blocos, item.inputPath | arquivo) }}
+  </div>
+  {% set quantos = d.blocos | length | default(0) %}
+  <div class="janela-status"><span>{{ quantos }} {% if quantos == 1 %}item{% else %}itens{% endif %}</span><span>{{ d.ano }}</span></div>
+</dialog>
+{%- endfor %}
+{% else %}
+<p class="vazio">Em breve.</p>
+{% endif %}

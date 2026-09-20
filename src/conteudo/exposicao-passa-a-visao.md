@@ -1,8 +1,12 @@
 ---
-title: Exposição “Passa a visão” - 2023
+title: Exposição “Passa a visão”
 pagina: fotografias
-ordem: null
+ordem: 1
 oculto: false
+ano: 2023
+local: Maré, Rio de Janeiro
+capa: /midia/01_Barbearia.JPG
+resumo: Oito fotógrafos favelados e periféricos numa exposição na Lona da Maré.
 links: []
 blocos:
   - type: texto

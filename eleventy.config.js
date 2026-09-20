@@ -1,9 +1,9 @@
 import { HtmlBasePlugin } from "@11ty/eleventy";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 import markdownIt from "markdown-it";
-import { abrirExternosEmNovaAba } from "./src/assets/markdown.js";
+import { prepararMarkdown } from "./src/assets/markdown.js";
 
-const md = abrirExternosEmNovaAba(markdownIt({ linkify: true }));
+const md = prepararMarkdown(markdownIt({ linkify: true }));
 const porOrdem = (a, b) => (a.data.ordem ?? 999) - (b.data.ordem ?? 999) || a.data.title.localeCompare(b.data.title);
 const visiveis = (api, glob) => api.getFilteredByGlob(glob).filter((i) => !i.data.oculto).sort(porOrdem);
 
@@ -16,7 +16,9 @@ export const config = {
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy("src/admin");
-  // src/midia não é copiada: o site usa só as versões comprimidas geradas abaixo (em /img).
+  // vídeos não passam pelo compressor de imagens: são copiados como estão
+  eleventyConfig.addPassthroughCopy("src/midia/**/*.{mp4,webm,mov,m4v}");
+  // o resto de src/midia não é copiado: o site usa só as versões comprimidas geradas abaixo (em /img).
 
   // Fontes e painel servidos pelo próprio site (sem Google Fonts nem CDN; versões fixas pelo package-lock).
   const fontes = ["narnoor-latin-400", "narnoor-latin-ext-400", "narnoor-latin-700", "narnoor-latin-ext-700", "schoolbell-latin-400"];
@@ -45,6 +47,12 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addCollection("paginas", (api) => visiveis(api, "src/paginas/*.md"));
   eleventyConfig.addCollection("textos", (api) => visiveis(api, "src/conteudo/*.md"));
+  eleventyConfig.addCollection("estante", (api) =>
+    api
+      .getFilteredByGlob("src/estante/*.md")
+      .filter((i) => !i.data.oculto)
+      .sort((a, b) => Number(new Date(b.data.data ?? 0)) - Number(new Date(a.data.data ?? 0)) || a.data.title.localeCompare(b.data.title))
+  );
 
   // caminho do arquivo no repositório, usado pelo modo de edição para salvar
   eleventyConfig.addFilter("arquivo", (inputPath) => inputPath.replace(/^\.\//, ""));
@@ -62,23 +70,54 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("md", (texto) => md.render(texto || ""));
   // Links digitados no painel: só http(s) e mailto (bloqueia javascript: e afins).
   eleventyConfig.addFilter("urlSegura", (url) => (/^(https?:|mailto:)/i.test(String(url ?? "").trim()) ? url : "#"));
+  // Arquivos enviados pelo painel: só caminhos internos (bloqueia javascript: e endereços de fora).
+  eleventyConfig.addFilter("arquivoSeguro", (caminho) => {
+    const limpo = String(caminho ?? "").trim();
+    // só caminho interno: começa com uma barra e não é endereço de outro site (//outro.site)
+    return /^\/[^"'<>]*$/.test(limpo) && !limpo.startsWith("//") ? limpo : "";
+  });
   eleventyConfig.addFilter("youtubeId", (link) => String(link).match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/)?.[1] ?? link);
 
-  // Endereço de um texto: página dele + #subtítulo. Vazio se o texto ou a página estiverem ocultos.
+  // Primeira imagem de um item: vira a capa na grade de galeria.
+  eleventyConfig.addFilter("capa", (item) => item.data.capa || (item.data.blocos || []).find((b) => b.type === "imagem" && b.imagem)?.imagem || "");
+  eleventyConfig.addFilter("contarImagens", (item) => (item.data.blocos || []).filter((b) => (b.type === "imagem" && b.imagem) || (b.type === "video" && b.youtube)).length);
+  // Item anterior e seguinte dentro da mesma galeria.
+  eleventyConfig.addFilter("vizinhos", (itens, slug) => {
+    const i = itens.findIndex((t) => t.fileSlug === slug);
+    return { anterior: itens[i - 1], proximo: itens[i + 1] };
+  });
+  eleventyConfig.addFilter("temBloco", (blocos, tipo) => (blocos || []).some((b) => b.type === tipo));
+  // Datas do painel (2026-08-14) escritas por extenso. UTC para a data não voltar um dia.
+  const formatoData = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric", timeZone: "UTC" });
+  eleventyConfig.addFilter("dataBr", (valor) => (valor ? formatoData.format(new Date(valor)) : ""));
+  // Nota de 0 a 5 em estrelas cheias e vazias.
+  eleventyConfig.addFilter("estrelas", (nota) => "★".repeat(Math.round(nota || 0)) + "☆".repeat(Math.max(0, 5 - Math.round(nota || 0))));
+
+  // Endereço de um texto: página própria (galeria) ou página da seção + #subtítulo.
+  // Vazio se o texto ou a página estiverem ocultos.
   const linkDoTexto = (slug, textos, paginas) => {
     const texto = textos.find((t) => t.fileSlug === slug);
-    const pagina = texto && paginas.find((p) => p.fileSlug === texto.data.pagina);
+    if (!texto) return "";
+    if (texto.url) return texto.url;
+    const pagina = paginas.find((p) => p.fileSlug === texto.data.pagina);
     return pagina ? pagina.url + "#" + slug : "";
   };
   eleventyConfig.addFilter("linkDoTexto", linkDoTexto);
 
   // Busca só por título e página: um JSON pequeno embutido, sem biblioteca.
-  eleventyConfig.addFilter("indiceBusca", (textos, paginas) => {
-    const indice = textos.flatMap((t) => {
+  eleventyConfig.addFilter("indiceBusca", (textos, paginas, estante) => {
+    const paginaEstante = paginas.find((p) => p.data.tipo === "estante");
+    const daEstante = (paginaEstante ? estante ?? [] : []).map((i) => ({
+      titulo: i.data.title,
+      secao: paginaEstante.data.title,
+      url: eleventyConfig.getFilter("url")(paginaEstante.url + "#" + i.fileSlug),
+    }));
+    const indice = daEstante.concat(textos.flatMap((t) => {
       const url = linkDoTexto(t.fileSlug, textos, paginas);
-      if (!url) return [];
-      return [{ titulo: t.data.title, secao: paginas.find((p) => p.fileSlug === t.data.pagina).data.title, url: eleventyConfig.getFilter("url")(url) }];
-    });
+      const pagina = paginas.find((p) => p.fileSlug === t.data.pagina);
+      if (!url || !pagina) return [];
+      return [{ titulo: t.data.title, secao: pagina.data.title, url: eleventyConfig.getFilter("url")(url) }];
+    }));
     return JSON.stringify(indice).replaceAll("<", "\\u003c");
   });
 }

@@ -1,6 +1,7 @@
 ---
 title: Plantas
 ordem: 9
+papel: quadriculado
 adesivos:
   - imagem: /midia/adesivos/folha.svg
     descricao: Folha

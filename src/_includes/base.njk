@@ -29,7 +29,7 @@
 
     <nav class="pastas" aria-label="Seções">
       {%- for p in collections.paginas %}
-      <a href="{{ p.url }}" data-arquivo="{{ p.inputPath | arquivo }}"{% if page.url == p.url %} aria-current="page"{% endif %}><span>{{ p.data.title }}</span></a>
+      <a href="{{ p.url }}" data-arquivo="{{ p.inputPath | arquivo }}"{#- a seção fica marcada também nas páginas de dentro dela (/fotografias/uma-colecao/) #}{% if page.url and page.url.startsWith(p.url) %} aria-current="page"{% endif %}><span>{{ p.data.title }}</span></a>
       {%- endfor %}
     </nav>
 
@@ -50,12 +50,13 @@
     </footer>
   </aside>
 
-  <main>
+  {#- o fundo de papel muda por seção: quadriculado, pautado ou liso #}
+  <main data-papel="{{ papel | default('quadriculado') }}">
     {% include "adesivos.njk" %}
     {{ content | safe }}
   </main>
 
   <a class="topo" href="#topo" aria-label="Voltar ao topo">▲</a>
-  <script type="application/json" id="indice-busca">{{ collections.textos | indiceBusca(collections.paginas) | safe }}</script>
+  <script type="application/json" id="indice-busca">{{ collections.textos | indiceBusca(collections.paginas, collections.estante) | safe }}</script>
 </body>
 </html>

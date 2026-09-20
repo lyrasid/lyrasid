@@ -1,0 +1,53 @@
+---
+layout: base.njk
+---
+{#- Estante: livros, filmes, séries e jogos. A ficha completa abre sobre a página. -#}
+{% set rotulos = { livro: "livro", filme: "filme", serie: "série", jogo: "jogo" } %}
+<h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Título da página">{{ title }}</h1>
+
+{% if intro %}<div class="texto intro">{{ intro | md | safe }}</div>{% endif %}
+
+{% if collections.estante.length %}
+<div class="estante-filtros" role="group" aria-label="Filtrar a estante">
+  <button type="button" data-tipo="tudo" aria-pressed="true">tudo</button>
+  <button type="button" data-tipo="livro" aria-pressed="false">livros</button>
+  <button type="button" data-tipo="filme" aria-pressed="false">filmes</button>
+  <button type="button" data-tipo="serie" aria-pressed="false">séries</button>
+  <button type="button" data-tipo="jogo" aria-pressed="false">jogos</button>
+  <button type="button" class="favoritos" data-favoritos aria-pressed="false">★ favoritos</button>
+</div>
+
+<ul class="estante">
+  {%- for item in collections.estante %}
+  {%- set d = item.data %}
+  <li id="{{ item.fileSlug }}" data-tipo="{{ d.tipo }}"{% if d.favorito %} data-favorito{% endif %} style="--atraso: {{ loop.index0 * 45 }}ms">
+    <button type="button" class="carta">
+      <span class="capa">
+        {% if d.capa %}<img src="{{ d.capa }}" alt="">{% else %}<span class="sem-capa">{{ rotulos[d.tipo] or d.tipo }}</span>{% endif %}
+        {% if d.favorito %}<span class="selo" aria-hidden="true">★</span>{% endif %}
+      </span>
+      <span class="titulo">{{ d.title }}</span>
+      <span class="autor">{{ d.autor }}</span>
+      <span class="nota" aria-label="Nota {{ d.nota | default(0) }} de 5">{{ d.nota | estrelas }}</span>
+    </button>
+    <template>
+      <div class="ficha-estante">
+        {% if d.capa %}<img class="capa-grande" src="{{ d.capa }}" alt="">{% endif %}
+        <div class="ficha-corpo">
+          <p class="tipo">{{ rotulos[d.tipo] or d.tipo }}</p>
+          <h2>{{ d.title }}</h2>
+          <p class="autor">{{ d.autor }}{% if d.ano %} · {{ d.ano }}{% endif %}</p>
+          <p class="nota" aria-label="Nota {{ d.nota | default(0) }} de 5">{{ d.nota | estrelas }}</p>
+          {% if d.data %}<p class="quando">terminei em {{ d.data | dataBr }}</p>{% endif %}
+          {% if d.comentario %}<div class="texto">{{ d.comentario | md | safe }}</div>{% endif %}
+          {% if d.link %}<p class="links"><a href="{{ d.link | urlSegura }}" target="_blank" rel="noopener">mais sobre ↗</a></p>{% endif %}
+        </div>
+      </div>
+    </template>
+  </li>
+  {%- endfor %}
+</ul>
+<p class="estante-vazia" hidden>Nada por aqui ainda.</p>
+{% else %}
+<p class="vazio">Em breve.</p>
+{% endif %}

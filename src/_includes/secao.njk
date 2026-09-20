@@ -4,6 +4,8 @@ layout: base.njk
 {% from "blocos.njk" import mostrarBlocos %}
 <h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Título da página">{{ title }}</h1>
 
+{% if intro %}<div class="texto intro">{{ intro | md | safe }}</div>{% endif %}
+
 {% for item in collections.textos | daPagina(page.fileSlug) %}
 {% set d = item.data %}
 <details name="subtitulos" id="{{ item.fileSlug }}" data-arquivo="{{ item.inputPath | arquivo }}">
@@ -11,6 +13,12 @@ layout: base.njk
   <div class="item">
     {% if d.links %}
     <p class="links">{% for l in d.links %}<a href="{{ l.url | urlSegura }}" target="_blank" rel="noopener">{{ l.texto or l.url }} ↗</a>{% endfor %}</p>
+    {% endif %}
+    {% if d.blocos | temBloco("receita") %}
+    <p class="acoes-receita">
+      <button type="button" class="botao-cozinha">Modo cozinha</button>
+      <button type="button" class="botao-imprimir">Imprimir</button>
+    </p>
     {% endif %}
     {{ mostrarBlocos(d.blocos, item.inputPath | arquivo) }}
   </div>

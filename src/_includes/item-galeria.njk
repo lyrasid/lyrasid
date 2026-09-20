@@ -1,0 +1,32 @@
+---
+layout: base.njk
+---
+{#- Uma coleção da galeria: abre em página própria, com as fotos e o texto dela. -#}
+{% from "blocos.njk" import mostrarBlocos %}
+{% set secao = secoes[pagina] %}
+{% set irmaos = collections.textos | daPagina(pagina) %}
+{% set perto = irmaos | vizinhos(page.fileSlug) %}
+
+<article class="colecao">
+  <p class="volta"><a href="/{{ pagina }}/">← {{ secao.title }}</a></p>
+
+  <h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Título">{{ title }}</h1>
+
+  <p class="meta{% if not (ano or local) %} campo-vazio{% endif %}" data-arquivo="{{ page.inputPath | arquivo }}">
+    <span class="{% if not ano %}campo-vazio{% endif %}" data-campo="ano" data-editar="linha" data-rotulo="Ano">{{ ano }}</span>
+    <span class="{% if not local %}campo-vazio{% endif %}" data-campo="local" data-editar="linha" data-rotulo="Local">{{ local }}</span>
+  </p>
+
+  {% if resumo %}<div class="texto intro">{{ resumo | md | safe }}</div>{% endif %}
+
+  {% if links %}
+  <p class="links">{% for l in links %}<a href="{{ l.url | urlSegura }}" target="_blank" rel="noopener">{{ l.texto or l.url }} ↗</a>{% endfor %}</p>
+  {% endif %}
+
+  {{ mostrarBlocos(blocos, page.inputPath | arquivo) }}
+
+  <nav class="vizinhos">
+    {% if perto.anterior %}<a class="anterior" href="{{ perto.anterior.url }}">← {{ perto.anterior.data.title }}</a>{% endif %}
+    {% if perto.proximo %}<a class="proxima" href="{{ perto.proximo.url }}">{{ perto.proximo.data.title }} →</a>{% endif %}
+  </nav>
+</article>

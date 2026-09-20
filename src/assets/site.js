@@ -22,16 +22,21 @@ document.addEventListener("click", (e) => {
 });
 document.addEventListener("keydown", (e) => e.key === "Escape" && celular.matches && fecharMenu());
 
-// subtítulos: o link com #id abre o subtítulo; abrir um atualiza o link
+// o link com #id abre o item: subtítulo que expande, pasta que vira janela ou ficha da estante
 const abrirDoLink = () => {
-  const d = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-  if (d?.tagName !== "DETAILS") return;
-  d.open = true;
-  d.scrollIntoView();
+  const alvo = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if (!alvo) return;
+  const botao = alvo.querySelector(".pasta[data-janela], .carta");
+  if (alvo.tagName === "DETAILS") {
+    alvo.open = true;
+    alvo.scrollIntoView();
+  } else if (botao) {
+    // pasta e estante abrem numa janela centralizada: rolar a página só atrapalharia
+    botao.click();
+  } else return;
   if (celular.matches) fecharMenu();
 };
 addEventListener("hashchange", abrirDoLink);
-abrirDoLink();
 document.querySelectorAll("details[id]").forEach((d) =>
   d.addEventListener("toggle", () => d.open && history.replaceState(null, "", "#" + d.id))
 );
@@ -143,3 +148,256 @@ document.querySelectorAll(".adesivo").forEach((el) => {
   });
   el.addEventListener("click", (e) => arrastou && e.preventDefault());
 });
+
+// ---------- segredos ----------
+// balãozinho que sobe a partir de um adesivo
+function balao(el, texto) {
+  const area = el.closest("main");
+  if (!area) return;
+  const caixa = el.getBoundingClientRect();
+  const areaCaixa = area.getBoundingClientRect();
+  const bolha = Object.assign(document.createElement("span"), { className: "balao-miau", textContent: texto });
+  bolha.style.left = caixa.left - areaCaixa.left + caixa.width / 2 + "px";
+  // se o adesivo está colado no topo, o balão sai por baixo para não subir para fora da tela
+  const acima = caixa.top - areaCaixa.top - 12;
+  bolha.style.top = (acima < 48 ? caixa.bottom - areaCaixa.top + 6 : acima) + "px";
+  area.append(bolha);
+  setTimeout(() => bolha.remove(), 1200);
+}
+
+// miado sintetizado na hora: um "miau" sem arquivo de som para baixar
+let audio;
+function miar() {
+  try {
+    audio ??= new (window.AudioContext || window.webkitAudioContext)();
+    audio.resume?.();
+  } catch { return; }
+  const agora = audio.currentTime;
+  const osc = audio.createOscillator();
+  const filtro = audio.createBiquadFilter();
+  const volume = audio.createGain();
+  osc.type = "sawtooth";
+  osc.frequency.setValueAtTime(430, agora);
+  osc.frequency.exponentialRampToValueAtTime(640, agora + 0.16);
+  osc.frequency.exponentialRampToValueAtTime(330, agora + 0.58);
+  filtro.type = "bandpass";
+  filtro.Q.value = 4.5;
+  filtro.frequency.setValueAtTime(950, agora);
+  filtro.frequency.exponentialRampToValueAtTime(1600, agora + 0.18);
+  filtro.frequency.exponentialRampToValueAtTime(760, agora + 0.55);
+  volume.gain.setValueAtTime(0.0001, agora);
+  volume.gain.exponentialRampToValueAtTime(0.22, agora + 0.07);
+  volume.gain.exponentialRampToValueAtTime(0.0001, agora + 0.6);
+  osc.connect(filtro).connect(volume).connect(audio.destination);
+  osc.start(agora);
+  osc.stop(agora + 0.62);
+}
+
+// cinco cliques no gato e ele responde
+document.querySelectorAll('.adesivo[data-segredo="miar"]').forEach((gato) => {
+  let cliques = 0;
+  let ultimo = 0;
+  gato.addEventListener("click", () => {
+    const agora = Date.now();
+    cliques = agora - ultimo > 2000 ? 1 : cliques + 1;
+    ultimo = agora;
+    if (cliques < 5) return;
+    cliques = 0;
+    miar();
+    balao(gato, "miau!");
+  });
+});
+
+// ---------- estante: filtros e ficha ----------
+const estante = document.querySelector(".estante");
+if (estante) {
+  const itens = [...estante.querySelectorAll("li")];
+  const vazia = document.querySelector(".estante-vazia");
+  const botoesTipo = [...document.querySelectorAll(".estante-filtros [data-tipo]")];
+  const botaoFavoritos = document.querySelector(".estante-filtros [data-favoritos]");
+  let tipo = "tudo";
+  let soFavoritos = false;
+
+  function aplicarFiltros() {
+    let visiveis = 0;
+    itens.forEach((li) => {
+      const cabe = (tipo === "tudo" || li.dataset.tipo === tipo) && (!soFavoritos || li.hasAttribute("data-favorito"));
+      li.hidden = !cabe;
+      if (!cabe) return;
+      // reinicia a entrada em cascata só para quem continua na tela
+      li.style.setProperty("--atraso", visiveis * 35 + "ms");
+      li.style.animation = "none";
+      void li.offsetWidth;
+      li.style.animation = "";
+      visiveis += 1;
+    });
+    vazia.hidden = visiveis > 0;
+  }
+
+  botoesTipo.forEach((botao) =>
+    botao.addEventListener("click", () => {
+      tipo = botao.dataset.tipo;
+      botoesTipo.forEach((b) => b.setAttribute("aria-pressed", b === botao));
+      aplicarFiltros();
+    })
+  );
+  botaoFavoritos.addEventListener("click", () => {
+    soFavoritos = !soFavoritos;
+    botaoFavoritos.setAttribute("aria-pressed", soFavoritos);
+    aplicarFiltros();
+  });
+
+  // ficha completa do item, aberta sobre a página
+  const folha = document.createElement("dialog");
+  folha.className = "folha";
+  folha.innerHTML = '<button type="button" class="folha-fechar" aria-label="Fechar">×</button><div class="folha-corpo"></div>';
+  document.body.append(folha);
+  const corpoFolha = folha.querySelector(".folha-corpo");
+  folha.querySelector(".folha-fechar").addEventListener("click", () => folha.close());
+  folha.addEventListener("click", (e) => e.target === folha && folha.close());
+
+  estante.addEventListener("click", (e) => {
+    const carta = e.target.closest(".carta");
+    if (!carta) return;
+    corpoFolha.replaceChildren(carta.parentElement.querySelector("template").content.cloneNode(true));
+    folha.showModal();
+  });
+}
+
+// ---------- outros projetos: pastas que abrem em janela ----------
+document.querySelectorAll(".pasta[data-janela]").forEach((pasta) => {
+  const janela = document.getElementById(pasta.dataset.janela);
+  if (janela) pasta.addEventListener("click", () => janela.showModal());
+});
+document.querySelectorAll(".janela").forEach((janela) => {
+  janela.querySelector(".janela-fechar").addEventListener("click", () => janela.close());
+  janela.addEventListener("click", (e) => e.target === janela && janela.close());
+});
+
+// ---------- modo cozinha ----------
+// A receita abre sobre a página com o fundo desfocado, a tela não apaga enquanto está aberta
+// e cada ingrediente pode ser riscado com um toque.
+const botoesCozinha = document.querySelectorAll(".botao-cozinha");
+if (botoesCozinha.length) {
+  const cozinha = document.createElement("dialog");
+  cozinha.className = "cozinha";
+  cozinha.innerHTML =
+    '<div class="cozinha-topo"><strong></strong><span class="acoes"><span class="acesa"></span>' +
+    '<button type="button" class="cozinha-imprimir">Imprimir</button>' +
+    '<button type="button" class="cozinha-fechar" aria-label="Fechar">×</button></span></div>' +
+    '<div class="cozinha-corpo"></div>';
+  document.body.append(cozinha);
+  const tituloCozinha = cozinha.querySelector("strong");
+  const corpoCozinha = cozinha.querySelector(".cozinha-corpo");
+  const avisoTela = cozinha.querySelector(".acesa");
+  let receitaAberta = null;
+
+  // mantém a tela acesa enquanto a receita está aberta (quando o navegador permite)
+  let trava = null;
+  async function manterAcesa() {
+    try {
+      trava = await navigator.wakeLock?.request("screen");
+      avisoTela.textContent = trava ? "tela acesa" : "";
+    } catch {
+      avisoTela.textContent = "";
+    }
+  }
+  function soltarTela() {
+    trava?.release?.().catch(() => {});
+    trava = null;
+    avisoTela.textContent = "";
+  }
+  // voltar para a aba depois de o celular bloquear precisa pedir a trava de novo
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && cozinha.open && !trava) manterAcesa();
+  });
+
+  function montarCozinha(detalhe) {
+    tituloCozinha.textContent = detalhe.querySelector("summary h2").textContent.trim();
+    corpoCozinha.replaceChildren();
+
+    const ficha = detalhe.querySelector(".ficha:not(.campo-vazio)");
+    if (ficha) corpoCozinha.append(ficha.cloneNode(true));
+
+    const ingredientes = [...detalhe.querySelectorAll('[data-editar="lista"] li')].map((li) => li.textContent.trim()).filter(Boolean);
+    if (ingredientes.length) {
+      const coluna = document.createElement("section");
+      coluna.className = "coluna-ingredientes";
+      coluna.append(Object.assign(document.createElement("h3"), { textContent: "Ingredientes" }));
+      const lista = document.createElement("ul");
+      lista.className = "ingredientes";
+      lista.append(
+        ...ingredientes.map((nome) => {
+          const li = Object.assign(document.createElement("li"), { textContent: nome, tabIndex: 0 });
+          li.setAttribute("role", "checkbox");
+          li.setAttribute("aria-checked", "false");
+          return li;
+        })
+      );
+      coluna.append(lista);
+      corpoCozinha.append(coluna);
+    }
+
+    const passos = [...detalhe.querySelectorAll(".item .texto:not(.campo-vazio)")];
+    if (passos.length) {
+      const coluna = document.createElement("section");
+      coluna.className = "coluna-passos";
+      coluna.append(Object.assign(document.createElement("h3"), { textContent: "Preparo" }));
+      const caixa = document.createElement("div");
+      caixa.className = "passos";
+      passos.forEach((p) => caixa.append(...[...p.cloneNode(true).childNodes]));
+      coluna.append(caixa);
+      corpoCozinha.append(coluna);
+    }
+  }
+
+  // riscar um ingrediente com toque, clique ou teclado
+  const riscar = (li) => li.setAttribute("aria-checked", li.getAttribute("aria-checked") !== "true");
+  corpoCozinha.addEventListener("click", (e) => {
+    const li = e.target.closest(".ingredientes li");
+    if (li) riscar(li);
+  });
+  corpoCozinha.addEventListener("keydown", (e) => {
+    const li = e.target.closest(".ingredientes li");
+    if (li && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault();
+      riscar(li);
+    }
+  });
+
+  botoesCozinha.forEach((botao) =>
+    botao.addEventListener("click", () => {
+      receitaAberta = botao.closest("details");
+      montarCozinha(receitaAberta);
+      cozinha.showModal();
+      manterAcesa();
+    })
+  );
+  cozinha.querySelector(".cozinha-fechar").addEventListener("click", () => cozinha.close());
+  cozinha.addEventListener("close", soltarTela);
+  cozinha.querySelector(".cozinha-imprimir").addEventListener("click", () => {
+    cozinha.close();
+    imprimirReceita(receitaAberta);
+  });
+}
+
+// ---------- imprimir uma receita ----------
+// Some com o resto da página e deixa só a receita escolhida, com quadradinhos para marcar.
+function imprimirReceita(detalhe) {
+  if (!detalhe) return;
+  const abertoAntes = detalhe.open;
+  detalhe.open = true;
+  detalhe.classList.add("imprimindo");
+  html.classList.add("imprimindo-receita");
+  const limpar = () => {
+    html.classList.remove("imprimindo-receita");
+    detalhe.classList.remove("imprimindo");
+    detalhe.open = abertoAntes;
+  };
+  addEventListener("afterprint", limpar, { once: true });
+  print();
+}
+document.querySelectorAll(".botao-imprimir").forEach((botao) => botao.addEventListener("click", () => imprimirReceita(botao.closest("details"))));
+
+// por último: os botões de pasta e de estante já existem quando um link com #id é aberto
+abrirDoLink();
