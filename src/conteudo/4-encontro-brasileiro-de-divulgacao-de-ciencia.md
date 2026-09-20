@@ -1,8 +1,6 @@
 ---
 title: 4º Encontro Brasileiro de Divulgação de Ciência
 pagina: divulgacao-cientifica
-ordem: null
-oculto: false
 ano: '2026'
 local: Instiuto Principia, São Paulo - SP
 resumo: teste
@@ -18,4 +16,6 @@ blocos:
 
       Partipei como ouvinte, avaliador de pôsteres e na oficina "[Ilustrando o Wikipédia - Ilustratona temática](https://outreachdashboard.wmflabs.org/courses/HumaniData/Ilustrando_a_Wikip%C3%A9dia_-_ilustratona_tem%C3%A1tica)". Ilustrei o verbete "[Biopirataria](https://pt.wikipedia.org/wiki/Biopirataria)".
     ao_lado: false
+ordem: null
+oculto: true
 ---
