@@ -15,10 +15,19 @@ layout: base.njk
 {%- set temPlantas = itens | algumComBloco("planta") %}
 {% if anos.length or comidas.length or tiposPlanta.length or temPlantas %}
 <div class="filtros" role="group" aria-label="Filtrar">
-  {{ grupo("ano", "ano", anos) }}
-  {{ grupo("comida", "tipo", comidas) }}
-  {{ grupo("planta", "tipo", tiposPlanta) }}
-  {% if temPlantas %}{{ grupoFixo("estado", "estado", [{ valor: "vivas", rotulo: "vivas" }, { valor: "no céu das plantas", rotulo: "no céu das plantas" }]) }}{% endif %}
+  {#- primeira linha: o tipo. As outras opções vêm abaixo, uma linha por vez. -#}
+  {% if comidas.length or tiposPlanta.length %}
+  <div class="filtros-linha">
+    {{ grupo("comida", "tipo", comidas) }}
+    {{ grupo("planta", "tipo", tiposPlanta) }}
+  </div>
+  {% endif %}
+  {% if temPlantas or anos.length %}
+  <div class="filtros-linha">
+    {% if temPlantas %}{{ grupoFixo("estado", "estado", [{ valor: "vivas", rotulo: "vivas" }, { valor: "no céu das plantas", rotulo: "no céu das plantas" }]) }}{% endif %}
+    {{ grupo("ano", "ano", anos) }}
+  </div>
+  {% endif %}
 </div>
 {% endif %}
 

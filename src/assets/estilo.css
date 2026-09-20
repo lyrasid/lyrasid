@@ -355,7 +355,9 @@ mark.vermelho { --grifo: 255, 130, 120; }
 
 
 /* ---------- estante (livros, filmes, séries, jogos) ---------- */
-.filtros { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem 1.6rem; max-width: 72rem; margin: 1.25rem 0 1.75rem; }
+/* A barra é uma pilha de linhas: o tipo em cima, os outros eixos embaixo. */
+.filtros { display: flex; flex-direction: column; gap: .55rem; max-width: 72rem; margin: 1.25rem 0 1.75rem; }
+.filtros-linha { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem 1.6rem; }
 .filtro-grupo { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .9rem; }
 .filtro-rotulo { font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; opacity: .4; }
 .filtros button {

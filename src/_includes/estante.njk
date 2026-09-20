@@ -10,17 +10,25 @@ layout: base.njk
 
 {% if collections.estante.length %}
 <div class="filtros" role="group" aria-label="Filtrar a estante">
-  {{ grupoFixo("tipo", "", [
-    { valor: "livro", rotulo: "livros" },
-    { valor: "filme", rotulo: "filmes" },
-    { valor: "serie", rotulo: "séries" },
-    { valor: "jogo", rotulo: "jogos" }
-  ]) }}
-  {{ grupo("ano", "ano", collections.estante | opcoesAnoPeriodo) }}
-  {{ grupo("mes", "mês", collections.estante | opcoesMesPeriodo) }}
-  <div class="filtro-grupo favoritos" data-grupo="favorito">
-    <button type="button" data-valor="sim" aria-pressed="false">★ favoritos</button>
+  <div class="filtros-linha">
+    {{ grupoFixo("tipo", "", [
+      { valor: "livro", rotulo: "livros" },
+      { valor: "filme", rotulo: "filmes" },
+      { valor: "serie", rotulo: "séries" },
+      { valor: "jogo", rotulo: "jogos" }
+    ]) }}
+    <div class="filtro-grupo favoritos" data-grupo="favorito">
+      <button type="button" data-valor="sim" aria-pressed="false">★ favoritos</button>
+    </div>
   </div>
+  {%- set anos = collections.estante | opcoesAnoPeriodo %}
+  {%- set meses = collections.estante | opcoesMesPeriodo %}
+  {% if anos.length or meses.length %}
+  <div class="filtros-linha">
+    {{ grupo("ano", "ano", anos) }}
+    {{ grupo("mes", "mês", meses) }}
+  </div>
+  {% endif %}
 </div>
 
 <ul class="estante">

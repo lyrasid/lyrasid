@@ -12,7 +12,7 @@ layout: base.njk
 {%- set anos = itens | opcoesAno %}
 {% if anos.length %}
 <div class="filtros" role="group" aria-label="Filtrar">
-  {{ grupo("ano", "ano", anos) }}
+  <div class="filtros-linha">{{ grupo("ano", "ano", anos) }}</div>
 </div>
 {% endif %}
 <ul class="galeria">
