@@ -1,11 +1,13 @@
 ---
-title: Série de exemplo
+title: Entrevista com o Vampiro
 tipo: serie
-autor: Nome do criador
-ano: 2023
-nota: 5
-data: 2026-09-01
-favorito: true
-capa: ''
+autor: Rolin Jones
+ano: '2022'
+nota: 3
+data: yyyy-09-Tu
+favorito: false
+capa: /midia/entrevista com o vampiro.webp
 comentario: Comentário provisório sobre a série.
+link: ''
+oculto: false
 ---
