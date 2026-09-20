@@ -420,9 +420,9 @@ mark.vermelho { --grifo: 255, 130, 120; }
 .folha::backdrop { background: rgba(17, 17, 17, .35); backdrop-filter: blur(5px); }
 .folha[open] { animation: surgir .22s ease-out; }
 .folha-fechar { position: absolute; top: .4rem; right: .7rem; padding: .2rem .5rem; font: inherit; font-size: 1.5rem; line-height: 1; color: var(--tinta); background: none; border: 0; cursor: pointer; }
-.ficha-estante { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 1.75rem; }
+.ficha-estante { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 1.75rem; align-items: start; }
 .ficha-estante:not(:has(.capa-grande)) { grid-template-columns: minmax(0, 1fr); }
-.ficha-estante .capa-grande { width: 100%; border: 2px solid var(--tinta); border-radius: 4px; }
+.ficha-estante .capa-grande { width: 100%; height: auto; border: 2px solid var(--tinta); border-radius: 4px; }
 .ficha-estante h2 { margin: .1rem 0 .2rem; font-size: 2rem; line-height: 1.1; }
 .ficha-estante .tipo { margin: 0; font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; opacity: .55; }
 .ficha-estante .autor { margin: 0; opacity: .75; }
