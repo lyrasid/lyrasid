@@ -9,5 +9,5 @@ favorito: true
 capa: /midia/oração para desaparecer.webp
 comentario: ''
 link: ''
-oculto: true
+oculto: false
 ---
