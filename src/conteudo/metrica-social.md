@@ -6,7 +6,7 @@ local: Internet
 resumo: Gestor de projetos
 links:
   - texto: Métrica.Social
-    url: Metrica.social
+    url: https://Metrica.social
 blocos:
   - type: texto
     texto: |-
