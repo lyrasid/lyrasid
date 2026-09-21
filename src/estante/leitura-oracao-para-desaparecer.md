@@ -1,5 +1,5 @@
 ---
-title: 'Leitura: Oração para desaparecer'
+title: Oração para desaparecer
 tipo: livro
 autor: Socorro Acioli
 ano: '2023'
