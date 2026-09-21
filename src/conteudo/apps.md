@@ -1,14 +1,15 @@
 ---
 title: Apps
 pagina: outros-projetos
-ordem: 2
 ano: 2023–2026
-links:
-  - texto: Google Play
-    url: https://play.google.com
+links: []
 blocos:
   - type: texto
     texto: |-
-      Aplicativos que fiz por conta própria, quase sempre para resolver um problema
-      pequeno e específico. Descrição provisória.
+      Aplicativos que desenvolvi, quase sempre para resolver um problema específico meu.
+
+      - [App financeiro para casais](https://app-financeiro-steel.vercel.app/login), famílias e parceiros de casa
+    ao_lado: false
+ordem: 2
+oculto: false
 ---
