@@ -43,5 +43,6 @@ As regras de cada pasta (endereço, modelo, ordem) ficam nos `*.11tydata.js` del
 - **Fontes e painel** são servidos pelo próprio site, sem CDN, com versão fixada pelo `package-lock.json`.
 - **Texturas de papel** (`npm run texturas`) são geradas de fotos de papel de verdade em `scripts/papel/`. Só precisa rodar de novo se as fotos mudarem. Usa o `sharp`.
 - **`npm run vendor`** reempacota as bibliotecas do editor visual para `src/assets/vendor/`. Só depois de mexer em [scripts/editor-libs.js](scripts/editor-libs.js).
+- **`npm run adicionar`** busca um título em APIs externas (Open Library, TMDB, RAWG) e cria o rascunho de um item da estante em `src/estante/`, com capa, autor e ano já preenchidos — nota, datas e comentário ficam para você completar depois, no painel. Livro não precisa de chave; filme/série/jogo precisam (veja [.env.example](.env.example)). Uso: `npm run adicionar -- livro "Dom Casmurro"` (sem argumentos, pergunta o tipo e o título).
 - **`/secreto/`** é piada interna, não cofre: a senha é conferida no navegador. Nada sigiloso ali.
 - **`/papeis/`** são páginas de teste dos fundos, fora do menu. Dá para apagar depois de escolher.
