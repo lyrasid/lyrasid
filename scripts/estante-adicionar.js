@@ -11,6 +11,7 @@
 import sharp from "sharp";
 import fs from "node:fs";
 import readline from "node:readline/promises";
+import { execFileSync } from "node:child_process";
 import { dump } from "js-yaml";
 
 const PASTA_ESTANTE = "src/estante";
@@ -70,11 +71,35 @@ async function main() {
   const capa = item.capaUrl ? await baixarCapa(item.capaUrl, slug) : "";
   if (item.capaUrl && !capa) console.log("Não consegui baixar a capa — adicione manualmente no painel.");
 
+  const caminhoArquivo = `${PASTA_ESTANTE}/${slug}.md`;
+  const caminhoCapa = capa ? `${PASTA_CAPAS}/${slug}.webp` : "";
   gravarArquivo(slug, { title: item.titulo, tipo, autor: item.autor || "", ano: item.ano || "", capa });
 
-  console.log(`\nCriado: ${PASTA_ESTANTE}/${slug}.md${capa ? ` + ${capa}` : ""}`);
+  console.log(`\nCriado: ${caminhoArquivo}${caminhoCapa ? ` + ${caminhoCapa}` : ""}`);
   console.log("Falta: nota, data e comentário — preencha no painel quando terminar a obra.");
-  console.log("E não esquecer: git add, commit e push. O painel e o site só mostram o que já estiver no GitHub.");
+
+  const enviar = (await perguntar("\nCommitar e enviar para o GitHub agora? (s/N) ")).trim().toLowerCase();
+  if (enviar === "s" || enviar === "sim") {
+    enviarParaGithub([caminhoArquivo, ...(caminhoCapa ? [caminhoCapa] : [])], `Create Item da estante "${item.titulo}"`);
+  } else {
+    console.log("Tudo bem — quando quiser publicar: git add, commit e push. O painel e o site só mostram o que já estiver no GitHub.");
+  }
+}
+
+// git add/commit/push dos arquivos criados. Se algo falhar (sem rede, sem `git` configurado...),
+// o arquivo já existe de qualquer forma — só avisa os comandos para rodar na mão.
+function enviarParaGithub(caminhos, mensagem) {
+  try {
+    execFileSync("git", ["add", ...caminhos], { stdio: "inherit" });
+    execFileSync("git", ["commit", "-m", mensagem], { stdio: "inherit" });
+    execFileSync("git", ["push"], { stdio: "inherit" });
+    console.log("\nEnviado! Já deve aparecer no painel e, em alguns minutos, no site publicado.");
+  } catch {
+    console.log("\nNão consegui enviar sozinho — o arquivo já foi criado, então rode manualmente:");
+    console.log(`  git add ${caminhos.join(" ")}`);
+    console.log(`  git commit -m "${mensagem}"`);
+    console.log("  git push");
+  }
 }
 
 async function escolherTipo() {
