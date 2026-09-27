@@ -229,14 +229,14 @@ if (barraFiltros) {
   // getAttribute e não dataset: os nomes dos eixos vêm de dados, sem virar camelCase
   const valoresDe = (item, eixo) => (item.getAttribute("data-f-" + eixo) || "").split("|");
   const botoesDe = (grupo) => [...grupo.querySelectorAll("button")];
-  // passa por todos os eixos, menos o que estiver sendo ignorado
-  const passa = (item, ignorado) =>
-    [...escolhas].every(([eixo, valor]) => eixo === ignorado || !valor || valoresDe(item, eixo).includes(valor));
+  // passa por todos os eixos, menos os que estiverem sendo ignorados
+  const passa = (item, ignorados = []) =>
+    [...escolhas].every(([eixo, valor]) => ignorados.includes(eixo) || !valor || valoresDe(item, eixo).includes(valor));
 
   function aplicarFiltros() {
     let visiveis = 0;
     for (const item of itens) {
-      const cabe = passa(item, null);
+      const cabe = passa(item);
       item.hidden = !cabe;
       if (!cabe) continue;
       // reinicia a entrada em cascata só para quem continua na tela
@@ -255,8 +255,11 @@ if (barraFiltros) {
     let limpou = false;
     for (const grupo of grupos) {
       const eixo = grupo.dataset.grupo;
-      // a escolha do próprio eixo não conta, senão só ela sobraria
-      const alcancaveis = itens.filter((i) => passa(i, eixo));
+      // a escolha do próprio eixo não conta, senão só ela sobraria. O ano também ignora o mês:
+      // o mês é de um ano só, e contá-lo prenderia a barra no ano dele (dá para trocar de ano
+      // direto; o mês do ano antigo cai logo abaixo)
+      const ignorados = eixo === "ano" ? [eixo, "mes"] : [eixo];
+      const alcancaveis = itens.filter((i) => passa(i, ignorados));
       let sobrou = false;
       for (const botao of botoesDe(grupo)) {
         if (!botao.dataset.valor) continue; // o "tudo" fica sempre
@@ -280,15 +283,42 @@ if (barraFiltros) {
     if (limpou) aplicarFiltros();
   }
 
+  const escolher = (grupo, valor) => {
+    escolhas.set(grupo.dataset.grupo, valor);
+    botoesDe(grupo).forEach((b) => b.setAttribute("aria-pressed", b.dataset.valor === valor));
+  };
+
   for (const grupo of grupos) {
     const eixo = grupo.dataset.grupo;
     for (const botao of botoesDe(grupo)) {
       botao.addEventListener("click", () => {
-        const valor = escolhas.get(eixo) === botao.dataset.valor ? "" : botao.dataset.valor;
-        escolhas.set(eixo, valor);
-        botoesDe(grupo).forEach((b) => b.setAttribute("aria-pressed", b.dataset.valor === valor));
+        escolher(grupo, escolhas.get(eixo) === botao.dataset.valor ? "" : botao.dataset.valor);
         aplicarFiltros();
       });
+    }
+  }
+
+  // A página já abre no período mais recente: o último ano e, onde há meses, o último mês
+  // dele. O "tudo" de cada eixo continua a um clique. Exceção: link direto para um item
+  // (#slug) de outro período — aí nada é pré-escolhido, senão ele sumiria.
+  const grupoAno = grupos.find((g) => g.dataset.grupo === "ano");
+  if (grupoAno) {
+    const grupoMes = grupos.find((g) => g.dataset.grupo === "mes");
+    const anoAtual = String(Math.max(...botoesDe(grupoAno).map((b) => Number(b.dataset.valor)).filter(Boolean)));
+    // os meses de um ano vêm em ordem de calendário: o último do ano é o mais recente
+    const mesAtual = grupoMes ? (botoesDe(grupoMes).filter((b) => b.dataset.ano === anoAtual).pop()?.dataset.valor || "") : "";
+    // item ainda sem data (recém-chegado, em andamento) é do agora: conta como o período mais recente
+    for (const item of itens) {
+      if (item.getAttribute("data-f-ano")) continue;
+      item.setAttribute("data-f-ano", anoAtual);
+      if (mesAtual) item.setAttribute("data-f-mes", mesAtual);
+    }
+    const alvo = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    const alvoFica = !alvo || !alvo.classList.contains("filtravel") ||
+      (valoresDe(alvo, "ano").includes(anoAtual) && (!mesAtual || valoresDe(alvo, "mes").includes(mesAtual)));
+    if (anoAtual !== "-Infinity" && alvoFica) {
+      escolher(grupoAno, anoAtual);
+      if (mesAtual) escolher(grupoMes, mesAtual);
     }
   }
   aplicarFiltros(); // já entra escondendo o que não leva a lugar nenhum
