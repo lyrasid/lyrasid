@@ -1,0 +1,8 @@
+---
+layout: base.njk
+title: Mudanças
+permalink: /mudancas/
+eleventyExcludeFromCollections: true
+---
+{#- O texto é o CHANGELOG.md da raiz, lido no eleventy.config.js (dado "mudancas"). -#}
+<div class="texto mudancas">{{ mudancas.texto | md | safe }}</div>

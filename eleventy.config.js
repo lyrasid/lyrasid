@@ -47,6 +47,14 @@ export default function (eleventyConfig) {
   // Endereço completo do site, para a prévia de compartilhamento (Open Graph). Na publicação vem do GitHub Pages.
   eleventyConfig.addGlobalData("urlSite", (process.env.SITE_URL || "https://lyrasid.github.io/lyrasid").replace(/\/$/, ""));
 
+  // Registro de mudanças: o CHANGELOG.md da raiz vira a página /mudancas/, e a versão do
+  // rodapé é o número do título mais recente ("## Versão 5 · 2026-09-27").
+  eleventyConfig.addWatchTarget("CHANGELOG.md");
+  eleventyConfig.addGlobalData("mudancas", () => {
+    const texto = fs.readFileSync("CHANGELOG.md", "utf8");
+    return { texto, versao: texto.match(/^## Versão (\d+)/m)?.[1] ?? "" };
+  });
+
   eleventyConfig.addCollection("paginas", (api) => visiveis(api, "src/paginas/*.md"));
   eleventyConfig.addCollection("textos", (api) => visiveis(api, "src/conteudo/*.md"));
   eleventyConfig.addCollection("estante", (api) =>

@@ -23,6 +23,14 @@ Três jeitos, todos gravando no mesmo lugar (arquivos `.md` no repositório):
 - **Edição pelo site** — o próprio site vira editor ([editar.js](src/assets/editar.js)). Pede um token do GitHub, que fica só na aba aberta.
 - **Direto no arquivo** — editar o Markdown e commitar.
 
+## Registro de mudanças
+
+O [CHANGELOG.md](CHANGELOG.md) guarda o que mudou no funcionamento e na aparência do site, do mais novo para o mais antigo. **Toda mudança no código ou no visual ganha uma entrada no mesmo commit:** uma linha curta, em linguagem do site (o que muda para quem visita ou edita), sob a data do dia. Se já existe uma entrada daquele dia, entra junto dela.
+
+Cada dia com mudanças é uma versão, com título `## Versão N · AAAA-MM-DD`: o primeiro dia novo ganha o número seguinte ao último. O site mostra esse arquivo em `/mudancas/`, e o pé de todas as páginas traz o link "dev versão N", com o número lido do título mais recente — basta escrever a entrada para a versão do site subir.
+
+Edições de conteúdo (textos, fotos, itens da estante) não entram: o histórico de commits já registra essas.
+
 ## Estrutura
 
 | Pasta | O que tem |

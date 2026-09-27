@@ -198,6 +198,12 @@ figcaption p { margin: .4rem 0 0; }
 
 .topo { position: fixed; right: 1rem; bottom: 1rem; font-size: 1.2rem; color: var(--tinta); text-decoration: none; }
 
+/* pé de todas as páginas: a versão leva ao registro de mudanças (/mudancas/) */
+.versao { position: absolute; z-index: 2; bottom: 1.5rem; left: clamp(1rem, 5vw, 4rem); font-size: .8rem; }
+.versao a { color: var(--tinta); opacity: .55; text-decoration: none; }
+.versao a:hover, .versao a:focus-visible { opacity: 1; text-decoration: underline; }
+@media print { .versao { display: none; } }
+
 /* ---------- adesivos ---------- */
 main { position: relative; }
 .adesivos { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
