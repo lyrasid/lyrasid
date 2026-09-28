@@ -1,4 +1,4 @@
-# Mudanças
+# Desenvolvimento do site
 
 O que mudou no site, do mais novo para o mais antigo. Só entram mudanças no funcionamento e na aparência; textos, fotos e itens da estante editados pelo painel ficam de fora (estão no [histórico de commits](https://github.com/lyrasid/lyrasid/commits/main)).
 
