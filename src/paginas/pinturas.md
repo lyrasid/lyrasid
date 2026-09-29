@@ -1,8 +1,9 @@
 ---
-title: Pinturas
+title: Desenhos&Pinturas
 ordem: 4
 tipo: galeria
 papel: liso
-oculto: true
+intro: ''
+oculto: false
 adesivos: []
 ---
