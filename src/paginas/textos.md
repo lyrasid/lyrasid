@@ -1,7 +1,9 @@
 ---
 title: Textos
 ordem: 2
+tipo: ''
 papel: pautado
-oculto: true
+intro: ''
+oculto: false
 adesivos: []
 ---
