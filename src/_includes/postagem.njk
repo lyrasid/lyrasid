@@ -1,0 +1,6 @@
+{#- Uma postagem da página Now: data por extenso e o texto, sem título (jeito de microblog).
+    O id é o nome do arquivo (a data), para dar link direto: /now/antes/#2026-09-28. -#}
+<article class="postagem" id="{{ post.fileSlug }}">
+  <p class="postagem-data"><time datetime="{{ post.data.data | dataIso }}">{{ post.data.data | dataBr }}</time></p>
+  <div class="texto">{{ post.data.texto | md | safe }}</div>
+</article>

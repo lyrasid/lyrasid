@@ -2,7 +2,13 @@
 
 O que mudou no site, do mais novo para o mais antigo. Só entram mudanças no funcionamento e na aparência; textos, fotos e itens da estante editados pelo painel ficam de fora (estão no [histórico de commits](https://github.com/lyrasid/lyrasid/commits/main)).
 
-## Versão 5 · 2026-09-27
+## Versão 0.6 · 29.09.2026
+
+- **Página Now** em `/now/`: "O que estou fazendo agora", com a postagem mais recente e a data da última atualização. As anteriores ficam em "O que andei fazendo" (`/now/antes/`), separadas por ano. Fora do menu, sem filtros; escreve-se pela coleção "Agora" do painel. Inspirada no [nownownow](https://nownownow.com/about).
+- **Painel:** os textos fixos da página Now (títulos, introduções, links e rodapé) e o registro de mudanças (`/mudancas/`) passam a ser editáveis em "Sobre mim e redes".
+- **Página de mudanças:** uma linha ondulada com o título "Versões" no meio separa a introdução das versões, e cada versão abre e fecha ao clicar no título (a mais recente já vem aberta). As versões passam a ser numeradas `0.x · dia.mês.ano`, e o link do pé vira só "versão 0.x".
+
+## Versão 0.5 · 27.09.2026
 
 - **Registro de mudanças no site:** esta página, em `/mudancas/`, com o link "dev versão" no pé de todas as páginas.
 - **Filtros abrem no período mais recente.** Estante, galerias e seções já entram no ano mais recente e, na estante, no último mês dele. O "tudo" continua a um clique.
@@ -11,11 +17,11 @@ O que mudou no site, do mais novo para o mais antigo. Só entram mudanças no fu
   - Dá para trocar de ano com um mês escolhido; o mês do ano antigo é solto sozinho.
 - **`npm run adicionar` pergunta, no final, se quer commitar e enviar** o rascunho para o GitHub na hora.
 
-## Versão 4 · 2026-09-26
+## Versão 0.4 · 26.09.2026
 
 - **`npm run adicionar`**: busca um título em APIs externas (Open Library, TMDB, RAWG) e cria o rascunho do item da estante com capa, autor e ano preenchidos.
 
-## Versão 3 · 2026-09-20
+## Versão 0.3 · 20.09.2026
 
 - **Painel com uma coleção por página**, cada uma só com os campos que usa. ([#11](https://github.com/lyrasid/lyrasid/pull/11))
 - **Filtros encadeados:** as opções acompanham o que sobrou na tela, e o mês carrega o ano junto. ([#10](https://github.com/lyrasid/lyrasid/pull/10))
@@ -36,7 +42,7 @@ O que mudou no site, do mais novo para o mais antigo. Só entram mudanças no fu
 - **Papel de fundo** por seção (quadriculado, pautado ou liso), com textura tirada de fotos de papel de verdade.
 - O gato mia com cinco cliques.
 
-## Versão 2 · 2026-09-14
+## Versão 0.2 · 14.09.2026
 
 - **Prévia de compartilhamento** (Open Graph), favicon, menu aberto no computador até a primeira vez que o visitante fecha, e fotos em tela cheia com setas, teclado e deslize.
 - **Segurança:** painel e bibliotecas do editor servidos pelo próprio site, sem CDN; fontes sem Google Fonts; token do editor guardado só na aba aberta; links externos em nova aba.
@@ -46,7 +52,7 @@ O que mudou no site, do mais novo para o mais antigo. Só entram mudanças no fu
 - **Blocos com tipo** (texto, imagem, vídeo, receita, planta), lado a lado em até 3 colunas.
 - **Imagens comprimidas** na publicação (WebP em três larguras).
 
-## Versão 1 · 2026-09-13
+## Versão 0.1 · 13.09.2026
 
 - **Primeira versão:** site com Eleventy, barra lateral em pastas, seções retráteis e painel Sveltia CMS apontando para este repositório.
 - Adesivos arrastáveis; páginas e textos editáveis pelo painel.

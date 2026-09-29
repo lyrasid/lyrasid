@@ -318,6 +318,25 @@ collections:
       - { name: link, label: Link (onde ver ou comprar), widget: string, required: false }
       - { name: oculto, label: Ocultar da estante, widget: boolean, default: false, required: false }
 
+  - name: now
+    label: Agora (/now)
+    label_singular: Postagem
+    icon: schedule
+    description: O que você está fazendo agora. A postagem mais recente aparece em /now; as outras vão para "O que andei fazendo" (/now/antes).
+    folder: src/now
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    identifier_field: data
+    slug: "{{year}}-{{month}}-{{day}}"
+    sortable_fields: [data]
+    summary: "{{data}}"
+    fields:
+      - { name: data, label: Data, widget: datetime, type: date, format: YYYY-MM-DD, default: "{{now}}", hint: "Aparece em cima da postagem e no \"Página atualizada em\"." }
+      - { name: texto, label: Texto, widget: markdown, hint: "Grife um trecho com ==assim==. Para trocar a cor: ==verde: assim== ou ==vermelho: assim==." }
+      - *oculto_texto
+
   - divider: true
     name: divisor-estrutura
 
@@ -417,6 +436,22 @@ collections:
             hint: "Toca sozinho, com som, assim que a senha certa é digitada. Envie um arquivo .mp4 ou .webm curto."
           - { name: titulo, label: Título da sala, widget: string, required: false }
           - { name: conteudo, label: O que aparece depois da senha, widget: markdown, required: false }
+      - name: pagina-now
+        label: Página Now (textos fixos)
+        file: src/_data/now.json
+        fields:
+          - { name: titulo, label: Título de /now, widget: string }
+          - { name: intro, label: Introdução de /now, widget: markdown, required: false, hint: "Aparece entre o \"Página atualizada em\" e a postagem. Pode ficar em branco." }
+          - { name: link_antes, label: Link para as postagens antigas, widget: string }
+          - { name: titulo_antes, label: Título de /now/antes, widget: string }
+          - { name: intro_antes, label: Introdução de /now/antes, widget: markdown, required: false }
+          - { name: link_voltar, label: Link de volta para /now, widget: string }
+          - { name: rodape, label: Linha do rodapé (nas duas páginas), widget: markdown, required: false }
+      - name: mudancas
+        label: Mudanças (/mudancas)
+        file: CHANGELOG.md
+        fields:
+          - { name: body, label: Registro de mudanças, widget: markdown, hint: "Cada dia com mudanças é uma versão: \"## Versão 0.x · DD.MM.AAAA\" (ex.: ## Versão 0.6 · 29.09.2026). O número do título mais recente vira o \"versão\" do pé das páginas." }
 
   # Lista de todos os textos, escondida do menu. Existe só para o campo "Ao clicar, abre o
   # texto" dos adesivos poder escolher qualquer texto do site, de qualquer página.

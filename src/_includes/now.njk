@@ -1,0 +1,8 @@
+---
+layout: base.njk
+---
+{#- Página Now (/now/) e o arquivo dela (/now/antes/). Ideia do nownownow.com.
+    Os textos fixos (títulos, links, rodapé) vêm de src/_data/now.json, editável no painel. -#}
+<h1>{{ title }}</h1>
+{{ content | safe }}
+{% if now.rodape %}<div class="now-inspiracao">{{ now.rodape | md | safe }}</div>{% endif %}

@@ -48,11 +48,20 @@ export default function (eleventyConfig) {
   eleventyConfig.addGlobalData("urlSite", (process.env.SITE_URL || "https://lyrasid.github.io/lyrasid").replace(/\/$/, ""));
 
   // Registro de mudanças: o CHANGELOG.md da raiz vira a página /mudancas/, e a versão do
-  // rodapé é o número do título mais recente ("## Versão 5 · 2026-09-27").
+  // rodapé é o número do título mais recente ("## Versão 0.5 · 27.09.2026").
+  // Cada "## " abre uma versão, que a página mostra recolhível; o que vem antes é a introdução.
   eleventyConfig.addWatchTarget("CHANGELOG.md");
   eleventyConfig.addGlobalData("mudancas", () => {
-    const texto = fs.readFileSync("CHANGELOG.md", "utf8");
-    return { texto, versao: texto.match(/^## Versão (\d+)/m)?.[1] ?? "" };
+    // o painel pode gravar um cabeçalho (--- ... ---) no topo do arquivo: fica fora da página
+    const texto = fs.readFileSync("CHANGELOG.md", "utf8").replace(/^---\r?\n(?:[\s\S]*?\r?\n)?---\r?\n/, "");
+    const [intro, ...partes] = texto.split(/^## /m);
+    const versoes = partes.map((parte) => {
+      const quebra = parte.indexOf("\n");
+      // na página o título das versões já diz "Versões": cada subtítulo fica só com número e data
+      const titulo = (quebra < 0 ? parte : parte.slice(0, quebra)).trim().replace(/^Versão\s+/, "");
+      return { titulo, corpo: quebra < 0 ? "" : parte.slice(quebra + 1) };
+    });
+    return { intro, versoes, versao: texto.match(/^## Versão ([\d.]+)/m)?.[1] ?? "" };
   });
 
   eleventyConfig.addCollection("paginas", (api) => visiveis(api, "src/paginas/*.md"));
@@ -117,6 +126,24 @@ export default function (eleventyConfig) {
     const data = dataValida(valor);
     return data ? formatoData.format(data) : "";
   });
+  eleventyConfig.addFilter("dataIso", (valor) => dataValida(valor)?.toISOString().slice(0, 10) ?? "");
+
+  // Página Now: postagens da mais nova para a mais antiga. Sem data não entra (não dá para ordenar).
+  eleventyConfig.addCollection("now", (api) =>
+    api
+      .getFilteredByGlob("src/now/*.md")
+      .filter((i) => !i.data.oculto && dataValida(i.data.data))
+      .sort((a, b) => dataValida(b.data.data) - dataValida(a.data.data) || b.fileSlug.localeCompare(a.fileSlug))
+  );
+  // /now/antes/: todas menos a mais recente (que fica em /now/), agrupadas por ano.
+  eleventyConfig.addFilter("antigasPorAno", (posts) =>
+    posts.slice(1).reduce((grupos, post) => {
+      const ano = String(dataValida(post.data.data).getUTCFullYear());
+      if (grupos.at(-1)?.ano === ano) grupos.at(-1).posts.push(post);
+      else grupos.push({ ano, posts: [post] });
+      return grupos;
+    }, [])
+  );
 
   // ---------- filtros das páginas ----------
   // As opções de cada filtro saem do próprio conteúdo: nada de lista fixa aqui.

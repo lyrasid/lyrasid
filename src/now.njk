@@ -1,0 +1,19 @@
+---
+layout: now.njk
+permalink: /now/
+papel: pautado
+eleventyExcludeFromCollections: true
+eleventyComputed:
+  title: "{{ now.titulo }}"
+---
+{%- set post = collections.now[0] %}
+{% if post %}
+<p class="now-atualizada">Página atualizada em {{ post.data.data | dataBr }}.</p>
+{% endif %}
+{% if now.intro %}<div class="texto intro">{{ now.intro | md | safe }}</div>{% endif %}
+{% if post %}
+{% include "postagem.njk" %}
+{% else %}
+<p class="vazio">Em breve.</p>
+{% endif %}
+{% if collections.now.length > 1 %}<p class="now-link"><a href="/now/antes/">{{ now.link_antes }}</a></p>{% endif %}

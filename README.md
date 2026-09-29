@@ -27,7 +27,7 @@ Três jeitos, todos gravando no mesmo lugar (arquivos `.md` no repositório):
 
 O [CHANGELOG.md](CHANGELOG.md) guarda o que mudou no funcionamento e na aparência do site, do mais novo para o mais antigo. **Toda mudança no código ou no visual ganha uma entrada no mesmo commit:** uma linha curta, em linguagem do site (o que muda para quem visita ou edita), sob a data do dia. Se já existe uma entrada daquele dia, entra junto dela.
 
-Cada dia com mudanças é uma versão, com título `## Versão N · AAAA-MM-DD`: o primeiro dia novo ganha o número seguinte ao último. O site mostra esse arquivo em `/mudancas/`, e o pé de todas as páginas traz o link "dev versão N", com o número lido do título mais recente — basta escrever a entrada para a versão do site subir.
+Cada dia com mudanças é uma versão, com título `## Versão 0.x · DD.MM.AAAA` (por exemplo `## Versão 0.6 · 29.09.2026`): o primeiro dia novo ganha o número seguinte ao último. O site mostra esse arquivo em `/mudancas/`, com cada versão recolhível, e o pé de todas as páginas traz o link "versão 0.x", com o número lido do título mais recente — basta escrever a entrada para a versão do site subir.
 
 Edições de conteúdo (textos, fotos, itens da estante) não entram: o histórico de commits já registra essas.
 
@@ -38,6 +38,7 @@ Edições de conteúdo (textos, fotos, itens da estante) não entram: o históri
 | `src/paginas/` | As páginas do menu. O `tipo` no frontmatter escolhe o modelo: seção (padrão), `galeria`, `estante` ou `pastas`. |
 | `src/conteudo/` | Os textos. Cada um pertence a uma página; em galerias vira página própria. |
 | `src/estante/` | Livros, filmes, séries e jogos, com nota. |
+| `src/now/` | Postagens da página Now (`/now/`), uma por arquivo, com data e texto. A mais recente fica em `/now/`; as outras, em `/now/antes/`. |
 | `src/midia/` | Imagens e vídeos enviados pelo painel. |
 | `src/_includes/` | Os modelos de página (Nunjucks). |
 | `src/assets/` | CSS, scripts do site e fontes. |

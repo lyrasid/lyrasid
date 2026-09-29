@@ -666,3 +666,28 @@ body.negado .console { color: #ff5f4e; animation: tremer .09s 4; }
   .imprimindo-receita [data-editar="lista"] li { position: relative; padding: .15rem 0 .15rem 1.7rem; break-inside: avoid; }
   .imprimindo-receita [data-editar="lista"] li::before { content: ""; position: absolute; left: 0; top: .45em; width: .9em; height: .9em; border: 1.5px solid #000; border-radius: 2px; }
 }
+
+/* ---------- página Now (/now/ e /now/antes/) ---------- */
+.now-atualizada { margin: -.75rem 0 2rem; font-style: italic; }
+.postagem { max-width: 44rem; margin-bottom: 2.5rem; }
+.postagem-data { margin: 0 0 .25rem; font-size: .85rem; font-weight: 700; }
+.postagem .texto > :first-child { margin-top: 0; }
+.now-ano { margin: 2.5rem 0 1rem; font-size: clamp(1.6rem, 3.2vw, 2.2rem); }
+.now-link { margin: 0 0 2rem; }
+.now-inspiracao { max-width: 44rem; margin: 3rem 0 0; padding-top: .5rem; font-size: .8rem; opacity: .6; border-top: 1px solid currentColor; }
+.now-inspiracao p { margin: 0; }
+
+/* ---------- página de mudanças (/mudancas/) ---------- */
+/* divisão entre a introdução e as versões: título no meio de uma linha ondulada, cinza e
+   discreta, dos dois lados (referências: o Basecamp e um aviso "Draft in Progress") */
+.divisao { display: flex; gap: 1.25rem; align-items: center; margin: 3rem 0 1.5rem; }
+.divisao::before, .divisao::after {
+  content: "";
+  flex: 1;
+  height: 10px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10' viewBox='0 0 24 10'%3E%3Cpath d='M0 5 Q6 1 12 5 T24 5' fill='none' stroke='%23b5b5b5' stroke-width='1.5'/%3E%3C/svg%3E") repeat-x center / 24px 10px;
+}
+.divisao span { font-family: "Schoolbell", cursive; font-size: clamp(1.6rem, 3.2vw, 2.2rem); line-height: 1; }
+.versao-mudancas > summary h2 { font-size: clamp(1.4rem, 2.6vw, 1.8rem); }
+.versao-mudancas > :not(summary) { margin-left: 1.6rem; }
+.versao-mudancas[open] { padding-bottom: 1rem; }

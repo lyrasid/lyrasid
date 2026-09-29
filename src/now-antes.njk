@@ -1,0 +1,17 @@
+---
+layout: now.njk
+permalink: /now/antes/
+papel: pautado
+eleventyExcludeFromCollections: true
+eleventyComputed:
+  title: "{{ now.titulo_antes }}"
+---
+{#- Todas as postagens menos a mais recente (que está em /now/), separadas por ano. -#}
+{% if now.intro_antes %}<div class="texto intro">{{ now.intro_antes | md | safe }}</div>{% endif %}
+<p class="now-link"><a href="/now/">{{ now.link_voltar }}</a></p>
+{% for grupo in collections.now | antigasPorAno %}
+<h2 class="now-ano">{{ grupo.ano }}</h2>
+{% for post in grupo.posts %}{% include "postagem.njk" %}{% endfor %}
+{% else %}
+<p class="vazio">Nada por aqui ainda.</p>
+{% endfor %}

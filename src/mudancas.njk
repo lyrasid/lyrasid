@@ -4,5 +4,15 @@ title: Mudanças
 permalink: /mudancas/
 eleventyExcludeFromCollections: true
 ---
-{#- O texto é o CHANGELOG.md da raiz, lido no eleventy.config.js (dado "mudancas"). -#}
-<div class="texto mudancas">{{ mudancas.texto | md | safe }}</div>
+{#- O texto é o CHANGELOG.md da raiz, lido no eleventy.config.js (dado "mudancas"):
+    a introdução, uma linha de divisão e as versões, cada uma recolhível (a mais recente aberta). -#}
+<div class="texto mudancas">
+  {{ mudancas.intro | md | safe }}
+  {% if mudancas.versoes.length %}<div class="divisao"><span>Versões</span></div>{% endif %}
+  {% for v in mudancas.versoes %}
+  <details class="versao-mudancas"{% if loop.first %} open{% endif %}>
+    <summary><h2>{{ v.titulo }}</h2></summary>
+    {{ v.corpo | md | safe }}
+  </details>
+  {% endfor %}
+</div>
