@@ -7,6 +7,7 @@ O que mudou no site, do mais novo para o mais antigo. Só entram mudanças no fu
 - **Página Now** em `/now/`: "O que estou fazendo agora", com a postagem mais recente e a data da última atualização. As anteriores ficam em "O que andei fazendo" (`/now/antes/`), separadas por ano. Fora do menu, sem filtros; escreve-se pela coleção "Agora" do painel. Inspirada no [nownownow](https://nownownow.com/about).
 - **Painel:** os textos fixos da página Now (títulos, introduções, links e rodapé) e o registro de mudanças (`/mudancas/`) passam a ser editáveis em "Sobre mim e redes".
 - **Página de mudanças:** uma linha ondulada com o título "Versões" no meio separa a introdução das versões, e cada versão abre e fecha ao clicar no título (a mais recente já vem aberta). As versões passam a ser numeradas `0.x · dia.mês.ano`, e o link do pé vira só "versão 0.x".
+- **Subtítulos menores** (os títulos que abrem e fecham) em todas as páginas: o fim de "Pint of Science 2026 - Barretos" alinha com o começo de "científica" no título. Diminuem junto a setinha ">" e o "Versões" da página de mudanças. As versões em `/mudancas/` passam a usar o mesmo tamanho dos outros subtítulos.
 
 ## Versão 0.5 · 27.09.2026
 
