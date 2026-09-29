@@ -160,7 +160,7 @@ summary { display: flex; gap: .6rem; align-items: baseline; list-style: none; cu
 summary::-webkit-details-marker { display: none; }
 summary::before { content: ">"; width: 1rem; font-family: "Schoolbell", cursive; font-size: 1.7rem; }
 details[open] > summary::before { content: "–"; }
-summary h2 { margin: .3rem 0; font-size: clamp(1.6rem, 3.2vw, 2.2rem); }
+summary h2 { margin: .3rem 0; font-size: clamp(1.4rem, 2.8vw, 1.9rem); }
 
 .item { padding: 0 0 2.5rem 1.6rem; }
 .texto { max-width: 44rem; }
