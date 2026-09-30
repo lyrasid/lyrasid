@@ -9,6 +9,7 @@ O que mudou no site, do mais novo para o mais antigo. Só entram mudanças no fu
 - **Página de mudanças:** uma linha ondulada com o título "Versões" no meio separa a introdução das versões, e cada versão abre e fecha ao clicar no título (a mais recente já vem aberta). As versões passam a ser numeradas `0.x · dia.mês.ano`, e o link do pé vira só "versão 0.x".
 - **Filtro de tipo na Divulgação científica:** podcasts, textos, sites, vídeos, eventos produzidos, participação em eventos e fui fonte, acima do filtro de ano. Os tipos são criados, renomeados e reordenados pelo painel, em "Sobre mim e redes → Tipos de divulgação"; cada item escolhe o seu no campo "Tipo". Tipo sem item não vira botão.
 - **Subtítulos menores** (os títulos que abrem e fecham) em todas as páginas: o fim de "Pint of Science 2026 - Barretos" alinha com o começo de "científica" no título. Diminuem junto a setinha ">" e o "Versões" da página de mudanças. As versões em `/mudancas/` passam a usar o mesmo tamanho dos outros subtítulos.
+- **O painel acompanha as páginas que ficaram visíveis:** coleção nova "Textos" para escrever na página Textos. As coleções de Pinturas e de Outros projetos passam a se chamar "Desenhos & Pinturas" e "Outros hobbys", como no menu.
 
 ## Versão 0.5 · 27.09.2026
 

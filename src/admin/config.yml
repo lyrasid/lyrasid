@@ -114,6 +114,28 @@ collections:
       - &ordem { name: ordem, label: Ordem, widget: number, value_type: int, required: false, hint: "Números menores aparecem primeiro." }
       - &oculto_texto { name: oculto, label: Ocultar do site, widget: boolean, default: false, required: false }
 
+  # "textos" já é o nome da lista escondida lá embaixo (usada pelos adesivos), por isso "pagina-textos".
+  - name: pagina-textos
+    label: Textos
+    label_singular: Texto
+    icon: edit_note
+    description: Textos que abrem e fecham na página Textos. O ano alimenta o filtro da página.
+    folder: src/conteudo
+    filter: { field: pagina, value: textos }
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    sortable_fields: [ordem, title]
+    fields:
+      - { name: title, label: Título, widget: string }
+      - { name: pagina, widget: hidden, default: textos }
+      - *ano_texto
+      - *links
+      - *blocos_comuns
+      - *ordem
+      - *oculto_texto
+
   - name: fotografias
     label: Fotografias
     label_singular: Ensaio
@@ -143,10 +165,10 @@ collections:
       - *oculto_texto
 
   - name: pinturas
-    label: Pinturas
-    label_singular: Pintura
+    label: Desenhos & Pinturas
+    label_singular: Desenho ou pintura
     icon: palette
-    description: Mesma estrutura das fotografias. A página está oculta no site até você mostrá-la em Páginas do menu.
+    description: Mesma estrutura das fotografias. Cada item vira uma página própria, com capa na grade.
     folder: src/conteudo
     filter: { field: pagina, value: pinturas }
     create: true
@@ -249,8 +271,8 @@ collections:
       - *oculto_texto
 
   - name: outros-projetos
-    label: Outros projetos
-    label_singular: Projeto
+    label: Outros hobbys
+    label_singular: Hobby
     icon: folder
     description: Abrem em janela de computador antigo. O ano aceita intervalo, para projeto que durou anos.
     folder: src/conteudo
