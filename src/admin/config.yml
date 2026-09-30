@@ -49,6 +49,16 @@ collections:
     fields:
       - { name: title, label: Título, widget: string }
       - { name: pagina, widget: hidden, default: divulgacao-cientifica }
+      - name: categoria
+        label: Tipo
+        widget: relation
+        collection: fixas
+        file: categorias
+        value_field: "divulgacao_cientifica.*.nome"
+        search_fields: ["divulgacao_cientifica.*.nome"]
+        display_fields: ["divulgacao_cientifica.*.nome"]
+        required: false
+        hint: "Alimenta o filtro de tipo da página. Para criar um tipo novo: Sobre mim e redes → Tipos de divulgação."
       - &ano_texto { name: ano, label: Ano, widget: string, required: false, hint: "Alimenta o filtro de ano da página. Aceita intervalo: 2023–2026." }
       - &local { name: local, label: Local, widget: string, required: false }
       - &resumo { name: resumo, label: Resumo (aparece no topo), widget: text, required: false }
@@ -447,6 +457,18 @@ collections:
           - { name: intro_antes, label: Introdução de /now/antes, widget: markdown, required: false }
           - { name: link_voltar, label: Link de volta para /now, widget: string }
           - { name: rodape, label: Linha do rodapé (nas duas páginas), widget: markdown, required: false }
+      - name: categorias
+        label: Tipos de divulgação (filtro)
+        file: src/_data/categorias.json
+        fields:
+          - name: divulgacao_cientifica
+            label: Tipos da Divulgação científica
+            label_singular: Tipo
+            widget: list
+            summary: "{{fields.nome}}"
+            hint: "Cada tipo vira um botão no filtro, nesta ordem. Tipo sem nenhum item não aparece. Ao renomear, troque também nos itens que já usavam o nome antigo."
+            fields:
+              - { name: nome, label: Nome, widget: string }
       - name: mudancas
         label: Mudanças (/mudancas)
         file: CHANGELOG.md

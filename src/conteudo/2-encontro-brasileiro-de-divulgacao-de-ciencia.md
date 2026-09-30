@@ -1,6 +1,7 @@
 ---
 title: 2º Encontro Brasileiro de Divulgação de Ciência
 pagina: divulgacao-cientifica
+categoria: participação em eventos
 ano: '2023'
 local: ''
 resumo: ''

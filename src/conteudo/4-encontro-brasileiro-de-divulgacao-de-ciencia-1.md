@@ -1,6 +1,7 @@
 ---
 title: 4º Encontro Brasileiro de Divulgação de Ciência
 pagina: divulgacao-cientifica
+categoria: participação em eventos
 ano: '2026'
 local: Instiuto Principia, São Paulo - SP
 resumo: ''

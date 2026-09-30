@@ -175,6 +175,11 @@ export default function (eleventyConfig) {
   // campo de lista fixa: tipo de comida, tipo de planta
   eleventyConfig.addFilter("campoDoItem", texto);
   eleventyConfig.addFilter("opcoesCampo", (itens, campo) => unicos(itens.map((i) => texto(i, campo))).sort((a, b) => a.localeCompare(b, "pt-BR")));
+  // categoria criada no painel (_data/categorias.json): segue a ordem de lá, só as que têm item
+  eleventyConfig.addFilter("opcoesCategoria", (itens, lista) => {
+    const presentes = new Set(itens.map((i) => texto(i, "categoria")));
+    return (lista || []).map((c) => c.nome).filter((nome) => presentes.has(nome));
+  });
   // estante: todo ano e todo mês que o item atravessou
   eleventyConfig.addFilter("anosDoPeriodo", (item) => unicos(periodo(item).map((m) => m.ano)).join("|"));
   // O mês anda junto do ano a que pertence: "2026-janeiro". Separados, o filtro deixava

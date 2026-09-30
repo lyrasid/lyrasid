@@ -1,11 +1,11 @@
 ---
 title: Serendip
 pagina: divulgacao-cientifica
+categoria: podcasts
 ordem: 3
-oculto: true
-links: []
-blocos:
-  - type: texto
-    texto: Texto provisório sobre o Serendip.
-    ao_lado: false
+oculto: false
+links:
+  - texto: Podcast Serendip (Deezer)
+    url: https://www.deezer.com/br/show/352742
+blocos: []
 ---

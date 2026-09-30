@@ -1,0 +1,11 @@
+{
+  "divulgacao_cientifica": [
+    { "nome": "podcasts" },
+    { "nome": "textos" },
+    { "nome": "sites" },
+    { "nome": "vídeos" },
+    { "nome": "eventos produzidos" },
+    { "nome": "participação em eventos" },
+    { "nome": "fui fonte" }
+  ]
+}

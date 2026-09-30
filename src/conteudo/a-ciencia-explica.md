@@ -1,11 +1,11 @@
 ---
 title: A Ciência Explica
 pagina: divulgacao-cientifica
+categoria: sites
 ordem: 1
-oculto: true
-links: []
-blocos:
-  - type: texto
-    texto: Texto provisório sobre o projeto A Ciência Explica.
-    ao_lado: false
+oculto: false
+links:
+  - texto: A Ciência Explica no Apoia.se
+    url: https://apoia.se/acienciaexplica
+blocos: []
 ---
