@@ -1,7 +1,7 @@
 ---
 title: Textos
 ordem: 2
-tipo: ''
+tipo: galeria
 papel: pautado
 intro: ''
 oculto: false
