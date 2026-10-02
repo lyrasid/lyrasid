@@ -18,10 +18,10 @@ blocos:
 
       #### Episódios especiais
 
-      - [https://open.spotify.com/episode/7rGQ6Qle60ySdskah2PT3B?si=ddtD5Z5_Sm64_FhbO72d_w](https://open.spotify.com/episode/7rGQ6Qle60ySdskah2PT3B?si=ddtD5Z5_Sm64_FhbO72d_w)
-      - [https://open.spotify.com/episode/6hra0Ur3dhCJv3cIypxMMH?si=6Wc8BbbdRBiklGygIg6m-g](https://open.spotify.com/episode/6hra0Ur3dhCJv3cIypxMMH?si=6Wc8BbbdRBiklGygIg6m-g)
-      - [https://open.spotify.com/episode/3IaaWZVNXo9V9ewTPWLvwM?si=e1YER3G1RwSi-3C-AW0XbQ](https://open.spotify.com/episode/3IaaWZVNXo9V9ewTPWLvwM?si=e1YER3G1RwSi-3C-AW0XbQ)
-      - [https://open.spotify.com/episode/5cyH7UTpY4Ecc5DYVbzKns?si=j3Pqv76CQFyWTCw0d_HaKg](https://open.spotify.com/episode/5cyH7UTpY4Ecc5DYVbzKns?si=j3Pqv76CQFyWTCw0d_HaKg)
+      - [O Magnetismo dos microrganismos](https://open.spotify.com/episode/7rGQ6Qle60ySdskah2PT3B?si=ddtD5Z5_Sm64_FhbO72d_w)
+      - [Os benefícios do Kombuchá](https://open.spotify.com/show/1hayp7uiB8wGBaolMLy128)
+      - [A saúde mental dos profissionais de saúde](https://open.spotify.com/episode/3IaaWZVNXo9V9ewTPWLvwM?si=e1YER3G1RwSi-3C-AW0XbQ&nd=1&dlsi=9c0de10e688f4497)
+      - [Microrganismos extremóflos: da Antártida ao espaço sideral](https://open.spotify.com/episode/5cyH7UTpY4Ecc5DYVbzKns?si=j3Pqv76CQFyWTCw0d_HaKg&nd=1&dlsi=3d704287e31f4b17)
 
       ##### Matérias de lançamento
 
