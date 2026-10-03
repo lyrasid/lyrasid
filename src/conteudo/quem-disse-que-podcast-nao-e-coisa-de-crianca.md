@@ -8,6 +8,8 @@ links:
 blocos:
   - type: texto
     texto: |-
+      > _Publicado originalmente na edição 381 da Revista Ciência Hoje, Na rede e no rádio - Outubro 2021_
+
       _“Histórias de Ninar para Pequenos Cientistas” é um podcast infantil que utiliza contação de histórias para falar de ciência._
 
       Inspirado no livro “Histórias de Ninar para Garotas Rebeldes”, que reúne 100 contos sobre mulheres com grande realizações, o podcast infantil “[Histórias de Ninar para Pequenos Cientistas](https://minasfazciencia.com.br/infantil/category/historias-de-ninar-para-pequenos-cientistas/)” explora um nicho de podcasts que possui suas particularidades. Até o momento, são poucos os podcasts que têm as crianças - e não seus pais - como público-alvo na podosfera brasileira, ainda mais podcasts de ciência. Apesar disso, o programa infantil traz episódios gostosos de ouvir e que prendem a atenção dos mais jovens e mais velhos também (eu mesmo já ouvi vários episódios).
@@ -26,23 +28,12 @@ blocos:
 
       Agora fica a pergunta: Quando será que teremos a terceira temporada do podcast?
 
-      **Sidcley Silva de Lyra**
+      --
 
-      Casa de Oswaldo Cruz/Fiocruz
-
-      Cofundador do site [A Ciência Explica](http://www.cienciaexplica.com.br/).
-
-      Publicado originalmente na Na rede e no rádio - Outubro 2021 [CH 381]
+      > Sidcley Silva de Lyra
+      > Casa de Oswaldo Cruz/Fiocruz
+      > Cofundador do site A Ciência Explica.
     ao_lado: false
-  - type: imagem
-    ao_lado: false
-    imagem: /midia/Imagem.webp
-    alt: ''
-    titulo: ''
-    ano: ''
-    descricao: ''
-    lado: direita
-    largura: 25
 ordem: null
 oculto: false
 ---
