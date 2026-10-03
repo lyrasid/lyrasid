@@ -14,7 +14,7 @@ blocos:
     ano: ''
     descricao: ''
     lado: direita
-    largura: 50
+    largura: 25
   - type: imagem
     ao_lado: false
     imagem: /midia/IMG_4313.webp
@@ -23,7 +23,7 @@ blocos:
     ano: ''
     descricao: ''
     lado: direita
-    largura: 50
+    largura: 25
 ordem: null
 oculto: false
 ---
