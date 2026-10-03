@@ -7,7 +7,7 @@ local: ''
 resumo: ''
 blocos:
   - type: imagem
-    ao_lado: false
+    ao_lado: true
     imagem: /midia/IMG_4315.webp
     alt: ''
     titulo: ''
@@ -16,7 +16,7 @@ blocos:
     lado: direita
     largura: 25
   - type: imagem
-    ao_lado: false
+    ao_lado: true
     imagem: /midia/IMG_4313.webp
     alt: ''
     titulo: ''
