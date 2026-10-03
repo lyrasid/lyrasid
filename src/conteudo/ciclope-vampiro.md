@@ -14,7 +14,7 @@ blocos:
     ano: ''
     descricao: ''
     lado: direita
-    largura: null
+    largura: 25
 ordem: null
 oculto: false
 ---
