@@ -3,7 +3,7 @@ title: Quem disse que podcast não é coisa de criança?!
 pagina: textos
 ano: '2021'
 links:
-  - texto: Texto original
+  - texto: Texto original - Ciência Hoje
     url: https://cienciahoje.org.br/artigo/estimulo-ao-habito-de-ouvir/
 blocos:
   - type: texto
