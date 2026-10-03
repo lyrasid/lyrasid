@@ -33,6 +33,8 @@ blocos:
       Cofundador do site [A Ciência Explica](http://www.cienciaexplica.com.br/).
 
       Publicado originalmente na Na rede e no rádio - Outubro 2021 [CH 381]
+
+      ![](/midia/Imagem.webp)
     ao_lado: false
 ordem: null
 oculto: false
