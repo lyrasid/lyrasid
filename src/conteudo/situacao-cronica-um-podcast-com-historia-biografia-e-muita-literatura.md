@@ -25,6 +25,8 @@ blocos:
       - **Sidcley Silva de Lyra**
       - Casa de Oswaldo Cruz/Fiocruz.
       - Cofundador do site [A Ciência Explica](http://www.cienciaexplica.com.br/) e podcaster no [Serendip - Cientistas (in)falíveis](https://twitter.com/PodcastSerendip).
+
+      _Publicado originalmente na edição 380 da Revista Ciência Hoje, Na rede e no rádio - Setembro 2021_
     ao_lado: false
 ordem: null
 oculto: false
