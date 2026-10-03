@@ -46,6 +46,7 @@ blocos:
 
       - **Sidcley Lyra** 
       - _Casa Oswaldo Cruz/Fiocruz_
+
       - **Fernanda Abreu**
       - _Instituto de Microbiologia Paulo de Góes_
       - _Universidade Federal do Rio de Janeiro_
