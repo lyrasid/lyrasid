@@ -28,9 +28,9 @@ blocos:
 
       --
 
-      Sidcley Silva de Lyra
-      Casa de Oswaldo Cruz/Fiocruz
-      Cofundador do site A Ciência Explica.
+      - Sidcley Silva de Lyra
+      - Casa de Oswaldo Cruz/Fiocruz
+      - Cofundador do site A Ciência Explica.
 
       _Publicado originalmente na edição 381 da Revista Ciência Hoje, Na rede e no rádio - Outubro 2021_
     ao_lado: false
