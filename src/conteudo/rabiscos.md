@@ -7,7 +7,7 @@ local: ''
 resumo: ''
 blocos:
   - type: imagem
-    ao_lado: true
+    ao_lado: false
     imagem: /midia/IMG_4315.webp
     alt: ''
     titulo: ''
