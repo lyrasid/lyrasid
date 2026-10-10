@@ -30,8 +30,6 @@ blocos:
       ##### Validade
 
       - Massa crua: até 3 dias na geladeira
-
-      ==**Receita original**==: [Chubby Vegan (adaptado)](https://chubbyvegan.net/panquecas-americanas-praticas-vegan/)
     ao_lado: false
   - type: imagem
     ao_lado: false
@@ -51,6 +49,9 @@ blocos:
     descricao: ''
     lado: direita
     largura: 50
+  - type: texto
+    texto: '> _Receita original:_ [_Chubby Vegan (adaptado)_](https://chubbyvegan.net/panquecas-americanas-praticas-vegan/)'
+    ao_lado: false
 ordem: null
 oculto: false
 ---
