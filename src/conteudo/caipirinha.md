@@ -14,7 +14,7 @@ blocos:
       - bastante gelo
   - type: texto
     texto: |-
-      ==Modo de preparo==:
+      # Modo de preparo
 
       1. Corte os limões ao meio e retire a parte branca (é isso que deixa amargo)
       2. Corte em formato de canoas e, depois, corte ao meio
