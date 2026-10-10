@@ -13,7 +13,7 @@ blocos:
   - type: texto
     texto: Comprei essa amoreira num domingo de 2025 em Barretos. Lary e eu tínhamos acabado de nos mudar e estávamos atrás de uma árvore frutífera para ter em casa.
   - type: imagem
-    imagem: /midia/amoreira.png
+    imagem: /midia/amoreira.webp
     alt: ''
     titulo: 1ª colheita
     ano: 08 de março de 2026

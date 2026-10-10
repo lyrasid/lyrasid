@@ -13,7 +13,7 @@ blocos:
     rega: regular
   - type: imagem
     ao_lado: false
-    imagem: /midia/IMG_2370.jpeg
+    imagem: /midia/IMG_2370.webp
     alt: ''
     titulo: Florescendo
     ano: 01 de fevereiro, 2026
