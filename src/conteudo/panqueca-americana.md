@@ -3,6 +3,18 @@ title: Panqueca americana
 pagina: receitas
 comida: doces
 blocos:
+  - type: receita
+    ao_lado: false
+    rendimento: 6 a 8 panquecas (depende da finura)
+    tempo: 15 min
+    ingredientes:
+      - 2 xícaras (chá) de farinha de trigo
+      - 3 colheres (sopa) de açúcar mascavo ou demerara
+      - 3 colheres (sopa) de fermento químico em pó
+      - 1 colher de (chá) de sal marinho
+      - 2 xícaras (chá) de leite
+      - 3 colheres (sopa) de óleo vegetal
+      - 2 colheres (sopa) de mel
   - type: texto
     texto: |-
       ## Modo de preparo
@@ -18,19 +30,9 @@ blocos:
       ##### Validade
 
       - Massa crua: até 3 dias na geladeira
+
+      ==**Receita original**==: [Chubby Vegan (adaptado)](https://chubbyvegan.net/panquecas-americanas-praticas-vegan/)
     ao_lado: false
-  - type: receita
-    ao_lado: false
-    rendimento: 6 a 8 panquecas (depende da finura)
-    tempo: 15 min
-    ingredientes:
-      - 2 xícaras (chá) de farinha de trigo
-      - 3 colheres (sopa) de açúcar mascavo ou demerara
-      - 3 colheres (sopa) de fermento químico em pó
-      - 1 colher de (chá) de sal marinho
-      - 2 xícaras (chá) de leite
-      - 3 colheres (sopa) de óleo vegetal
-      - 2 colheres (sopa) de mel
   - type: imagem
     ao_lado: false
     imagem: /midia/WhatsApp Image 2026-10-10 at 11.03.36.webp
@@ -39,7 +41,7 @@ blocos:
     ano: ''
     descricao: ''
     lado: direita
-    largura: null
+    largura: 50
   - type: imagem
     ao_lado: true
     imagem: /midia/WhatsApp Image 2026-10-10 at 11.04.31.webp
@@ -48,7 +50,7 @@ blocos:
     ano: ''
     descricao: ''
     lado: direita
-    largura: null
+    largura: 50
 ordem: null
 oculto: false
 ---
