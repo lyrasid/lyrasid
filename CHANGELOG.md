@@ -2,6 +2,18 @@
 
 O que mudou no site, do mais novo para o mais antigo. Só entram mudanças no funcionamento e na aparência; textos, fotos e itens da estante editados pelo painel ficam de fora (estão no [histórico de commits](https://github.com/lyrasid/lyrasid/commits/main)).
 
+## Versão 0.7 · 10.10.2026
+
+- **Imagens lado a lado sem buraco no meio:** com largura escolhida, a imagem leva a coluna junto, e a seguinte começa logo depois dela (antes, uma foto de 30% ficava num canto da metade da página). No celular continuam uma embaixo da outra.
+- **Página Esportes**, com filtro por esporte: jiujitsu, escalada, lira, tecido, acrobacia circense, trapézio e perna de pau. Os esportes ficam em "Sobre mim e redes → Tipos dos filtros"; o botão aparece quando o esporte tem algum item.
+- **Estante:** três tipos novos, cada um com seu botão no filtro: músicas e shows, podcasts e coisas da internet (vídeos e leituras de que gostei). Só aparece botão de tipo que tem item.
+  - **Pausas:** livro, série e jogo podem ter pausas ("parei em", "voltei em"). Mês inteiro de pausa sai do filtro de mês e ano, e a ficha mostra o período parado.
+  - **Re-lido, reassistido, re-jogado:** um campo para marcar quando não é a primeira vez. Aparece como ↻ na capa e na ficha.
+- **Receitas:** os tipos de comida passam a ser criados e renomeados pelo painel, em "Sobre mim e redes → Tipos dos filtros" (antes era uma lista fixa). Ao imprimir uma receita, fotos, vídeos e links ficam fora da folha.
+- **Textos** ganham o campo de capa, como Fotografias e Desenhos&Pinturas.
+- **"Estou fazendo agora"** no pé da barra lateral, levando para `/now/`.
+- **Painel:** ao segurar a alça de um bloco para reorganizar, todos os blocos daquela lista recolhem, e fica fácil achar onde soltar.
+
 ## Versão 0.6 · 29.09.2026
 
 - **Página Now** em `/now/`: "O que estou fazendo agora", com a postagem mais recente e a data da última atualização. As anteriores ficam em "O que andei fazendo" (`/now/antes/`), separadas por ano. Fora do menu, sem filtros; escreve-se pela coleção "Agora" do painel. Inspirada no [nownownow](https://nownownow.com/about).

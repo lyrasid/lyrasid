@@ -1,9 +1,10 @@
 ---
 layout: base.njk
 ---
-{#- Estante: livros, filmes, séries e jogos. A ficha completa abre sobre a página. -#}
+{#- Estante: livros, filmes, séries, jogos, músicas, podcasts e coisas da internet. A ficha completa abre sobre a página. -#}
 {% from "filtros.njk" import grupo %}
-{% set rotulos = { livro: "livro", filme: "filme", serie: "série", jogo: "jogo" } %}
+{% set rotulos = { livro: "livro", filme: "filme", serie: "série", jogo: "jogo", musica: "música ou show", podcast: "podcast", internet: "coisa da internet" } %}
+{% set deNovo = { livro: "re-lido", filme: "reassistido", serie: "reassistida", jogo: "re-jogado", musica: "ouvido de novo", podcast: "ouvido de novo", internet: "visto de novo" } %}
 <h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Título da página">{{ title }}</h1>
 
 {% if intro %}<div class="texto intro">{{ intro | md | safe }}</div>{% endif %}
@@ -11,12 +12,19 @@ layout: base.njk
 {% if collections.estante.length %}
 <div class="filtros" role="group" aria-label="Filtrar a estante">
   <div class="filtros-linha">
-    {{ grupo("tipo", "", [
+    {#- só os tipos que têm algum item viram botão, nesta ordem -#}
+    {%- set presentes = collections.estante | opcoesCampo("tipo") %}
+    {%- set tipos = [] %}
+    {%- for t in [
       { valor: "livro", rotulo: "livros" },
       { valor: "filme", rotulo: "filmes" },
       { valor: "serie", rotulo: "séries" },
-      { valor: "jogo", rotulo: "jogos" }
-    ]) }}
+      { valor: "jogo", rotulo: "jogos" },
+      { valor: "musica", rotulo: "músicas e shows" },
+      { valor: "podcast", rotulo: "podcasts" },
+      { valor: "internet", rotulo: "coisas da internet" }
+    ] %}{% if t.valor in presentes %}{% set tipos = (tipos.push(t), tipos) %}{% endif %}{% endfor %}
+    {{ grupo("tipo", "", tipos) }}
     <div class="filtro-grupo favoritos" data-grupo="favorito">
       <button type="button" data-valor="sim" aria-pressed="false">★ favoritos</button>
     </div>
@@ -43,6 +51,7 @@ layout: base.njk
       <span class="capa">
         {% if d.capa %}<img src="{{ d.capa }}" alt="">{% else %}<span class="sem-capa">{{ rotulos[d.tipo] or d.tipo }}</span>{% endif %}
         {% if d.favorito %}<span class="selo" aria-hidden="true">★</span>{% endif %}
+        {% if d.de_novo %}<span class="selo-de-novo" aria-label="{{ deNovo[d.tipo] or 'de novo' }}">↻</span>{% endif %}
       </span>
       <span class="titulo">{{ d.title }}</span>
       <span class="autor">{{ d.autor }}</span>
@@ -56,10 +65,12 @@ layout: base.njk
           <h2>{{ d.title }}</h2>
           <p class="autor">{{ d.autor }}{% if d.ano %} · {{ d.ano }}{% endif %}</p>
           <p class="nota" aria-label="Nota {{ d.nota | default(0) }} de 5">{{ d.nota | estrelas }}</p>
+          {% if d.de_novo %}<p class="de-novo">↻ {{ deNovo[d.tipo] or "de novo" }}</p>{% endif %}
           {#- livro, série e jogo levam tempo: quando há as duas datas, a ficha mostra o período -#}
           {% if d.inicio and d.data %}<p class="quando">de {{ d.inicio | dataBr }} a {{ d.data | dataBr }}</p>
           {% elif d.data %}<p class="quando">terminei em {{ d.data | dataBr }}</p>
           {% elif d.inicio %}<p class="quando">comecei em {{ d.inicio | dataBr }}</p>{% endif %}
+          {% for p in d.pausas %}{% if p.inicio and p.fim %}<p class="quando">pausa de {{ p.inicio | dataBr }} a {{ p.fim | dataBr }}</p>{% endif %}{% endfor %}
           {% if d.comentario %}<div class="texto">{{ d.comentario | md | safe }}</div>{% endif %}
           {% if d.link %}<p class="links"><a href="{{ d.link | urlSegura }}" target="_blank" rel="noopener">mais sobre ↗</a></p>{% endif %}
         </div>

@@ -9,7 +9,8 @@
 {% for item in linha %}
   {% set b = item.bloco %}
   {% set campo = "blocos." + item.indice %}
-  <div class="bloco" data-indice="{{ item.indice }}">
+  {#- lado a lado, a largura vale para o bloco inteiro: a coluna encolhe junto e não sobra buraco ao lado da imagem -#}
+  <div class="bloco" data-indice="{{ item.indice }}"{% if linha.length > 1 and b.largura and b.type in ["imagem", "video"] %} style="--largura: {{ b.largura }}%"{% endif %}>
 
   {% if b.type == "texto" %}
   <div class="texto{% if not b.texto %} campo-vazio{% endif %}" data-arquivo="{{ arquivo }}" data-campo="{{ campo }}.texto" data-rotulo="Texto">{% if b.texto %}{{ b.texto | md | safe }}{% endif %}</div>
