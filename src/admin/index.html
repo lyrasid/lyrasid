@@ -11,6 +11,18 @@
        Se o painel mudar esses nomes por dentro, só deixa de recolher; nada quebra. -->
   <style>
     .item-list:has(> .item-wrapper > .item:is([draggable="true"], .dragging)) > .item-wrapper > .item > .item-body { display: none; }
+
+    /* campo "Tamanho na página" (tamanho.js): uma folha desenhada por botão, com a foto do tamanho escolhido */
+    .tamanho-foto { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .tamanho-foto button { display: grid; justify-items: center; gap: 4px; padding: 6px 8px; font: inherit; font-size: 13px; color: inherit; background: none; border: 1px solid transparent; border-radius: 6px; cursor: pointer; opacity: .65; }
+    .tamanho-foto button:hover { opacity: 1; }
+    .tamanho-foto button[aria-checked="true"] { opacity: 1; border-color: currentColor; }
+    .tamanho-foto .folha { display: block; width: 52px; height: 36px; padding: 5px; border: 1.5px solid currentColor; border-radius: 3px; }
+    .tamanho-foto .foto { display: block; height: 100%; background: currentColor; border-radius: 1px; }
+    .tamanho-foto .personalizado { font-size: 13px; opacity: .8; }
+
+    /* aviso enquanto uma foto do iPhone é convertida (fotos-iphone.js) */
+    .aviso-iphone { position: fixed; left: 50%; bottom: 24px; z-index: 99999; padding: 10px 18px; color: #fff; background: #222; border-radius: 999px; transform: translateX(-50%); box-shadow: 0 6px 20px rgba(0, 0, 0, .35); }
   </style>
 </head>
 <body>
@@ -18,5 +30,9 @@
   <script src="sveltia-cms.js"></script>
   <!-- Botões de marca-texto na barra do editor: o Sveltia não permite acrescentá-los pela configuração. -->
   <script src="marca-texto.js"></script>
+  <!-- Campo "Tamanho na página" das imagens: botões em vez de digitar a porcentagem. -->
+  <script src="tamanho.js"></script>
+  <!-- Fotos do iPhone (HEIC) viram JPEG antes de o painel comprimir. -->
+  <script src="fotos-iphone.js"></script>
 </body>
 </html>

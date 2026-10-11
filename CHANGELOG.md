@@ -13,6 +13,8 @@ O que mudou no site, do mais novo para o mais antigo. Só entram mudanças no fu
 - **Textos** ganham o campo de capa, como Fotografias e Desenhos&Pinturas.
 - **"Estou fazendo agora"** no pé da barra lateral, levando para `/now/`.
 - **Painel:** ao segurar a alça de um bloco para reorganizar, todos os blocos daquela lista recolhem, e fica fácil achar onde soltar.
+- **Tamanho das imagens no painel:** o campo "Largura (%)" vira "Tamanho na página", com botões que mostram o tamanho numa folha desenhada: ¼, ⅓, ½, ⅔, ¾ ou inteira. Tamanhos antigos fora da lista aparecem como "personalizado" e continuam valendo. No modo de edição, a alça de largura encaixa nesses mesmos tamanhos quando passa perto.
+- **Fotos do iPhone (HEIC) no painel:** são convertidas para JPEG no momento do envio (escolhendo o arquivo ou arrastando), e o painel segue comprimindo para WebP como sempre. Antes, um HEIC ia sem converter e quebraria a publicação.
 
 ## Versão 0.6 · 29.09.2026
 

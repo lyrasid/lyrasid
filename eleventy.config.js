@@ -27,6 +27,8 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({
     ...Object.fromEntries(fontes.map((f) => [`node_modules/@fontsource/${f.split("-")[0]}/files/${f}-normal.woff2`, `assets/fontes/${f}-normal.woff2`])),
     "node_modules/@sveltia/cms/dist/sveltia-cms.js": "admin/sveltia-cms.js",
+    // conversor de fotos do iPhone (HEIC), baixado pelo painel só quando aparece um HEIC (ver admin/fotos-iphone.js)
+    "node_modules/heic-to/dist/csp/heic-to.min.js": "admin/heic-to.js",
   });
 
   // Prefixo do endereço (/lyrasid/) aplicado em todos os links e imagens do HTML final.

@@ -380,6 +380,8 @@ document.querySelectorAll(".midia[data-campo]").forEach((fig) => {
     let largura;
     const mover = (ev) => {
       largura = Math.max(20, Math.min(100, Math.round(((ev.clientX - inicio) / total) * 100)));
+      // perto de um dos tamanhos do painel (¼, ⅓, ½, ⅔, ¾, inteira), encaixa nele
+      largura = [25, 33, 50, 67, 75, 100].find((t) => Math.abs(t - largura) <= 3) ?? largura;
       fig.style.setProperty("--largura", largura + "%");
       bloco?.style.setProperty("--largura", largura + "%");
     };
