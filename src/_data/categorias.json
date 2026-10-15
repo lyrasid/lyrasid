@@ -7,5 +7,28 @@
     { "nome": "eventos produzidos" },
     { "nome": "participação em eventos" },
     { "nome": "fui fonte" }
+  ],
+  "receitas": [
+    { "nome": "massas" },
+    { "nome": "carnes" },
+    { "nome": "peixes" },
+    { "nome": "saladas" },
+    { "nome": "sopas" },
+    { "nome": "pães" },
+    { "nome": "bolos" },
+    { "nome": "doces" },
+    { "nome": "geleias" },
+    { "nome": "bebidas" },
+    { "nome": "molhos" },
+    { "nome": "salgados" }
+  ],
+  "esportes": [
+    { "nome": "jiujitsu" },
+    { "nome": "escalada" },
+    { "nome": "lira" },
+    { "nome": "tecido" },
+    { "nome": "acrobacia circense" },
+    { "nome": "trapézio" },
+    { "nome": "perna de pau" }
   ]
 }

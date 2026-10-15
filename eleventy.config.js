@@ -154,7 +154,19 @@ export default function (eleventyConfig) {
 
   // Um livro ou uma série ocupam vários meses: o período vai de "comecei" a "terminei".
   // Faltando um dos dois, vale só o outro; invertidos, a ordem se corrige sozinha.
+  // Mês inteiro dentro de uma pausa fica de fora; mês com algum dia ativo continua contando.
   const periodo = (item) => {
+    const pausas = (item.data.pausas || [])
+      .map((p) => [dataValida(p.inicio), dataValida(p.fim)])
+      .filter(([de, ate]) => de && ate)
+      .map(([de, ate]) => (de <= ate ? [de, ate] : [ate, de]));
+    const pausado = (passo) => {
+      const fimDoMes = new Date(Date.UTC(passo.getUTCFullYear(), passo.getUTCMonth() + 1, 0));
+      return pausas.some(([de, ate]) => de <= passo && ate >= fimDoMes);
+    };
+    return periodoCompleto(item).filter((m) => !pausado(m.passo));
+  };
+  const periodoCompleto = (item) => {
     const a = dataValida(item.data.inicio) || dataValida(item.data.data);
     const b = dataValida(item.data.data) || dataValida(item.data.inicio);
     if (!a) return [];
@@ -163,7 +175,7 @@ export default function (eleventyConfig) {
     const passo = new Date(Date.UTC(de.getUTCFullYear(), de.getUTCMonth(), 1));
     // ponytail: teto de 600 meses para um ano digitado errado não travar a publicação
     while (passo <= ate && meses.length < 600) {
-      meses.push({ ano: String(passo.getUTCFullYear()), mes: MESES[passo.getUTCMonth()] });
+      meses.push({ ano: String(passo.getUTCFullYear()), mes: MESES[passo.getUTCMonth()], passo: new Date(passo) });
       passo.setUTCMonth(passo.getUTCMonth() + 1);
     }
     return meses;

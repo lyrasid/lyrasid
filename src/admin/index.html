@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
   <title>Painel · Sidcley Lyra</title>
+  <!-- Ao segurar a alça de um item de lista (os blocos) para reorganizar, todos os itens
+       daquela lista recolhem e viram só o cabeçalho: fica fácil achar onde soltar.
+       O Sveltia marca o item segurado com draggable="true" e o arrastado com .dragging.
+       Se o painel mudar esses nomes por dentro, só deixa de recolher; nada quebra. -->
+  <style>
+    .item-list:has(> .item-wrapper > .item:is([draggable="true"], .dragging)) > .item-wrapper > .item > .item-body { display: none; }
+  </style>
 </head>
 <body>
   <!-- Sveltia CMS servido pelo próprio site, na versão fixada no package-lock.json (atualizar: npm update @sveltia/cms) -->

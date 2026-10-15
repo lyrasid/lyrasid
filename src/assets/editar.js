@@ -271,6 +271,12 @@ function reorganizar(container) {
     l.style.setProperty("--colunas", l.children.length);
     l.classList.toggle("colunas", l.children.length > 1);
   });
+  // lado a lado, a largura da imagem passa para o bloco (como em blocos.njk)
+  itens.forEach(({ el }) => {
+    const largura = el.querySelector(":scope > .midia")?.style.getPropertyValue("--largura");
+    if (largura && el.parentElement.classList.contains("colunas")) el.style.setProperty("--largura", largura);
+    else el.style.removeProperty("--largura");
+  });
   const lados = itens.map(({ el }) => !!el.previousElementSibling);
   itens.forEach(({ el }, i) => {
     el.dataset.indice = i;
@@ -368,11 +374,14 @@ document.querySelectorAll(".midia[data-campo]").forEach((fig) => {
     e.preventDefault();
     alca.setPointerCapture(e.pointerId);
     const inicio = fig.getBoundingClientRect().left;
-    const total = fig.parentElement.clientWidth;
+    // a conta é sobre a linha inteira: lado a lado, o próprio bloco encolhe junto com a imagem
+    const total = fig.closest(".linha").clientWidth;
+    const bloco = fig.closest(".colunas > .bloco");
     let largura;
     const mover = (ev) => {
       largura = Math.max(20, Math.min(100, Math.round(((ev.clientX - inicio) / total) * 100)));
       fig.style.setProperty("--largura", largura + "%");
+      bloco?.style.setProperty("--largura", largura + "%");
     };
     const soltar = () => {
       alca.removeEventListener("pointermove", mover);

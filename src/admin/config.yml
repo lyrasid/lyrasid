@@ -58,7 +58,7 @@ collections:
         search_fields: ["divulgacao_cientifica.*.nome"]
         display_fields: ["divulgacao_cientifica.*.nome"]
         required: false
-        hint: "Alimenta o filtro de tipo da página. Para criar um tipo novo: Sobre mim e redes → Tipos de divulgação."
+        hint: "Alimenta o filtro de tipo da página. Para criar um tipo novo: Sobre mim e redes → Tipos dos filtros."
       - &ano_texto { name: ano, label: Ano, widget: string, required: false, hint: "Alimenta o filtro de ano da página. Aceita intervalo: 2023–2026." }
       - &local { name: local, label: Local, widget: string, required: false }
       - &resumo { name: resumo, label: Resumo (aparece no topo), widget: text, required: false }
@@ -130,6 +130,12 @@ collections:
     fields:
       - { name: title, label: Título, widget: string }
       - { name: pagina, widget: hidden, default: textos }
+      - &capa
+        name: capa
+        label: Capa da galeria
+        widget: image
+        required: false
+        hint: "Vazio = usa a primeira imagem dos blocos."
       - *ano_texto
       - *links
       - *blocos_comuns
@@ -151,12 +157,7 @@ collections:
     fields:
       - { name: title, label: Título, widget: string }
       - { name: pagina, widget: hidden, default: fotografias }
-      - &capa
-        name: capa
-        label: Capa da galeria
-        widget: image
-        required: false
-        hint: "Vazio = usa a primeira imagem dos blocos."
+      - *capa
       - *ano_texto
       - *local
       - *resumo
@@ -246,10 +247,14 @@ collections:
       - { name: pagina, widget: hidden, default: receitas }
       - name: comida
         label: Tipo de comida
-        widget: select
+        widget: relation
+        collection: fixas
+        file: categorias
+        value_field: "receitas.*.nome"
+        search_fields: ["receitas.*.nome"]
+        display_fields: ["receitas.*.nome"]
         required: false
-        options: [massas, carnes, peixes, saladas, sopas, pães, bolos, doces, geleias, bebidas, molhos, salgados]
-        hint: "Alimenta o filtro da página. Peça para acrescentar tipos à lista."
+        hint: "Alimenta o filtro da página. Para criar um tipo novo: Sobre mim e redes → Tipos dos filtros."
       - name: blocos
         label: Blocos
         label_singular: Bloco
@@ -267,6 +272,39 @@ collections:
               - { name: tempo, label: Tempo de preparo, widget: string, required: false }
               - { name: ingredientes, label: Ingredientes (um por linha), widget: list, required: false, hint: "Aparecem no modo cozinha para riscar com um toque." }
               - *ao_lado
+      - *ordem
+      - *oculto_texto
+
+  - name: esportes
+    label: Esportes
+    label_singular: Treino ou modalidade
+    icon: sports_martial_arts
+    description: Jiu-jítsu, escalada, circo... O esporte e o ano alimentam os filtros da página.
+    folder: src/conteudo
+    filter: { field: pagina, value: esportes }
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    sortable_fields: [ordem, title]
+    fields:
+      - { name: title, label: Título, widget: string }
+      - { name: pagina, widget: hidden, default: esportes }
+      - name: categoria
+        label: Esporte
+        widget: relation
+        collection: fixas
+        file: categorias
+        value_field: "esportes.*.nome"
+        search_fields: ["esportes.*.nome"]
+        display_fields: ["esportes.*.nome"]
+        required: false
+        hint: "Alimenta o filtro da página. Para criar um esporte novo: Sobre mim e redes → Tipos dos filtros."
+      - *ano_texto
+      - *local
+      - *resumo
+      - *links
+      - *blocos_comuns
       - *ordem
       - *oculto_texto
 
@@ -318,7 +356,7 @@ collections:
     label: Estante
     label_singular: Item da estante
     icon: auto_stories
-    description: O que você leu, assistiu e jogou. Livro, série e jogo levam tempo — preencha também "Quando comecei" para o item entrar em todos os meses do período.
+    description: O que você leu, assistiu, jogou e ouviu, e as coisas da internet de que gostou. Livro, série e jogo levam tempo — preencha também "Quando comecei" para o item entrar em todos os meses do período.
     folder: src/estante
     create: true
     delete: true
@@ -339,11 +377,25 @@ collections:
           - { label: Filme, value: filme }
           - { label: Série, value: serie }
           - { label: Jogo, value: jogo }
-      - { name: autor, label: Autoria (autor, diretor, estúdio), widget: string, required: false }
+          - { label: Música ou show, value: musica }
+          - { label: Podcast, value: podcast }
+          - { label: Coisa da internet (vídeo, texto, site), value: internet }
+      - { name: autor, label: Autoria (autor, diretor, estúdio, artista, canal), widget: string, required: false }
       - { name: ano, label: Ano da obra, widget: string, required: false }
       - { name: nota, label: Nota (0 a 5), widget: number, value_type: int, min: 0, max: 5, required: false }
       - { name: inicio, label: Quando comecei, widget: datetime, type: date, format: YYYY-MM-DD, required: false, hint: "Livro, série e jogo levam tempo: com esta data o item entra em todos os meses do período." }
       - { name: data, label: Quando terminei, widget: datetime, type: date, format: YYYY-MM-DD, required: false }
+      - name: pausas
+        label: Pausas
+        label_singular: Pausa
+        widget: list
+        required: false
+        summary: "{{fields.inicio}} a {{fields.fim}}"
+        hint: "Livro, série e jogo: os meses inteiros de pausa saem do filtro de mês e ano."
+        fields:
+          - { name: inicio, label: Parei em, widget: datetime, type: date, format: YYYY-MM-DD }
+          - { name: fim, label: Voltei em, widget: datetime, type: date, format: YYYY-MM-DD }
+      - { name: de_novo, label: Re-lido, reassistido ou re-jogado, widget: boolean, default: false, required: false, hint: "Ligado quando não é a primeira vez." }
       - { name: favorito, label: Favorito, widget: boolean, default: false, required: false }
       - { name: capa, label: Capa, widget: image, required: false }
       - { name: comentario, label: Comentário, widget: markdown, required: false }
@@ -395,7 +447,7 @@ collections:
         options:
           - { label: "Caderno (subtítulos que abrem)", value: "" }
           - { label: "Galeria (capas que abrem em página própria)", value: galeria }
-          - { label: "Estante (livros, filmes, séries e jogos)", value: estante }
+          - { label: "Estante (livros, filmes, séries, jogos, músicas, podcasts e coisas da internet)", value: estante }
           - { label: "Pastas (abrem em janela de computador antigo)", value: pastas }
         hint: "Página nova precisa de uma coleção própria no painel para receber textos. Peça e eu crio."
       - &papel
@@ -480,7 +532,7 @@ collections:
           - { name: link_voltar, label: Link de volta para /now, widget: string }
           - { name: rodape, label: Linha do rodapé (nas duas páginas), widget: markdown, required: false }
       - name: categorias
-        label: Tipos de divulgação (filtro)
+        label: Tipos dos filtros
         file: src/_data/categorias.json
         fields:
           - name: divulgacao_cientifica
@@ -489,6 +541,22 @@ collections:
             widget: list
             summary: "{{fields.nome}}"
             hint: "Cada tipo vira um botão no filtro, nesta ordem. Tipo sem nenhum item não aparece. Ao renomear, troque também nos itens que já usavam o nome antigo."
+            fields:
+              - { name: nome, label: Nome, widget: string }
+          - name: receitas
+            label: Tipos de comida (Receitas)
+            label_singular: Tipo
+            widget: list
+            summary: "{{fields.nome}}"
+            hint: "Cada tipo vira um botão no filtro, em ordem alfabética. Tipo sem nenhuma receita não aparece. Ao renomear, troque também nas receitas que já usavam o nome antigo."
+            fields:
+              - { name: nome, label: Nome, widget: string }
+          - name: esportes
+            label: Esportes
+            label_singular: Esporte
+            widget: list
+            summary: "{{fields.nome}}"
+            hint: "Cada esporte vira um botão no filtro, nesta ordem. Esporte sem nenhum item não aparece. Ao renomear, troque também nos itens que já usavam o nome antigo."
             fields:
               - { name: nome, label: Nome, widget: string }
       - name: mudancas
