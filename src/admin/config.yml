@@ -96,7 +96,7 @@ collections:
               - &ano_midia { name: ano, label: Ano ou data, widget: string, required: false }
               - &descricao_midia { name: descricao, label: Descrição, widget: text, required: false }
               - &lado { name: lado, label: Legenda do lado, widget: select, required: false, default: direita, options: [{ label: Direita, value: direita }, { label: Esquerda, value: esquerda }] }
-              - &largura { name: largura, label: Largura (%), widget: number, value_type: int, min: 20, max: 100, required: false, hint: "Vazio = largura total. No celular é sempre 100%." }
+              - &largura { name: largura, label: Tamanho na página, widget: tamanho, required: false, hint: "Quanto da largura da página a imagem ocupa. Lado a lado, cada uma ocupa o seu pedaço. No celular é sempre a largura inteira." }
               - *ao_lado
           - &bloco_video
             name: video
