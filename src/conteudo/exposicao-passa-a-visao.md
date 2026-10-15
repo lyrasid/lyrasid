@@ -5,7 +5,7 @@ ordem: 1
 oculto: false
 ano: 2023
 local: Maré, Rio de Janeiro
-capa: /midia/01_Barbearia.JPG
+capa: /midia/01_Barbearia.webp
 resumo: Oito fotógrafos favelados e periféricos numa exposição na Lona da Maré.
 blocos:
   - type: texto
@@ -16,7 +16,7 @@ blocos:
 
       A exposição marcou a [reinauguração da Areninha Cultura Herbert Vianna](https://www.redesdamare.org.br/br/noticia/120/inauguracao-da-areninha-cultural-herbert-vianna-sera-no-dia-22-de-novembro), a Lona da Maré.
   - type: imagem
-    imagem: /midia/01_Barbearia.JPG
+    imagem: /midia/01_Barbearia.webp
     alt: ''
     titulo: 'Favela & Navalha: Um corte, uma identidade'
     ano: '2023'
@@ -26,7 +26,7 @@ blocos:
     lado: direita
     largura: null
   - type: imagem
-    imagem: /midia/02_Barbearia.JPG
+    imagem: /midia/02_Barbearia.webp
     alt: ''
     titulo: 'Favela & Navalha: Um corte, uma identidade'
     ano: '2023'
@@ -48,7 +48,7 @@ blocos:
 
       > Ao longo de três meses, o Lab de Imagem e Narrativa do Maré de Notícias provocou os fotógrafos a refletirem sobre as narrativas imagétivas das favelas e periferias, com exercícios e discussão que resultaram na exposição **"Passa a visão"** que nasce do desejo de falar destes territórios a partir do olhar de quem vive nelas.
   - type: imagem
-    imagem: /midia/IMG_9986.JPG
+    imagem: /midia/IMG_9986.webp
     alt: ''
     titulo: ''
     ano: ''
