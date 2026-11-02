@@ -37,14 +37,15 @@
     </nav>
 
     <div class="busca">
-      <input type="search" placeholder="Buscar…" aria-label="Buscar por título ou seção">
+      <input type="search" placeholder="Buscar no caderno…" aria-label="Buscar por título ou seção">
       <ul class="resultados"></ul>
     </div>
 
     <button class="alternar" type="button" aria-label="Abrir ou fechar o menu"><span class="seta">◀</span><span class="hamburguer">☰</span></button>
 
     <footer class="rodape-barra">
-      <a class="agora" href="/now/">Estou fazendo agora</a>
+      {%- set andamento = collections.estante | emAndamento(collections.paginas) %}
+      <p class="agora"><a href="/now/">Estou fazendo agora</a>{% if andamento %} → <a href="{{ andamento.url }}">{{ andamento.verbo }} {{ andamento.titulo }}</a>{% endif %}</p>
       <div class="redes">
       {% if site.instagram %}<a href="{{ site.instagram | urlSegura }}" aria-label="Instagram" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/></svg></a>{% endif %}
@@ -60,7 +61,11 @@
   <main data-papel="{{ papel | default('quadriculado') }}">
     {% include "adesivos.njk" %}
     {{ content | safe }}
-    {% if mudancas.versao %}<footer class="versao"><a href="/mudancas/">versão {{ mudancas.versao }}</a></footer>{% endif %}
+    {#- pé de todas as páginas: versão e o "caminho" da página, como numa pasta do computador antigo #}
+    <footer class="versao">
+      {% if mudancas.versao %}<span>versão {{ mudancas.versao }} · <a href="/mudancas/">mudanças</a></span>{% endif %}
+      <span class="caminho" aria-hidden="true">C:\LYRASID{{ page.url | replace("/", "\\") | upper }}</span>
+    </footer>
   </main>
 
   <a class="topo" href="#topo" aria-label="Voltar ao topo">▲</a>

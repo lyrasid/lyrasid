@@ -21,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # histórico completo: as novidades da página inicial usam a data do commit que criou cada arquivo
       - uses: actions/setup-node@v7
         with:
           node-version: 22

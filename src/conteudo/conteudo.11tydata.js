@@ -3,6 +3,8 @@
 const emGaleria = (data) => data.secoes?.[data.pagina]?.tipo === "galeria";
 
 export default {
+  // quando o texto entrou no site (commit que criou o arquivo): ordena as novidades da página inicial
+  date: "git Created",
   eleventyComputed: {
     layout: (data) => (emGaleria(data) ? "item-galeria.njk" : undefined),
     permalink: (data) => (emGaleria(data) && !data.oculto ? `/${data.pagina}/${data.page.fileSlug}/` : false),

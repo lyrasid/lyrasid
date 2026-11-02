@@ -29,7 +29,8 @@ const FASES = [
   ["bebê", 0, 2], ["criança", 3, 9], ["pré-adolescente", 10, 12], ["adolescente", 13, 17],
   ["jovem", 18, 24], ["jovem adulto", 25, 34], ["adulto", 35, 59], ["idoso", 60, ANOS - 1],
 ];
-const CORES = ["#f2a7a0", "#f4c27c", "#eedb6f", "#a8d47f", "#6cc3a3", "#72a9db", "#9d90d8", "#cf8fbd"];
+// cores da marca, do claro ao escuro (sem azul: azul só na pauta do caderno)
+const CORES = ["#e9c3c8", "#f3d98a", "#e8b04a", "#c9a27a", "#b7c08a", "#8e9a5b", "#b76e7e", "#8e3b4f"];
 const TIPOS = { estudo: "Estudo", trabalho: "Trabalho", moradia: "Onde morei" };
 
 const AGORA = indice(semanaDe(HOJE));

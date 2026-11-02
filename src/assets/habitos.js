@@ -172,9 +172,9 @@ function desenharGrafico() {
 
 // ---------- ano: média de cada parâmetro por mês ----------
 function cor(media) {
-  // 1 vermelho → 2 amarelo → 3 verde
-  const matiz = media <= 2 ? (media - 1) * 46 : 46 + (media - 2) * 84;
-  return `hsl(${matiz.toFixed(0)} 72% 62%)`;
+  // 1 ruim → 2 médio → 3 bom, misturando as cores da legenda (--v-r, --v-m, --v-b no estilo.css)
+  const [de, ate, passo] = media <= 2 ? ["--v-r", "--v-m", media - 1] : ["--v-m", "--v-b", media - 2];
+  return `color-mix(in oklab, var(${de}), var(${ate}) ${(passo * 100).toFixed(0)}%)`;
 }
 
 function desenharAno() {

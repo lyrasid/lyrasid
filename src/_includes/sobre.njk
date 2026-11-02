@@ -1,9 +1,62 @@
 ---
 layout: base.njk
 ---
+{#- Página inicial: apresentação, as pastas do caderno, as novidades e o post-it do "agora". -#}
 {% from "blocos.njk" import mostrarBlocos %}
-<article class="sobre">
-  {% if foto %}<img class="foto" src="{{ foto }}" alt="Foto de {{ title }}">{% endif %}
-  <h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Nome">{{ title }}</h1>
-  {{ mostrarBlocos(blocos, page.inputPath | arquivo) }}
-</article>
+<div class="inicio">
+  <header class="sobre">
+    {#- "boa noite · 02.11.2026": preenchido pelo site.js com a hora de quem visita #}
+    <p class="saudacao" aria-hidden="true"></p>
+    {% if foto %}<img class="foto" src="{{ foto }}" alt="Foto de {{ title }}">{% endif %}
+    <h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Nome">{{ title }}</h1>
+    {{ mostrarBlocos(blocos, page.inputPath | arquivo) }}
+  </header>
+
+  <section class="inicio-secao" aria-labelledby="abra-uma-pasta">
+    <h2 class="aba-titulo" id="abra-uma-pasta"><span class="aba-num">01</span>Abra uma pasta</h2>
+    <ul class="area-pastas inicio-pastas">
+      {%- for p in collections.paginas %}
+      {%- set n = p | itensDaPagina(collections.textos, collections.estante) %}
+      {%- if n %}
+      <li style="--atraso: {{ loop.index0 * 50 }}ms">
+        <a class="pasta" href="{{ p.url }}">
+          <img src="/midia/adesivos/pasta.svg" alt="" width="120" height="100">
+          {#- "Desenhos&Pinturas" quebra depois do & na pasta estreita #}
+          <span>{{ p.data.title | escape | replace("&amp;", "&amp;<wbr>") | safe }}</span>
+          <small>{{ n }} {% if n == 1 %}item{% else %}itens{% endif %}</small>
+        </a>
+      </li>
+      {%- endif %}
+      {%- endfor %}
+    </ul>
+  </section>
+
+  {%- set novas = collections.textos | novidades(collections.estante, collections.paginas, 5) %}
+  {%- set post = collections.now[0] %}
+  {% if novas.length or post %}
+  <div class="inicio-mesa">
+    {% if novas.length %}
+    <section class="janela-fixa novidades" aria-labelledby="novidades-titulo">
+      <div class="janela-barra">
+        <h2 class="janela-titulo" id="novidades-titulo">novidades.txt</h2>
+        <span class="janela-botoes" aria-hidden="true"><span>_</span><span>❐</span></span>
+      </div>
+      <ol class="janela-corpo">
+        {%- for n in novas %}
+        <li><time datetime="{{ n.data | dataIso }}">{{ n.data | dataBr }}</time><a href="{{ n.url }}">{{ n.titulo }}</a><small>{{ n.secao | lower }}</small></li>
+        {%- endfor %}
+      </ol>
+      <div class="janela-status"><span>{{ novas.length }} {% if novas.length == 1 %}item{% else %}itens{% endif %}</span><span class="online">1 online</span></div>
+    </section>
+    {% endif %}
+    {% if post %}
+    <div class="post-it">
+      <p class="post-it-data"><a href="/now/">agora</a> · <time datetime="{{ post.data.data | dataIso }}">{{ post.data.data | dataBr }}</time></p>
+      {#- no post-it vão só os tópicos principais; o resto fica em /now/ #}
+      <div class="texto">{{ post.data.texto | md | safe }}</div>
+      <p class="post-it-mais"><a href="/now/">ler tudo →</a></p>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>

@@ -22,6 +22,15 @@ document.addEventListener("click", (e) => {
 });
 document.addEventListener("keydown", (e) => e.key === "Escape" && celular.matches && fecharMenu());
 
+// página inicial: "boa noite · 02.11.2026", na hora de quem visita
+const saudacao = document.querySelector(".saudacao");
+if (saudacao) {
+  const agora = new Date();
+  const hora = agora.getHours();
+  const dia = (n) => String(n).padStart(2, "0");
+  saudacao.textContent = `${hora >= 5 && hora < 12 ? "bom dia" : hora >= 12 && hora < 18 ? "boa tarde" : "boa noite"} · ${dia(agora.getDate())}.${dia(agora.getMonth() + 1)}.${agora.getFullYear()}`;
+}
+
 // o link com #id abre o item: subtítulo que expande, pasta que vira janela ou ficha da estante
 const abrirDoLink = () => {
   const alvo = document.getElementById(decodeURIComponent(location.hash.slice(1)));
@@ -327,19 +336,30 @@ if (barraFiltros) {
 // ---------- estante: ficha de um item ----------
 const estante = document.querySelector(".estante");
 if (estante) {
-  // ficha completa do item, aberta sobre a página
+  // ficha completa do item, aberta numa janela sobre a página ("a_odisseia.txt")
   const folha = document.createElement("dialog");
-  folha.className = "folha";
-  folha.innerHTML = '<button type="button" class="folha-fechar" aria-label="Fechar">×</button><div class="folha-corpo"></div>';
+  folha.className = "janela janela-ficha";
+  folha.innerHTML = `<div class="janela-barra"><span class="janela-titulo"></span><span class="janela-botoes"><span aria-hidden="true">_</span><span aria-hidden="true">❐</span><button type="button" class="janela-fechar" aria-label="Fechar">✕</button></span></div>
+    <div class="janela-corpo"></div><div class="janela-status"><span></span><span></span></div>`;
   document.body.append(folha);
-  const corpoFolha = folha.querySelector(".folha-corpo");
-  folha.querySelector(".folha-fechar").addEventListener("click", () => folha.close());
+  const [titulo, corpo, status] = [".janela-titulo", ".janela-corpo", ".janela-status"].map((s) => folha.querySelector(s));
+  folha.querySelector(".janela-fechar").addEventListener("click", () => folha.close());
   folha.addEventListener("click", (e) => e.target === folha && folha.close());
 
   estante.addEventListener("click", (e) => {
     const carta = e.target.closest(".carta");
     if (!carta) return;
-    corpoFolha.replaceChildren(carta.parentElement.querySelector("template").content.cloneNode(true));
+    const ficha = carta.parentElement.querySelector("template").content.cloneNode(true);
+    const nome = ficha.querySelector("h2").textContent;
+    titulo.textContent = nome.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "") + ".txt";
+    folha.setAttribute("aria-label", nome);
+    const [tipo, quando] = status.children;
+    tipo.textContent = ficha.querySelector(".tipo").textContent;
+    // a primeira data vai para a barra de status (as pausas continuam no corpo)
+    const data = ficha.querySelector(".quando");
+    quando.textContent = data?.textContent ?? "";
+    data?.remove();
+    corpo.replaceChildren(ficha);
     folha.showModal();
   });
 }
