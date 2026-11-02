@@ -1,0 +1,37 @@
+---
+layout: base.njk
+---
+{#- A grade é montada pelo semanas.js no navegador: a semana atual depende do dia em que a página é aberta, não do dia da publicação. -#}
+<h1>{{ title }}</h1>
+{% if intro %}<div class="texto intro">{{ intro | md | safe }}</div>{% endif %}
+
+<div class="semanas">
+  <p class="semanas-resumo" aria-live="polite"></p>
+
+  <div class="semanas-controles">
+    <div class="semanas-cor" role="group" aria-label="Colorir por">
+      <button type="button" data-cor="fases" aria-pressed="true">Fases da vida</button>
+      <button type="button" data-cor="estudo" aria-pressed="false">Estudo</button>
+      <button type="button" data-cor="trabalho" aria-pressed="false">Trabalho</button>
+      <button type="button" data-cor="moradia" aria-pressed="false">Onde morei</button>
+    </div>
+    <div class="semanas-mundo">
+      <label><input type="checkbox" data-onde="mundo"> Mundo</label>
+      <label><input type="checkbox" data-onde="brasil"> Brasil</label>
+    </div>
+  </div>
+
+  <ul class="semanas-legenda"></ul>
+  <div class="semanas-grade"></div>
+
+  <h2 class="semanas-titulo-lista">Acontecimentos</h2>
+  <ol class="semanas-lista"></ol>
+</div>
+
+<aside class="semana-detalhe" hidden aria-live="polite">
+  <button type="button" class="fechar" aria-label="Fechar">×</button>
+  <div></div>
+</aside>
+
+<script type="application/json" id="dados-semanas">{{ { vida: semanas, mundo: mundo.acontecimentos } | dump | replace("<", "\\u003c") | safe }}</script>
+<script src="/assets/semanas.js?v={{ "/assets/semanas.js" | versao }}" type="module"></script>

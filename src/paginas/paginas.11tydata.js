@@ -4,6 +4,7 @@ const LAYOUTS = {
   estante: "estante.njk", // livros, filmes, séries e jogos
   pastas: "pastas.njk", // pastas de computador que abrem em janela
   habitos: "habitos.njk", // habit tracker: dados cifrados em dados/habitos.json, preenchidos pelo navegador
+  semanas: "semanas.njk", // a vida em semanas: dados em _data/semanas.json e _data/mundo.json
 };
 
 export default {

@@ -449,6 +449,8 @@ collections:
           - { label: "Galeria (capas que abrem em página própria)", value: galeria }
           - { label: "Estante (livros, filmes, séries, jogos, músicas, podcasts e coisas da internet)", value: estante }
           - { label: "Pastas (abrem em janela de computador antigo)", value: pastas }
+          - { label: "Hábitos (habit tracker com senha)", value: habitos }
+          - { label: "Vida em semanas", value: semanas }
         hint: "Página nova precisa de uma coleção própria no painel para receber textos. Peça e eu crio."
       - &papel
         name: papel
@@ -486,6 +488,56 @@ collections:
           - { name: largura, label: Largura (px), widget: number, value_type: int, min: 40, max: 600, default: 140, hint: "No celular aparece com 60% do tamanho." }
           - { name: rotacao, label: Rotação (graus), widget: number, value_type: int, min: -45, max: 45, default: 0 }
           - { name: oculto, label: Ocultar adesivo, widget: boolean, default: false, required: false, hint: "Some do site sem apagar: é só desligar isto para ele voltar." }
+
+  - name: vida-em-semanas
+    label: Vida em semanas
+    icon: calendar_view_week
+    description: A página /semanas/. Cada acontecimento vira uma marca na semana em que caiu; cada período colore as semanas entre o início e o fim.
+    files:
+      - name: minha-vida
+        label: Minha vida (acontecimentos e períodos)
+        file: src/_data/semanas.json
+        fields:
+          - { name: nascimento, label: Nascimento, widget: datetime, type: date, format: YYYY-MM-DD }
+          - { name: anos, label: Até que idade vai a grade, widget: number, value_type: int, min: 1, max: 120, default: 80 }
+          - name: acontecimentos
+            label: Acontecimentos
+            label_singular: Acontecimento
+            widget: list
+            required: false
+            summary: "{{fields.data}} · {{fields.titulo}}"
+            fields:
+              - &data_ac { name: data, label: Data, widget: datetime, type: date, format: YYYY-MM-DD }
+              - &fim_ac { name: fim, label: Até (opcional), widget: datetime, type: date, format: YYYY-MM-DD, required: false, hint: "Só para o que durou mais de uma semana: marca todas as semanas entre as duas datas." }
+              - &titulo_ac { name: titulo, label: Título, widget: string }
+              - &texto_ac { name: texto, label: Detalhe, widget: text, required: false, hint: "Aparece ao clicar na semana." }
+          - name: periodos
+            label: Períodos (estudo, trabalho, onde morei)
+            label_singular: Período
+            widget: list
+            required: false
+            summary: "{{fields.tipo}} · {{fields.nome}} · {{fields.inicio}}"
+            fields:
+              - { name: tipo, label: Tipo, widget: select, options: [{ label: Estudo, value: estudo }, { label: Trabalho, value: trabalho }, { label: Onde morei, value: moradia }] }
+              - { name: nome, label: Nome, widget: string, hint: "Ex.: Escola Municipal X, Fiocruz, Rio de Janeiro." }
+              - { name: inicio, label: Início, widget: datetime, type: date, format: YYYY-MM-DD }
+              - { name: fim, label: Fim, widget: datetime, type: date, format: YYYY-MM-DD, required: false, hint: "Em branco = até hoje." }
+      - name: mundo
+        label: Acontecimentos do mundo e do Brasil
+        file: src/_data/mundo.json
+        fields:
+          - name: acontecimentos
+            label: Acontecimentos
+            label_singular: Acontecimento
+            widget: list
+            summary: "{{fields.data}} · {{fields.titulo}}"
+            hint: "Aparecem na grade quando o visitante marca Mundo ou Brasil."
+            fields:
+              - *data_ac
+              - *fim_ac
+              - { name: onde, label: Onde, widget: select, options: [{ label: Mundo, value: mundo }, { label: Brasil, value: brasil }] }
+              - *titulo_ac
+              - *texto_ac
 
   - name: fixas
     label: Sobre mim e redes
