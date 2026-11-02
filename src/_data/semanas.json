@@ -2,7 +2,31 @@
   "nascimento": "1992-06-21",
   "anos": 80,
   "acontecimentos": [
-    { "data": "1992-06-21", "titulo": "Nasci" }
+    {
+      "data": "1992-06-21",
+      "fim": "",
+      "titulo": "Nasci",
+      "texto": ""
+    },
+    {
+      "data": "2025-05-14",
+      "fim": "",
+      "titulo": "Mudança para Barretos",
+      "texto": ""
+    },
+    {
+      "data": "2026-03-02",
+      "fim": "",
+      "titulo": "Primeira aula de Ukulele",
+      "texto": "Local: CEU da Artes - Barretos\ncom a professora Denise"
+    }
   ],
-  "periodos": []
+  "periodos": [
+    {
+      "tipo": "estudo",
+      "nome": "Mestrado em Divulgação da Ciência, Tecnologia e Saúde",
+      "inicio": "2018-08-01",
+      "fim": "2020-07-01"
+    }
+  ]
 }
