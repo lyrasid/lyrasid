@@ -705,3 +705,68 @@ body.negado .console { color: #ff5f4e; animation: tremer .09s 4; }
 .divisao span { font-family: "Schoolbell", cursive; font-size: clamp(1.2rem, 2.1vw, 1.4rem); line-height: 1; }
 .versao-mudancas > :not(summary) { margin-left: 1.6rem; }
 .versao-mudancas[open] { padding-bottom: 1rem; }
+
+/* ---------- hábitos (habit tracker) ---------- */
+.habitos { --v-b: #5cbf6b; --v-m: #f2c94c; --v-r: #e0605a; --v-vazio: #e4e2dc; }
+.habitos-senha { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; max-width: 30rem; }
+.habitos-senha[hidden] { display: none; }
+.habitos-senha label { flex-basis: 100%; }
+.habitos-senha input { flex: 1; min-width: 0; padding: .35rem .6rem; font: inherit; border: 1.5px solid var(--tinta); border-radius: .35rem; background: var(--papel); }
+.habitos-aviso { flex-basis: 100%; min-height: 1.6em; margin: 0; font-style: italic; }
+.habitos button { font: inherit; color: var(--tinta); }
+.habitos-senha button, .habitos-salvar { padding: .2rem .9rem; font: inherit; color: var(--tinta); background: var(--papel); border: 1.5px solid var(--tinta); border-radius: 999px; cursor: pointer; }
+.habitos-salvar:not(:disabled):hover, .habitos-senha button:hover { color: var(--papel); background: var(--tinta); }
+.habitos-salvar:disabled { opacity: .35; cursor: default; }
+
+.habitos-topo { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1.5rem; margin-bottom: 1rem; }
+.habitos-modo, .habitos-nav { display: flex; align-items: center; gap: .6rem; }
+.habitos-modo button { padding: .1rem 0; background: none; border: 0; border-bottom: 2px solid transparent; opacity: .5; cursor: pointer; }
+.habitos-modo button[aria-pressed="true"] { opacity: 1; border-bottom-color: var(--tinta); }
+.habitos-nav button { padding: 0 .3rem; background: none; border: 0; cursor: pointer; }
+.habitos-nav button:disabled { opacity: .2; cursor: default; }
+.habitos-periodo { min-width: 9.5rem; margin: 0; font-size: 1.5rem; text-align: center; }
+
+.habitos-legenda { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem 1rem; margin-bottom: 1rem; font-size: .9rem; }
+.habitos-legenda button { display: flex; align-items: center; gap: .4rem; padding: .1rem .5rem; background: none; border: 1.5px solid transparent; border-radius: 999px; cursor: pointer; }
+.habitos-legenda button[aria-pressed="true"] { border-color: var(--tinta); }
+.habitos-legenda i { width: .9rem; height: .9rem; border: 1px solid rgba(0, 0, 0, .35); }
+.habitos-dica { opacity: .5; }
+.habitos[data-modo="ano"] .habitos-legenda { display: none; }
+
+/* a grade rola de lado no celular; o nome do parâmetro fica parado à esquerda */
+.habitos-rolagem { max-width: 100%; overflow-x: auto; }
+.habitos-grade { border-collapse: collapse; font-size: .8rem; }
+.habitos-grade th { font-weight: 400; }
+.habitos-grade thead th { padding: 0 0 .2rem; line-height: 1.1; text-align: center; }
+.habitos-grade thead small { display: block; font-size: .65rem; opacity: .5; }
+.habitos-grade thead .hoje { font-weight: 700; color: var(--vinho); }
+.habitos-grade tbody th[scope="row"] { position: sticky; left: 0; z-index: 1; padding: 0 .6rem 0 0; white-space: nowrap; text-align: left; background: var(--papel-claro); }
+.habitos-grade .grupo th { position: sticky; left: 0; padding: .7rem 0 .15rem; font-size: .7rem; letter-spacing: .1em; text-align: left; text-transform: uppercase; opacity: .55; }
+.habitos-grade td { padding: 1px; }
+.habitos-grade td button { display: block; width: 1.15rem; height: 1.15rem; padding: 0; border: 1px solid rgba(0, 0, 0, .25); border-radius: 2px; cursor: pointer; touch-action: none; }
+.habitos-grade td.fds button { border-color: rgba(0, 0, 0, .5); }
+.habitos-grade td button:disabled { opacity: .3; cursor: default; }
+.habitos-grade td button:not(:disabled):hover { outline: 2px solid var(--tinta); outline-offset: 0; }
+.habitos .v-b { background: var(--v-b); }
+.habitos .v-m { background: var(--v-m); }
+.habitos .v-r { background: var(--v-r); }
+.habitos .v-\. { background: var(--v-vazio); }
+.habitos-grade .media { display: block; width: 2.4rem; padding: .1rem 0; font-size: .75rem; text-align: center; border-radius: 2px; }
+.habitos-grade .media.vazia { height: 1.4rem; background: var(--v-vazio); }
+
+.habitos-grafico { max-width: 44rem; margin: 2rem 0 0; }
+.habitos-grafico figcaption { display: flex; flex-wrap: wrap; gap: .2rem 1rem; margin-bottom: .4rem; font-size: .9rem; }
+.habitos-grafico figcaption span { display: inline-flex; align-items: center; gap: .3rem; }
+.habitos-grafico figcaption svg { width: 1.5rem; height: .5rem; }
+.habitos-grafico > svg { display: block; width: 100%; height: auto; font-size: 10px; }
+.habitos-grafico .eixo { stroke: rgba(0, 0, 0, .15); }
+.habitos-grafico text { fill: rgba(0, 0, 0, .55); }
+.habitos-grafico path, .habitos-grafico line { fill: none; stroke-width: 2; }
+.habitos-grafico .s0 { stroke: var(--vinho); fill: var(--vinho); }
+.habitos-grafico .s1 { stroke: #2f7fc1; fill: #2f7fc1; }
+.habitos-grafico .s2 { stroke: #d9822b; fill: #d9822b; }
+.habitos-grafico .s3 { stroke: #2a9d6a; fill: #2a9d6a; }
+.habitos-grafico .s1 path, .habitos-grafico .s1 line { stroke-dasharray: 6 3; }
+.habitos-grafico .s2 path, .habitos-grafico .s2 line { stroke-dasharray: 2 3; }
+.habitos-grafico .serie path, .habitos-grafico figcaption line { fill: none; }
+.habitos-status { min-height: 1.6em; font-style: italic; }

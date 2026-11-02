@@ -1,0 +1,42 @@
+---
+layout: base.njk
+---
+{#- Tudo aqui é montado pelo habitos.js depois da senha: os dados ficam cifrados em dados/habitos.json. -#}
+<h1>{{ title }}</h1>
+
+<form class="habitos-senha" autocomplete="off">
+  <label for="senha-habitos">Senha para ver os hábitos</label>
+  <input id="senha-habitos" type="password" autocomplete="current-password" required>
+  <button type="submit">Abrir</button>
+  <p class="habitos-aviso" aria-live="polite"></p>
+</form>
+
+<div class="habitos" hidden>
+  <div class="habitos-topo">
+    <div class="habitos-modo" role="group" aria-label="Visualização">
+      <button type="button" data-modo="mes" aria-pressed="true">Mês</button>
+      <button type="button" data-modo="ano" aria-pressed="false">Ano</button>
+    </div>
+    <div class="habitos-nav">
+      <button type="button" data-ir="-1" aria-label="Anterior">◀</button>
+      <h2 class="habitos-periodo" aria-live="polite"></h2>
+      <button type="button" data-ir="1" aria-label="Próximo">▶</button>
+    </div>
+    <button type="button" class="habitos-salvar" disabled>Salvar</button>
+  </div>
+
+  {#- a legenda também é o pincel: escolha uma cor e pinte; sem pincel, cada clique troca a cor -#}
+  <div class="habitos-legenda" role="group" aria-label="Pincel">
+    <button type="button" data-pincel="b" aria-pressed="false"><i class="v-b"></i>bom</button>
+    <button type="button" data-pincel="m" aria-pressed="false"><i class="v-m"></i>médio</button>
+    <button type="button" data-pincel="r" aria-pressed="false"><i class="v-r"></i>ruim</button>
+    <button type="button" data-pincel="." aria-pressed="false"><i class="v-."></i>não anotado</button>
+    <small class="habitos-dica">sem pincel, cada clique troca a cor</small>
+  </div>
+
+  <div class="habitos-rolagem"><table class="habitos-grade"></table></div>
+  <figure class="habitos-grafico"></figure>
+  <p class="habitos-status" aria-live="polite"></p>
+</div>
+
+<script src="/assets/habitos.js?v={{ "/assets/habitos.js" | versao }}" type="module"></script>

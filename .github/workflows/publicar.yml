@@ -3,6 +3,8 @@ name: Publicar no GitHub Pages
 on:
   push:
     branches: [main]
+    # salvar os hábitos não muda o site: a página lê dados/habitos.json direto do GitHub
+    paths-ignore: [dados/**]
   workflow_dispatch:
 
 permissions:
