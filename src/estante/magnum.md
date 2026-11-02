@@ -5,7 +5,9 @@ autor: Andrew Guest, Destin Daniel Cretton
 ano: '2026'
 nota: 4
 inicio: 2026-09-26
-data: ''
+data: 2026-10-02
+pausas: []
+de_novo: false
 favorito: false
 capa: /midia/estante/magnum.webp
 comentario: ''
