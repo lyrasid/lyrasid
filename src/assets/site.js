@@ -31,6 +31,18 @@ if (saudacao) {
   saudacao.textContent = `${hora >= 5 && hora < 12 ? "bom dia" : hora >= 12 && hora < 18 ? "boa tarde" : "boa noite"} · ${dia(agora.getDate())}.${dia(agora.getMonth() + 1)}.${agora.getFullYear()}`;
 }
 
+// página inicial: "N online", contado pelo worker em workers/online (escondido se ele não responder)
+const online = document.querySelector(".online");
+if (online) {
+  const id = crypto.randomUUID();
+  const avisar = () => document.hidden || fetch(online.dataset.url + "?id=" + id)
+    .then((r) => r.json())
+    .then(({ online: n }) => { online.textContent = n + " online"; online.hidden = false; })
+    .catch(() => { online.hidden = true; });
+  avisar();
+  setInterval(avisar, 30000);
+}
+
 // página inicial: novidades.txt minimiza (fica só a barra de título, no mesmo lugar) e maximiza (todas as entradas)
 const novidades = document.querySelector(".novidades");
 if (novidades) {

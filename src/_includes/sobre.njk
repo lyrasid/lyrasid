@@ -5,8 +5,8 @@ layout: base.njk
 {% from "blocos.njk" import mostrarBlocos %}
 <div class="inicio">
   <header class="sobre">
-    {#- "boa noite · 02.11.2026 · 1 online": a saudação é preenchida pelo site.js com a hora de quem visita #}
-    <p class="saudacao" aria-hidden="true"><span class="saudacao-texto"></span><span class="online">1 online</span></p>
+    {#- "boa noite · 02.11.2026 · 3 online": a saudação é preenchida pelo site.js com a hora de quem visita #}
+    <p class="saudacao" aria-hidden="true"><span class="saudacao-texto"></span>{% if site.online %}<span class="online" data-url="{{ site.online }}" hidden></span>{% endif %}</p>
     {% if foto %}<img class="foto" src="{{ foto }}" alt="Foto de {{ title }}">{% endif %}
     <h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Nome">{{ title }}</h1>
     {{ mostrarBlocos(blocos, page.inputPath | arquivo) }}
