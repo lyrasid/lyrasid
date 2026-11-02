@@ -770,3 +770,63 @@ body.negado .console { color: #ff5f4e; animation: tremer .09s 4; }
 .habitos-grafico .s2 path, .habitos-grafico .s2 line { stroke-dasharray: 2 3; }
 .habitos-grafico .serie path, .habitos-grafico figcaption line { fill: none; }
 .habitos-status { min-height: 1.6em; font-style: italic; }
+
+/* ---------- vida em semanas ---------- */
+.semanas { --futuro: #e4e2dc; --vivida: rgba(0, 0, 0, .2); max-width: 52rem; }
+.semanas-resumo { margin: 0 0 1.2rem; font-size: 1.05rem; }
+.semanas-controles { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 1.5rem; margin-bottom: .6rem; }
+.semanas-cor { display: flex; flex-wrap: wrap; gap: .3rem 1rem; }
+.semanas-cor button { padding: .1rem 0; font: inherit; font-size: .95rem; color: var(--tinta); background: none; border: 0; border-bottom: 2px solid transparent; opacity: .5; cursor: pointer; }
+.semanas-cor button[aria-pressed="true"] { opacity: 1; border-bottom-color: var(--tinta); }
+.semanas-mundo { display: flex; gap: 1rem; font-size: .95rem; }
+.semanas-mundo input { accent-color: var(--tinta); }
+
+.semanas-legenda { display: flex; flex-wrap: wrap; gap: .2rem 1rem; margin: 0 0 1.2rem; padding: 0; font-size: .8rem; list-style: none; }
+.semanas-legenda li { display: flex; align-items: center; gap: .35rem; }
+.semanas-legenda small { opacity: .55; }
+.semanas-legenda i { width: .7rem; height: .7rem; border-radius: 1px; background: var(--c, var(--vivida)); }
+.semanas-legenda i.futuro { background: var(--futuro); }
+.semanas-legenda .agora-legenda { background: var(--tinta); animation: piscar 1.2s steps(2, jump-none) infinite; }
+.semanas-legenda .eu-legenda { background: var(--futuro); box-shadow: inset 0 0 0 2.5px var(--tinta); }
+
+/* a grade: uma linha por ano de idade, um bloco por fase da vida */
+.semanas-fase { margin-bottom: .55rem; }
+.semanas-fase h3 { margin: 0 0 .15rem; font-size: .7rem; font-weight: 400; letter-spacing: .1em; text-transform: uppercase; opacity: .55; }
+.semanas-fase h3 small { letter-spacing: 0; text-transform: none; }
+.semanas-linha { position: relative; display: grid; grid-template-columns: repeat(52, 1fr); gap: 2px; margin-bottom: 2px; }
+.semanas-linha[data-idade]:not([data-idade=""])::before { content: attr(data-idade); position: absolute; right: 100%; padding-right: .4rem; font-size: .6rem; line-height: 1; opacity: .45; }
+.semanas-grade i { aspect-ratio: 1; background: var(--vivida); border-radius: 1px; cursor: pointer; }
+.semanas-grade i.cor { background: var(--c); }
+.semanas-grade i.futuro { background: var(--futuro); }
+.semanas-grade i.eu { box-shadow: inset 0 0 0 2px var(--tinta); }
+.semanas-grade i.mundo { box-shadow: inset 0 0 0 1.5px var(--vinho); }
+.semanas-grade i.faixa { box-shadow: inset 0 -2px 0 var(--vinho); }
+.semanas-grade i.agora { background: var(--tinta); animation: piscar 1.2s steps(2, jump-none) infinite; }
+.semanas-grade i:hover, .semanas-grade i.escolhida { outline: 2px solid var(--tinta); outline-offset: 1px; position: relative; z-index: 1; }
+@keyframes piscar { 50% { opacity: .15; } }
+@media (prefers-reduced-motion: reduce) { .semanas-grade i.agora, .semanas-legenda .agora-legenda { animation: none; outline: 2px solid var(--vinho); } }
+
+.semanas-titulo-lista { margin: 2.5rem 0 .5rem; font-size: 1.4rem; }
+.semanas-lista { margin: 0; padding: 0; list-style: none; columns: 2 18rem; column-gap: 2rem; }
+.semanas-lista li { break-inside: avoid; }
+.semanas-lista button { display: block; width: 100%; padding: .15rem 0; font: inherit; font-size: .9rem; color: var(--tinta); text-align: left; background: none; border: 0; cursor: pointer; }
+.semanas-lista button:hover { text-decoration: underline; }
+.semanas-lista time { display: inline-block; min-width: 6.5rem; font-size: .8rem; opacity: .55; }
+.semanas-lista .o-eu button { font-weight: 700; }
+
+/* detalhe da semana: cartão preso no pé da tela, para aparecer onde quer que se clique na grade */
+.semana-detalhe { position: fixed; right: 1rem; bottom: 1rem; z-index: 20; width: min(26rem, calc(100vw - 2rem)); max-height: 50vh; overflow-y: auto; padding: .9rem 2.4rem .9rem 1.1rem; font-size: .9rem; background: var(--papel); border: 2px solid var(--tinta); border-radius: .5rem; box-shadow: 4px 4px 0 rgba(0, 0, 0, .15); }
+.semana-detalhe[hidden] { display: none; }
+.semana-detalhe .fechar { position: absolute; top: .3rem; right: .5rem; padding: 0 .3rem; font: inherit; font-size: 1.4rem; line-height: 1; color: var(--tinta); background: none; border: 0; cursor: pointer; }
+.semana-detalhe p { margin: 0; }
+.semana-detalhe ul { margin: .6rem 0 0; padding-left: 1.1rem; }
+.semana-detalhe li { margin-bottom: .4rem; }
+.semana-detalhe small { font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; opacity: .55; }
+
+@media (max-width: 768px) {
+  .semanas-linha { gap: 1px; margin-bottom: 1px; }
+  .semanas-linha[data-idade]:not([data-idade=""])::before { display: none; }
+  .semanas-grade i { border-radius: 0; }
+  .semanas-grade i.eu { box-shadow: inset 0 0 0 1.5px var(--tinta); }
+  .semanas-grade i.mundo { box-shadow: inset 0 0 0 1px var(--vinho); }
+}
