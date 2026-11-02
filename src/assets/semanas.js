@@ -40,7 +40,7 @@ const pessoais = (vida.acontecimentos ?? []).filter((a) => a.data).map((a) => ({
 const todos = [...pessoais, ...mundo].filter((a) => dia(a.data) >= aniversario(0)).sort((a, b) => dia(a.data) - dia(b.data));
 function acontecimentosDa(i, mostrar) {
   const { inicio, fim } = periodoDa(i);
-  return todos.filter((a) => mostrar.has(a.onde) && dia(a.data) <= fim && dia(a.fim ?? a.data) >= inicio);
+  return todos.filter((a) => mostrar.has(a.onde) && dia(a.data) <= fim && dia(a.fim || a.data) >= inicio); // o painel grava "Até" vazio como ""
 }
 
 // ---------- estado ----------
@@ -55,15 +55,39 @@ function coresDasSemanas() {
   if (cor === "fases") {
     FASES.forEach(([, de, ate], f) => { for (let i = de * 52; i < Math.min((ate + 1) * 52, TOTAL); i++) cores[i] = CORES[f]; });
   } else {
-    periodos().forEach((p) => {
-      const de = indice(semanaDe(Math.max(dia(p.inicio), aniversario(0))));
-      const ate = p.fim ? indice(semanaDe(dia(p.fim))) : AGORA;
-      for (let i = de; i <= Math.min(ate, TOTAL - 1); i++) cores[i] = p.cor;
-    });
+    periodos().forEach((p) => { for (let i = p.de; i <= p.ate; i++) cores[i] = p.cor; });
   }
   return cores;
 }
-const periodos = () => (vida.periodos ?? []).filter((p) => p.tipo === cor && p.inicio).map((p, n) => ({ ...p, cor: CORES[(n * 3) % CORES.length] }));
+// períodos da aba, em semanas, na ordem do tempo; fim em branco = até esta semana
+const periodos = () => (vida.periodos ?? [])
+  .filter((p) => p.tipo === cor && p.inicio)
+  .map((p) => ({ ...p, de: indice(semanaDe(Math.max(dia(p.inicio), aniversario(0)))), ate: Math.min(p.fim ? indice(semanaDe(dia(p.fim))) : AGORA, TOTAL - 1) }))
+  .sort((a, b) => a.de - b.de)
+  .map((p, n) => ({ ...p, cor: CORES[(n * 3) % CORES.length] }));
+
+const mesAno = (t) => new Date(t).toLocaleDateString("pt-BR", { month: "short", year: "numeric", timeZone: "UTC" });
+const intervalo = (de, ate) => `${mesAno(periodoDa(de).inicio)} – ${mesAno(periodoDa(ate).fim)}`;
+
+// Blocos da grade. Nas fases, um por fase (em anos inteiros). Nas outras abas, um por período,
+// cortado na semana exata, com o tempo entre períodos e o que ainda vem em blocos sem nome.
+function blocos() {
+  if (cor === "fases") return FASES.map(([nome, de, ate]) => ({ titulo: `${nome} <small>${de}–${ate} anos</small>`, de: de * 52, ate: Math.min((ate + 1) * 52, TOTAL) - 1 }));
+  const lista = [];
+  const intervaloSemNome = (de, ate) => de <= ate && lista.push({ titulo: `<small>${intervalo(de, ate)}</small>`, de, ate });
+  let cursor = 0;
+  for (const p of periodos()) {
+    const de = Math.max(p.de, cursor); // período que começa dentro de outro continua do fim do anterior
+    if (de > p.ate) continue;
+    intervaloSemNome(cursor, de - 1);
+    lista.push({ titulo: `${esc(p.nome)} <small>${mesAno(dia(p.inicio))} – ${p.fim ? mesAno(dia(p.fim)) : "hoje"}</small>`, de, ate: p.ate });
+    cursor = p.ate + 1;
+  }
+  intervaloSemNome(cursor, Math.min(AGORA - 1, TOTAL - 1));
+  cursor = Math.max(cursor, AGORA);
+  if (cursor < TOTAL) lista.push({ titulo: "daqui para a frente", de: cursor, ate: TOTAL - 1 });
+  return lista;
+}
 
 // ---------- desenho ----------
 function desenharGrade() {
@@ -75,12 +99,14 @@ function desenharGrade() {
     for (let i = de; i <= ate && i < TOTAL; i++) if (marcadas.get(i) !== "eu") marcadas.set(i, a.onde === "eu" ? "eu" : i === de ? "mundo" : "faixa");
   });
   let html = "";
-  for (const [nome, de, ate] of FASES) {
-    html += `<section class="semanas-fase"><h3>${nome} <small>${de}–${ate} anos</small></h3>`;
-    for (let idade = de; idade <= ate; idade++) {
-      html += `<div class="semanas-linha" data-idade="${idade % 5 === 0 ? idade : ""}">`;
+  for (const { titulo, de, ate } of blocos()) {
+    html += `<section class="semanas-fase"><h3>${titulo}</h3>`;
+    for (let idade = Math.floor(de / 52); idade <= Math.floor(ate / 52); idade++) {
+      // a idade aparece só na linha que começa dentro deste bloco
+      html += `<div class="semanas-linha" data-idade="${idade % 5 === 0 && idade * 52 >= de ? idade : ""}">`;
       for (let s = 0; s < 52; s++) {
         const i = idade * 52 + s;
+        if (i < de || i > ate) { html += "<b></b>"; continue; } // semana de outro bloco: espaço vazio, mantém a coluna
         const vivida = i < AGORA;
         const classes = [i === AGORA && "agora", vivida && cores[i] && "cor", !vivida && i !== AGORA && "futuro", marcadas.get(i)].filter(Boolean).join(" ");
         const estilo = (vivida || i === AGORA) && cores[i] ? ` style="--c:${cores[i]}"` : "";
@@ -96,14 +122,13 @@ function desenharGrade() {
 function desenharLegenda() {
   const itens = cor === "fases"
     ? FASES.map(([nome], f) => `<li><i style="--c:${CORES[f]}"></i>${nome}</li>`)
-    : periodos().map((p) => `<li><i style="--c:${p.cor}"></i>${esc(p.nome)} <small>${ano(p.inicio)}–${p.fim ? ano(p.fim) : "hoje"}</small></li>`);
+    : periodos().map((p) => `<li><i style="--c:${p.cor}"></i>${esc(p.nome)}</li>`); // as datas já estão no título de cada bloco
   if (!itens.length) itens.push(`<li class="vazio">Nada em "${TIPOS[cor]}" ainda. Os períodos entram pelo painel, em "Vida em semanas".</li>`);
   itens.push(`<li><i class="futuro"></i>ainda não vivido</li>`, `<li><i class="agora-legenda"></i>esta semana</li>`);
   if (mostrar.size > 1 || pessoais.length) itens.push(`<li><i class="eu-legenda"></i>acontecimento</li>`);
   $(".semanas-legenda").innerHTML = itens.join("");
 }
 
-const ano = (iso) => iso.slice(0, 4);
 const dataBR = (t, comAno = true) => new Date(t).toLocaleDateString("pt-BR", { day: "numeric", month: "short", ...(comAno && { year: "numeric" }), timeZone: "UTC" });
 const num = (n) => n.toLocaleString("pt-BR");
 
