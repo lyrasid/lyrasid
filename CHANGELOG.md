@@ -11,6 +11,7 @@ O que mudou no site, do mais novo para o mais antigo. Só entram mudanças no fu
 - **Página Vida em semanas:** a vida inteira, até os 80 anos, numa grade de 52 semanas por linha, agrupada por fase (bebê, criança, pré-adolescente, adolescente, jovem, jovem adulto, adulto, idoso). Semanas vividas coloridas, não vividas em cinza e a semana atual piscando. No topo, semanas e dias vividos, idade e quanto falta.
   - **Colorir por** fases da vida, estudo, trabalho ou onde morei. Os períodos entram pelo painel, na coleção nova "Vida em semanas".
   - **Acontecimentos:** os seus, escritos no painel, viram marca na semana; clicar numa semana mostra as datas e o que aconteceu nela. Marcando Mundo ou Brasil, entra uma base de acontecimentos (Plano Real, Copas, eleições, pandemia de covid-19…), também editável no painel. Embaixo, a lista de todos leva até a semana.
+  - **Blocos por período:** nas abas Estudo, Trabalho e Onde morei, a grade se divide nos períodos cadastrados (com nome e datas), cortados na semana exata em que começam e terminam; o tempo entre eles e o que ainda vem ficam em blocos sem nome. Em Fases da vida, continua um bloco por fase.
   - **Correção:** acontecimento escrito no painel sem a data "Até" não aparecia no cartão da semana (só na lista). O detalhe do acontecimento passa a respeitar as quebras de linha.
 - **Painel:** "Tipo de página" passa a ter Hábitos e Vida em semanas (antes, editar essas páginas pelo painel podia apagar o tipo).
 
