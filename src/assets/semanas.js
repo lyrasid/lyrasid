@@ -40,7 +40,7 @@ const pessoais = (vida.acontecimentos ?? []).filter((a) => a.data).map((a) => ({
 const todos = [...pessoais, ...mundo].filter((a) => dia(a.data) >= aniversario(0)).sort((a, b) => dia(a.data) - dia(b.data));
 function acontecimentosDa(i, mostrar) {
   const { inicio, fim } = periodoDa(i);
-  return todos.filter((a) => mostrar.has(a.onde) && dia(a.data) <= fim && dia(a.fim ?? a.data) >= inicio);
+  return todos.filter((a) => mostrar.has(a.onde) && dia(a.data) <= fim && dia(a.fim || a.data) >= inicio); // o painel grava "Até" vazio como ""
 }
 
 // ---------- estado ----------
