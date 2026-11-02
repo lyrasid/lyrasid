@@ -4,6 +4,7 @@ layout: base.njk
 {#- Página de galeria (fotografias, pinturas): cada item é uma coleção com página própria. -#}
 {% from "filtros.njk" import grupo %}
 <h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Título da página">{{ title }}</h1>
+{% include "caminho.njk" %}
 
 {% if intro %}<div class="texto intro">{{ intro | md | safe }}</div>{% endif %}
 

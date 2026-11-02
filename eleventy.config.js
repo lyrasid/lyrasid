@@ -23,7 +23,7 @@ export default function (eleventyConfig) {
   // o resto de src/midia não é copiado: o site usa só as versões comprimidas geradas abaixo (em /img).
 
   // Fontes e painel servidos pelo próprio site (sem Google Fonts nem CDN; versões fixas pelo package-lock).
-  const fontes = ["narnoor-latin-400", "narnoor-latin-ext-400", "narnoor-latin-700", "narnoor-latin-ext-700", "schoolbell-latin-400"];
+  const fontes = ["narnoor-latin-400", "narnoor-latin-ext-400", "narnoor-latin-700", "narnoor-latin-ext-700", "schoolbell-latin-400", "vt323-latin-400"];
   eleventyConfig.addPassthroughCopy({
     ...Object.fromEntries(fontes.map((f) => [`node_modules/@fontsource/${f.split("-")[0]}/files/${f}-normal.woff2`, `assets/fontes/${f}-normal.woff2`])),
     "node_modules/@sveltia/cms/dist/sveltia-cms.js": "admin/sveltia-cms.js",
@@ -116,8 +116,8 @@ export default function (eleventyConfig) {
     return { anterior: itens[i - 1], proximo: itens[i + 1] };
   });
   eleventyConfig.addFilter("temBloco", (blocos, tipo) => (blocos || []).some((b) => b.type === tipo));
-  // Datas do painel (2026-08-14) escritas por extenso. UTC para a data não voltar um dia.
-  const formatoData = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric", timeZone: "UTC" });
+  // Datas do painel (2026-08-14) escritas como 14.08.2026, o formato do caderno. UTC para a data não voltar um dia.
+  const formatoData = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" });
   const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
   // Data escrita torta no painel não derruba a publicação: o site sai sem a data.
   const dataValida = (valor) => {
@@ -126,7 +126,7 @@ export default function (eleventyConfig) {
   };
   eleventyConfig.addFilter("dataBr", (valor) => {
     const data = dataValida(valor);
-    return data ? formatoData.format(data) : "";
+    return data ? formatoData.format(data).replaceAll("/", ".") : "";
   });
   eleventyConfig.addFilter("dataIso", (valor) => dataValida(valor)?.toISOString().slice(0, 10) ?? "");
 
@@ -220,6 +220,40 @@ export default function (eleventyConfig) {
     return pagina ? pagina.url + "#" + slug : "";
   };
   eleventyConfig.addFilter("linkDoTexto", linkDoTexto);
+
+  // C:\LYRASID\FOTOGRAFIAS\PRAIA\ abaixo do título: cada pasta do endereço vira um link para ela.
+  eleventyConfig.addFilter("caminho", (url) => {
+    const partes = String(url ?? "").split("/").filter(Boolean);
+    return partes.map((p, i) => ({ nome: decodeURIComponent(p).toUpperCase(), url: "/" + partes.slice(0, i + 1).join("/") + "/" }));
+  });
+
+  // ---------- página inicial ----------
+  const paginaDaEstante = (paginas) => paginas.find((p) => p.data.tipo === "estante");
+  // Quantos itens cada pasta guarda: a estante conta os dela, as outras páginas contam os textos.
+  eleventyConfig.addFilter("itensDaPagina", (pagina, textos, estante) =>
+    pagina.data.tipo === "estante" ? estante.length : textos.filter((t) => t.data.pagina === pagina.fileSlug).length
+  );
+  // novidades.txt: o que entrou por último no caderno. A data é a do commit que criou o arquivo
+  // (date: "git Created" nos arquivos de dados de src/conteudo e src/estante).
+  eleventyConfig.addFilter("novidades", (textos, estante, paginas, quantas) => {
+    const naEstante = paginaDaEstante(paginas);
+    const itens = textos.flatMap((t) => {
+      const url = linkDoTexto(t.fileSlug, textos, paginas);
+      const pagina = paginas.find((p) => p.fileSlug === t.data.pagina);
+      return url && pagina ? [{ data: t.date, titulo: t.data.title, url, secao: pagina.data.title }] : [];
+    });
+    if (naEstante) itens.push(...estante.map((i) => ({ data: i.date, titulo: i.data.title, url: naEstante.url + "#" + i.fileSlug, secao: naEstante.data.title })));
+    return itens.sort((a, b) => b.data - a.data).slice(0, quantas);
+  });
+  // "Estou fazendo agora → lendo A odisseia": o item da estante começado e ainda não terminado.
+  const VERBOS = { livro: "lendo", filme: "vendo", serie: "vendo", jogo: "jogando", musica: "ouvindo", podcast: "ouvindo", internet: "vendo" };
+  eleventyConfig.addFilter("emAndamento", (estante, paginas) => {
+    const naEstante = paginaDaEstante(paginas);
+    const item = naEstante && estante
+      .filter((i) => dataValida(i.data.inicio) && !dataValida(i.data.data))
+      .sort((a, b) => dataValida(b.data.inicio) - dataValida(a.data.inicio))[0];
+    return item ? { verbo: VERBOS[item.data.tipo] ?? "com", titulo: item.data.title, url: naEstante.url + "#" + item.fileSlug } : null;
+  });
 
   // Busca só por título e página: um JSON pequeno embutido, sem biblioteca.
   eleventyConfig.addFilter("indiceBusca", (textos, paginas, estante) => {

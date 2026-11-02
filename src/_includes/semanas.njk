@@ -3,6 +3,7 @@ layout: base.njk
 ---
 {#- A grade é montada pelo semanas.js no navegador: a semana atual depende do dia em que a página é aberta, não do dia da publicação. -#}
 <h1>{{ title }}</h1>
+{% include "caminho.njk" %}
 {% if intro %}<div class="texto intro">{{ intro | md | safe }}</div>{% endif %}
 
 <div class="semanas">

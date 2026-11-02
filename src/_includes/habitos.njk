@@ -3,6 +3,7 @@ layout: base.njk
 ---
 {#- Tudo aqui é montado pelo habitos.js depois da senha: os dados ficam cifrados em dados/habitos.json. -#}
 <h1>{{ title }}</h1>
+{% include "caminho.njk" %}
 
 <form class="habitos-senha" autocomplete="off">
   <label for="senha-habitos">Senha para ver os hábitos</label>

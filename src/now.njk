@@ -12,7 +12,7 @@ eleventyComputed:
 {% endif %}
 {% if now.intro %}<div class="texto intro">{{ now.intro | md | safe }}</div>{% endif %}
 {% if post %}
-{% include "postagem.njk" %}
+<div class="post-it">{% include "postagem.njk" %}</div>
 {% else %}
 <p class="vazio">Em breve.</p>
 {% endif %}
