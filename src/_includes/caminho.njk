@@ -1,0 +1,6 @@
+{#- Caminho da página, como numa pasta do computador: C:\LYRASID\FOTOGRAFIAS\PRAIA\.
+    Cada pasta é um link de volta para ela; a última é a página aberta. Fica abaixo do título (menos na home). -#}
+<nav class="caminho" aria-label="Caminho até esta página">
+  <a href="/">C:\LYRASID\</a>
+  {%- for p in page.url | caminho %}{% if loop.last %}<span aria-current="page">{{ p.nome }}\</span>{% else %}<a href="{{ p.url }}">{{ p.nome }}\</a>{% endif %}{% endfor -%}
+</nav>

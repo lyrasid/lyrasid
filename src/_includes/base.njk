@@ -18,8 +18,8 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-  {#- menu aberto no computador até o visitante fechar uma vez (a escolha fica guardada) #}
-  <script>try { if (matchMedia("(min-width: 769px)").matches && localStorage.getItem("menu") !== "fechado") document.documentElement.classList.add("menu-aberto") } catch (e) {}</script>
+  {#- menu começa recolhido; no computador, quem abrir uma vez continua com ele aberto (a escolha fica guardada) #}
+  <script>try { if (matchMedia("(min-width: 769px)").matches && localStorage.getItem("menu") === "aberto") document.documentElement.classList.add("menu-aberto") } catch (e) {}</script>
   {#- ?v= é a marca de versão do arquivo: sem ela o navegador segura o CSS antigo por até
       10 minutos depois de publicar. ponytail: só o CSS e o site.js são marcados; editar.js e
       as bibliotecas do editor não, então o modo de edição pode pedir recarregamento forte. -#}
@@ -61,11 +61,7 @@
   <main data-papel="{{ papel | default('quadriculado') }}">
     {% include "adesivos.njk" %}
     {{ content | safe }}
-    {#- pé de todas as páginas: versão e o "caminho" da página, como numa pasta do computador antigo #}
-    <footer class="versao">
-      {% if mudancas.versao %}<span>versão {{ mudancas.versao }} · <a href="/mudancas/">mudanças</a></span>{% endif %}
-      <span class="caminho" aria-hidden="true">C:\LYRASID{{ page.url | replace("/", "\\") | upper }}</span>
-    </footer>
+    {% if mudancas.versao %}<footer class="versao"><span>versão {{ mudancas.versao }} · <a href="/mudancas/">mudanças</a></span></footer>{% endif %}
   </main>
 
   <a class="topo" href="#topo" aria-label="Voltar ao topo">▲</a>

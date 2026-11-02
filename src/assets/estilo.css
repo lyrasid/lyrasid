@@ -225,7 +225,6 @@ figcaption p { margin: .4rem 0 0; }
 /* pé de todas as páginas: a versão leva ao registro de mudanças (/mudancas/); à direita, o "caminho" da página */
 .versao { position: absolute; z-index: 2; bottom: 1.5rem; left: clamp(1rem, 5vw, 4rem); right: clamp(1rem, 5vw, 4rem); display: flex; flex-wrap: wrap; justify-content: space-between; gap: .2rem 1rem; font-family: var(--f-sis); font-size: 1rem; line-height: 1.1; color: var(--tinta-2); }
 .versao a { color: var(--vinho); }
-.versao .caminho { margin-left: auto; overflow-wrap: anywhere; }
 @media print { .versao { display: none; } }
 
 /* ---------- adesivos ---------- */
@@ -707,16 +706,24 @@ body.negado .console { color: #ff5f4e; animation: tremer .09s 4; }
 .habitos-senha { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; max-width: 30rem; }
 .habitos-senha[hidden] { display: none; }
 .habitos-senha label { flex-basis: 100%; }
-.habitos-senha input { flex: 1; min-width: 0; min-height: 2.3rem; padding: .35rem .6rem; font: inherit; color: var(--tinta); border: 0; background: var(--papel); box-shadow: var(--relevo-fundo); }
+.habitos-senha input { flex: 1; min-width: 0; padding: .35rem .6rem; font: inherit; color: var(--tinta); border: 1.5px solid var(--tinta); border-radius: .35rem; background: var(--papel); }
 .habitos-aviso { flex-basis: 100%; min-height: 1.6em; margin: 0; font-style: italic; }
+.habitos button { font: inherit; color: var(--tinta); }
+.habitos-senha button, .habitos-salvar { padding: .2rem .9rem; font: inherit; color: var(--tinta); background: var(--papel); border: 1.5px solid var(--tinta); border-radius: 999px; cursor: pointer; }
+.habitos-salvar:not(:disabled):hover, .habitos-senha button:hover { color: var(--papel); background: var(--vinho); border-color: var(--vinho); }
+.habitos-salvar:disabled { opacity: .35; cursor: default; }
 
 .habitos-topo { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1.5rem; margin-bottom: 1rem; }
-.habitos-modo { display: flex; gap: 2px; }
-.habitos-nav { display: flex; align-items: center; gap: .6rem; }
+.habitos-modo, .habitos-nav { display: flex; align-items: center; gap: .6rem; }
+.habitos-modo button { padding: .1rem 0; background: none; border: 0; border-bottom: 2px solid transparent; opacity: .5; cursor: pointer; }
+.habitos-modo button[aria-pressed="true"] { opacity: 1; border-bottom-color: var(--vinho); }
+.habitos-nav button { padding: 0 .3rem; background: none; border: 0; cursor: pointer; }
+.habitos-nav button:disabled { opacity: .2; cursor: default; }
 .habitos-periodo { min-width: 9.5rem; margin: 0; font-size: 1.5rem; text-align: center; }
 
-.habitos-legenda { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .5rem; margin-bottom: 1rem; }
-.habitos-legenda button { display: inline-flex; align-items: center; gap: .45rem; }
+.habitos-legenda { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem 1rem; margin-bottom: 1rem; font-size: .9rem; }
+.habitos-legenda button { display: flex; align-items: center; gap: .4rem; padding: .1rem .5rem; background: none; border: 1.5px solid transparent; border-radius: 999px; cursor: pointer; }
+.habitos-legenda button[aria-pressed="true"] { border-color: var(--tinta); }
 .habitos-legenda i { width: .9rem; height: .9rem; border: 1px solid rgba(43, 29, 22, .35); }
 .habitos-dica { opacity: .5; }
 .habitos[data-modo="ano"] .habitos-legenda { display: none; }
@@ -822,8 +829,7 @@ body.negado .console { color: #ff5f4e; animation: tremer .09s 4; }
 /* ---------- Caderno de Save: peças da interface ---------- */
 /* Conteúdo é papel; interface (salvar, abrir, escolher) é janela. Botões em relevo, retos,
    com a letra do computador (VT323); o principal em amarelo; ligado = afundado. */
-:where(.habitos-senha button, .habitos-salvar, .habitos-modo button, .habitos-nav button, .habitos-legenda button,
-    .edicao-barra button, .acoes-receita button, .cozinha-topo button:not(.cozinha-fechar)) {
+:where(.edicao-barra button, .acoes-receita button, .cozinha-topo button:not(.cozinha-fechar)) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -840,10 +846,8 @@ body.negado .console { color: #ff5f4e; animation: tremer .09s 4; }
   box-shadow: var(--relevo);
   cursor: pointer;
 }
-:where(.habitos-senha button, .habitos-salvar, .edicao-barra [data-acao="salvar"]) { background: var(--amarelo); }
-:is(.habitos-modo, .habitos-legenda) button[aria-pressed="true"] { padding-top: .3rem; background: var(--cinza-luz); box-shadow: var(--relevo-fundo); }
-:where(.habitos-salvar, .habitos-nav button, .edicao-barra button):disabled { color: var(--cinza-sombra); background: var(--cinza-win); cursor: default; }
-.habitos-nav button { min-width: 2.3rem; padding-inline: .4rem; font-size: 1rem; }
+:where(.edicao-barra [data-acao="salvar"]) { background: var(--amarelo); }
+:where(.edicao-barra button):disabled { color: var(--cinza-sombra); background: var(--cinza-win); cursor: default; }
 .cozinha-topo button:not(.cozinha-fechar) { min-height: 2rem; font-size: 1.05rem; }
 
 /* datas, rótulos e contagens: o que o "computador" diz */
@@ -877,7 +881,8 @@ main > .post-it { max-width: 36rem; margin-bottom: 2.5rem; rotate: -.6deg; }
 .inicio .sobre h1 { margin-bottom: 1rem; }
 .inicio .sobre .texto { font-size: 1.05rem; }
 .inicio .sobre .texto > :first-child { margin-top: 0; }
-.saudacao { min-height: 1.2em; margin: 0 0 .4rem; font-family: var(--f-sis); font-size: 1.1rem; letter-spacing: .04em; color: var(--musgo); text-transform: uppercase; }
+.saudacao { display: flex; flex-wrap: wrap; gap: .2rem .6rem; min-height: 1.2em; margin: 0 0 .4rem; font-family: var(--f-sis); font-size: 1.1rem; letter-spacing: .04em; color: var(--musgo); text-transform: uppercase; }
+.saudacao-texto:not(:empty)::after { content: "·"; margin-left: .6rem; }
 
 /* título de seção com a aba numerada, como as divisórias do fichário */
 .aba-titulo { display: flex; align-items: flex-end; gap: .7rem; margin: 0 0 1.25rem; font-size: clamp(1.6rem, 3.2vw, 2.1rem); line-height: 1; }
@@ -892,18 +897,44 @@ main > .post-it { max-width: 36rem; margin-bottom: 2.5rem; rotate: -.6deg; }
 .inicio-mesa { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2.5rem 2.5rem; padding-bottom: 2rem; }
 .janela-fixa { flex: 1 1 22rem; max-width: 34rem; padding: 0; background: var(--cinza-win); box-shadow: var(--relevo), 6px 6px 0 rgba(43, 29, 22, .22); }
 .janela-fixa .janela-barra { padding-block: .3rem; }
-.janela-fixa .janela-botoes > * { cursor: default; }
+.janela-fixa .janela-botoes button { cursor: pointer; }
+.janela-fixa .janela-botoes button:active { box-shadow: var(--relevo-fundo); }
 .janela-fixa .janela-corpo { margin: 0 3px; padding: .5rem 1rem; list-style: none; }
+/* minimizada: o miolo (lista e status) encolhe para cima e fica só a barra de título */
+.janela-miolo { overflow: hidden; }
+.novidades.minimizada .janela-miolo { height: 0; }
+/* maximizada: todas as entradas e a largura toda da mesa (o post-it desce) */
+.inicio-mesa .novidades.maximizada { flex-basis: 100%; max-width: none; }
+.novidades:not(.maximizada) li:nth-child(n + 6) { display: none; }
 .novidades li { display: grid; grid-template-columns: 6.2rem minmax(0, 1fr) auto; gap: .2rem 1rem; align-items: baseline; padding: .55rem 0; border-bottom: 1px dashed rgba(43, 29, 22, .25); }
-.novidades li:last-child { border-bottom: 0; }
+.novidades li:last-child, .novidades:not(.maximizada) li:nth-child(5) { border-bottom: 0; }
 .novidades time { font-family: var(--f-sis); font-size: 1.05rem; color: var(--tinta-2); }
 .novidades li a { min-width: 0; }
 .novidades li small { font-family: var(--f-sis); font-size: 1rem; color: var(--musgo); text-align: right; }
-.janela-fixa .janela-status span:last-child { flex: 0 0 9rem; }
 .online::before { content: ""; display: inline-block; width: .6rem; height: .6rem; margin-right: .4rem; vertical-align: -.05rem; background: #5da83b; border: 1.5px solid var(--tinta); border-radius: 50%; }
 .inicio-mesa .post-it { flex: 0 1 18rem; margin-top: .5rem; }
 .post-it-data { margin: 0 0 .5rem; font-family: var(--f-sis); font-size: 1rem; color: var(--tinta-2); text-transform: uppercase; }
 .post-it-data a { color: inherit; }
+
+/* atalhos de programa (Hábitos, Vida em semanas): ícone em pixel com a setinha de atalho */
+.atalhos { display: flex; flex-wrap: wrap; gap: 1.25rem 1rem; margin: 0; padding: 0; list-style: none; }
+.atalho { display: grid; justify-items: center; gap: .35rem; width: 8rem; padding: .5rem; color: var(--tinta); text-align: center; text-decoration: none; }
+.atalho-icone { position: relative; display: grid; place-items: center; width: 4.5rem; height: 4rem; }
+.atalho-icone img { width: auto; height: 3.4rem; image-rendering: pixelated; filter: drop-shadow(0 3px 4px rgba(43, 29, 22, .22)); transition: transform .2s cubic-bezier(.2, .9, .3, 1.2); }
+.atalho-icone::after { content: "↗"; position: absolute; left: 0; bottom: 0; width: 1.1rem; height: 1.1rem; font-family: var(--f-sis); font-size: .95rem; line-height: 1.05rem; color: var(--tinta); background: var(--papel); box-shadow: inset 0 0 0 1.5px var(--tinta); }
+.atalho:hover img, .atalho:focus-visible img { transform: translateY(-6px) scale(1.07); }
+.atalho > span:not(.atalho-icone) { padding: .05rem .4rem; font-size: .9rem; line-height: 1.2; border-radius: 3px; }
+.atalho:hover > span:not(.atalho-icone), .atalho:focus-visible > span:not(.atalho-icone) { color: var(--papel); background: var(--tinta); }
+.atalho small { margin-top: -.2rem; font-family: var(--f-sis); font-size: .95rem; line-height: 1; color: var(--tinta-2); }
+
+/* caminho da página (C:\LYRASID\ESTANTE\) abaixo do título: cada pasta leva de volta a ela */
+.caminho { margin: 0 0 1.75rem; font-family: var(--f-sis); font-size: 1.15rem; line-height: 1.2; color: var(--tinta-2); overflow-wrap: anywhere; }
+h1 + .caminho { margin-top: -1rem; }
+.caminho a { color: var(--vinho); text-decoration: none; }
+.caminho a:hover, .caminho a:focus-visible { text-decoration: underline; }
+.caminho [aria-current] { color: var(--tinta); }
+.colecao .caminho + .meta { margin-top: -.6rem; }
+@media print { .caminho { display: none; } }
 
 @media (max-width: 768px) {
   .inicio { gap: 2.25rem; }

@@ -8,9 +8,8 @@ layout: base.njk
 {% set perto = irmaos | vizinhos(page.fileSlug) %}
 
 <article class="colecao">
-  <p class="volta"><a href="/{{ pagina }}/">← {{ secao.title }}</a></p>
-
   <h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Título">{{ title }}</h1>
+  {% include "caminho.njk" %}
 
   <p class="meta{% if not (ano or local) %} campo-vazio{% endif %}" data-arquivo="{{ page.inputPath | arquivo }}">
     <span class="{% if not ano %}campo-vazio{% endif %}" data-campo="ano" data-editar="linha" data-rotulo="Ano">{{ ano }}</span>

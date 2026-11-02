@@ -5,8 +5,8 @@ layout: base.njk
 {% from "blocos.njk" import mostrarBlocos %}
 <div class="inicio">
   <header class="sobre">
-    {#- "boa noite · 02.11.2026": preenchido pelo site.js com a hora de quem visita #}
-    <p class="saudacao" aria-hidden="true"></p>
+    {#- "boa noite · 02.11.2026 · 1 online": a saudação é preenchida pelo site.js com a hora de quem visita #}
+    <p class="saudacao" aria-hidden="true"><span class="saudacao-texto"></span><span class="online">1 online</span></p>
     {% if foto %}<img class="foto" src="{{ foto }}" alt="Foto de {{ title }}">{% endif %}
     <h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Nome">{{ title }}</h1>
     {{ mostrarBlocos(blocos, page.inputPath | arquivo) }}
@@ -31,22 +31,29 @@ layout: base.njk
     </ul>
   </section>
 
-  {%- set novas = collections.textos | novidades(collections.estante, collections.paginas, 5) %}
+  {#- novidades.txt: tudo o que entrou no site, do mais novo para o mais antigo. Aberta mostra
+      as 5 primeiras; maximizada, todas; minimizada, só a barra de título (site.js anima a troca). #}
+  {%- set novas = collections.textos | novidades(collections.estante, collections.paginas, 9999) %}
   {%- set post = collections.now[0] %}
   {% if novas.length or post %}
   <div class="inicio-mesa">
     {% if novas.length %}
-    <section class="janela-fixa novidades" aria-labelledby="novidades-titulo">
+    <section class="janela-fixa novidades" aria-labelledby="novidades-titulo" data-mostrar="5">
       <div class="janela-barra">
         <h2 class="janela-titulo" id="novidades-titulo">novidades.txt</h2>
-        <span class="janela-botoes" aria-hidden="true"><span>_</span><span>❐</span></span>
+        <span class="janela-botoes">
+          <button type="button" class="janela-min" aria-label="Minimizar" aria-pressed="false">_</button>
+          <button type="button" class="janela-max" aria-label="Maximizar: ver todas as novidades" aria-pressed="false">□</button>
+        </span>
       </div>
-      <ol class="janela-corpo">
-        {%- for n in novas %}
-        <li><time datetime="{{ n.data | dataIso }}">{{ n.data | dataBr }}</time><a href="{{ n.url }}">{{ n.titulo }}</a><small>{{ n.secao | lower }}</small></li>
-        {%- endfor %}
-      </ol>
-      <div class="janela-status"><span>{{ novas.length }} {% if novas.length == 1 %}item{% else %}itens{% endif %}</span><span class="online">1 online</span></div>
+      <div class="janela-miolo">
+        <ol class="janela-corpo">
+          {%- for n in novas %}
+          <li><time datetime="{{ n.data | dataIso }}">{{ n.data | dataBr }}</time><a href="{{ n.url }}">{{ n.titulo }}</a><small>{{ n.secao | lower }}</small></li>
+          {%- endfor %}
+        </ol>
+        <div class="janela-status"><span class="novidades-contagem" data-total="{{ novas.length }}">{% if novas.length > 5 %}5 de {{ novas.length }} itens{% else %}{{ novas.length }} {% if novas.length == 1 %}item{% else %}itens{% endif %}{% endif %}</span></div>
+      </div>
     </section>
     {% endif %}
     {% if post %}
@@ -58,5 +65,27 @@ layout: base.njk
     </div>
     {% endif %}
   </div>
+  {% endif %}
+
+  {#- Hábitos e Vida em semanas não guardam itens: entram como atalhos de programa, não como pastas #}
+  {%- set icones = { habitos: { img: "/midia/icones/hp.svg", exe: "habitos.exe", w: 156, h: 132 }, semanas: { img: "/midia/icones/ampulheta.svg", exe: "semanas.exe", w: 88, h: 104 } } %}
+  {%- set atalhos = [] %}
+  {%- for p in collections.paginas %}{% if icones[p.data.tipo] %}{% set atalhos = (atalhos.push(p), atalhos) %}{% endif %}{% endfor %}
+  {% if atalhos.length %}
+  <section class="inicio-secao" aria-labelledby="atalhos-titulo">
+    <h2 class="aba-titulo" id="atalhos-titulo"><span class="aba-num">02</span>Atalhos</h2>
+    <ul class="atalhos">
+      {%- for p in atalhos %}
+      {%- set i = icones[p.data.tipo] %}
+      <li>
+        <a class="atalho" href="{{ p.url }}">
+          <span class="atalho-icone"><img src="{{ i.img }}" alt="" width="{{ i.w }}" height="{{ i.h }}"></span>
+          <span>{{ p.data.title }}</span>
+          <small>{{ i.exe }}</small>
+        </a>
+      </li>
+      {%- endfor %}
+    </ul>
+  </section>
   {% endif %}
 </div>

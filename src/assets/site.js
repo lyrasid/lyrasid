@@ -23,12 +23,39 @@ document.addEventListener("click", (e) => {
 document.addEventListener("keydown", (e) => e.key === "Escape" && celular.matches && fecharMenu());
 
 // página inicial: "boa noite · 02.11.2026", na hora de quem visita
-const saudacao = document.querySelector(".saudacao");
+const saudacao = document.querySelector(".saudacao-texto");
 if (saudacao) {
   const agora = new Date();
   const hora = agora.getHours();
   const dia = (n) => String(n).padStart(2, "0");
   saudacao.textContent = `${hora >= 5 && hora < 12 ? "bom dia" : hora >= 12 && hora < 18 ? "boa tarde" : "boa noite"} · ${dia(agora.getDate())}.${dia(agora.getMonth() + 1)}.${agora.getFullYear()}`;
+}
+
+// página inicial: novidades.txt minimiza (fica só a barra de título, no mesmo lugar) e maximiza (todas as entradas)
+const novidades = document.querySelector(".novidades");
+if (novidades) {
+  const miolo = novidades.querySelector(".janela-miolo");
+  const [minimizar, maximizar] = novidades.querySelectorAll(".janela-botoes button");
+  const contagem = novidades.querySelector(".novidades-contagem");
+  const total = Number(contagem.dataset.total);
+  const calmo = matchMedia("(prefers-reduced-motion: reduce)");
+  // troca o estado e anima do tamanho antigo para o novo (a janela cresce e encolhe a partir do topo)
+  const trocar = (min, max) => {
+    const antes = { janela: novidades.getBoundingClientRect(), miolo: miolo.offsetHeight };
+    novidades.classList.toggle("minimizada", min);
+    novidades.classList.toggle("maximizada", max);
+    minimizar.setAttribute("aria-pressed", min);
+    maximizar.setAttribute("aria-pressed", max);
+    maximizar.textContent = max ? "❐" : "□";
+    maximizar.setAttribute("aria-label", max ? "Restaurar: voltar às 5 mais recentes" : "Maximizar: ver todas as novidades");
+    contagem.textContent = max || total <= 5 ? `${total} ${total === 1 ? "item" : "itens"}` : `5 de ${total} itens`;
+    if (calmo.matches) return;
+    const opcoes = { duration: 280, easing: "cubic-bezier(.2, .8, .3, 1)" };
+    miolo.animate([{ height: antes.miolo + "px" }, { height: miolo.offsetHeight + "px" }], opcoes);
+    novidades.animate([{ width: antes.janela.width + "px" }, { width: novidades.getBoundingClientRect().width + "px" }], opcoes);
+  };
+  minimizar.addEventListener("click", () => trocar(!novidades.classList.contains("minimizada"), false));
+  maximizar.addEventListener("click", () => trocar(false, !novidades.classList.contains("maximizada")));
 }
 
 // o link com #id abre o item: subtítulo que expande, pasta que vira janela ou ficha da estante

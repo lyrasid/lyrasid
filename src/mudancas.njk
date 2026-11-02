@@ -6,6 +6,7 @@ eleventyExcludeFromCollections: true
 ---
 {#- O texto é o CHANGELOG.md da raiz, lido no eleventy.config.js (dado "mudancas"):
     a introdução, uma linha de divisão e as versões, cada uma recolhível (a mais recente aberta). -#}
+{% include "caminho.njk" %}
 <div class="texto mudancas">
   {{ mudancas.intro | md | safe }}
   {% if mudancas.versoes.length %}<div class="divisao"><span>Versões</span></div>{% endif %}

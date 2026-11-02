@@ -221,6 +221,12 @@ export default function (eleventyConfig) {
   };
   eleventyConfig.addFilter("linkDoTexto", linkDoTexto);
 
+  // C:\LYRASID\FOTOGRAFIAS\PRAIA\ abaixo do título: cada pasta do endereço vira um link para ela.
+  eleventyConfig.addFilter("caminho", (url) => {
+    const partes = String(url ?? "").split("/").filter(Boolean);
+    return partes.map((p, i) => ({ nome: decodeURIComponent(p).toUpperCase(), url: "/" + partes.slice(0, i + 1).join("/") + "/" }));
+  });
+
   // ---------- página inicial ----------
   const paginaDaEstante = (paginas) => paginas.find((p) => p.data.tipo === "estante");
   // Quantos itens cada pasta guarda: a estante conta os dela, as outras páginas contam os textos.

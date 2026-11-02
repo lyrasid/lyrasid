@@ -6,6 +6,7 @@ layout: base.njk
 {% set rotulos = { livro: "livro", filme: "filme", serie: "série", jogo: "jogo", musica: "música ou show", podcast: "podcast", internet: "coisa da internet" } %}
 {% set deNovo = { livro: "re-lido", filme: "reassistido", serie: "reassistida", jogo: "re-jogado", musica: "ouvido de novo", podcast: "ouvido de novo", internet: "visto de novo" } %}
 <h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Título da página">{{ title }}</h1>
+{% include "caminho.njk" %}
 
 {% if intro %}<div class="texto intro">{{ intro | md | safe }}</div>{% endif %}
 

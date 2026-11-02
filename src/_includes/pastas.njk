@@ -4,6 +4,7 @@ layout: base.njk
 {#- Outros projetos: cada item é uma pasta que abre numa janela quase do tamanho da tela. -#}
 {% from "blocos.njk" import mostrarBlocos %}
 <h1 data-arquivo="{{ page.inputPath | arquivo }}" data-campo="title" data-editar="linha" data-rotulo="Título da página">{{ title }}</h1>
+{% include "caminho.njk" %}
 
 {% if intro %}<div class="texto intro">{{ intro | md | safe }}</div>{% endif %}
 
