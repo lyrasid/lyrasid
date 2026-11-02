@@ -246,13 +246,21 @@ export default function (eleventyConfig) {
     return itens.sort((a, b) => b.data - a.data).slice(0, quantas);
   });
   // "Estou fazendo agora → lendo A odisseia": o item da estante começado e ainda não terminado.
-  const VERBOS = { livro: "lendo", filme: "vendo", serie: "vendo", jogo: "jogando", musica: "ouvindo", podcast: "ouvindo", internet: "vendo" };
+  // Sem nenhum em andamento, o último terminado, no passado ("→ vi Magnum").
+  const VERBOS = {
+    livro: ["lendo", "li"], filme: ["vendo", "vi"], serie: ["vendo", "vi"], jogo: ["jogando", "joguei"],
+    musica: ["ouvindo", "ouvi"], podcast: ["ouvindo", "ouvi"], internet: ["vendo", "vi"],
+  };
   eleventyConfig.addFilter("emAndamento", (estante, paginas) => {
     const naEstante = paginaDaEstante(paginas);
-    const item = naEstante && estante
-      .filter((i) => dataValida(i.data.inicio) && !dataValida(i.data.data))
-      .sort((a, b) => dataValida(b.data.inicio) - dataValida(a.data.inicio))[0];
-    return item ? { verbo: VERBOS[item.data.tipo] ?? "com", titulo: item.data.title, url: naEstante.url + "#" + item.fileSlug } : null;
+    if (!naEstante) return null;
+    const ms = (v) => +(dataValida(v) ?? 0);
+    const recente = (itens, campo) => itens.sort((a, b) => ms(b.data[campo]) - ms(a.data[campo]) || ms(b.data.inicio) - ms(a.data.inicio))[0];
+    const andamento = recente(estante.filter((i) => dataValida(i.data.inicio) && !dataValida(i.data.data)), "inicio");
+    const item = andamento ?? recente(estante.filter((i) => dataValida(i.data.data)), "data");
+    if (!item) return null;
+    const [agora, passado] = VERBOS[item.data.tipo] ?? ["com", "com"];
+    return { verbo: andamento ? agora : passado, titulo: item.data.title, url: naEstante.url + "#" + item.fileSlug };
   });
 
   // Busca só por título e página: um JSON pequeno embutido, sem biblioteca.
