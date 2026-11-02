@@ -2,6 +2,13 @@
 
 O que mudou no site, do mais novo para o mais antigo. Só entram mudanças no funcionamento e na aparência; textos, fotos e itens da estante editados pelo painel ficam de fora (estão no [histórico de commits](https://github.com/lyrasid/lyrasid/commits/main)).
 
+## Versão 0.8 · 02.11.2026
+
+- **Página Hábitos:** habit tracker com 20 parâmetros em cinco grupos (sono, corpo, mente, pessoas e lazer, rotina), um quadradinho por dia: verde bom, amarelo médio, vermelho ruim, cinza não anotado. Cada clique troca a cor; escolhendo uma cor na legenda, ela vira pincel e dá para arrastar pintando vários dias. Navega de mês em mês a partir de novembro de 2026, e os dias futuros ficam travados.
+  - **Gráfico de linha** de sono, humor, ansiedade e saúde no mês, que são estados do dia (sobem e descem), não hábitos de fazer ou não fazer.
+  - **Visão do ano:** a média de cada parâmetro em cada mês, colorida do vermelho ao verde, com quantos dias foram anotados.
+  - **Senha:** os dados ficam em `dados/habitos.json` no repositório, cifrados com a senha (sem ela, o arquivo é ilegível). Salvar pede o mesmo token do GitHub do modo de edição e não republica o site.
+
 ## Versão 0.7 · 10.10.2026
 
 - **Imagens lado a lado sem buraco no meio:** com largura escolhida, a imagem leva a coluna junto, e a seguinte começa logo depois dela (antes, uma foto de 30% ficava num canto da metade da página). No celular continuam uma embaixo da outra.

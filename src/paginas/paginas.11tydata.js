@@ -3,6 +3,7 @@ const LAYOUTS = {
   galeria: "galeria.njk", // capas em grade; cada item abre em página própria
   estante: "estante.njk", // livros, filmes, séries e jogos
   pastas: "pastas.njk", // pastas de computador que abrem em janela
+  habitos: "habitos.njk", // habit tracker: dados cifrados em dados/habitos.json, preenchidos pelo navegador
 };
 
 export default {
