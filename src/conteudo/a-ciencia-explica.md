@@ -37,6 +37,7 @@ blocos:
       # **Linha do tempo**
 
       ### 
+
       **2017**
 
       O site **A Ciência Explica** foi criado pelos colegas de classe, Luiza e Sidcley. Dois graduandos em microbiologia com vontade de levar para fora o que estava sendo desenvolvido nos laboratórios do subsolo do CCS/UFRJ.
@@ -47,7 +48,6 @@ blocos:
 
       Organizamos o evento [**Ciência às Seis e Meia**](https://lyrasid.github.io/lyrasid/divulgacao-cientifica/#ciencia-as-6-e-meia), no Museu do Amanhã. É um evento tradicional da Sociedade Brasileira para o Progresso da Ciência (SBPC/RJ), mas sem constância. Em 2018, fui assessor de divulgação científica do secretário regional, Leandro Lobo, e organizamos um ciclo de 10 seminários sobre temas relevantes.
 
-
       ### **2019**
 
       Começamos a produzir o [**Podcast Serendip - Cientistas (In)falíveis**](https://lyrasid.github.io/lyrasid/divulgacao-cientifica/#serendip), criado pelos cientistas Muriel Souza e Leandro Lobo. O Serendip fala sobre as descobertas da ciência feitas por acaso, contando a vida desses cientistas.
@@ -57,6 +57,14 @@ blocos:
       ### **2020**
 
       Lançamos a web-série [**Cientista no Carona**](https://lyrasid.github.io/lyrasid/divulgacao-cientifica/#cientista-no-carona) no YouTube onde queremos mostrar que quem trabalha com ciência vai muito além de estereótipos estabelecidos no imaginário popular. Em 5 episódios, conversamos com 4 convidadas sobre suas vidas, enquanto acompanhamos seus hobbies e trabalhos.
+    ao_lado: false
+  - type: texto
+    texto: |-
+      > _“Divulgar para atender à ‘fome individual de ciência’ (…)_
+      > _Divulgar para atender à necessidade imperiosa de conhecer uma das linguagens importantes do mundo moderno (…)_
+      > _Divulgar para atrair novos valores para a ciência.”_
+      > 
+      > **_==José Reis, 1985==_**
     ao_lado: false
 ordem: 1
 oculto: false
