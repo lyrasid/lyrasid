@@ -4,6 +4,8 @@ O que mudou no site, do mais novo para o mais antigo. Só entram mudanças no fu
 
 ## Versão 0.8 · 02.11.2026
 
+- **Estatísticas e "online" de verdade:** o site passa a contar visitas pelo GoatCounter (sem cookies). O "N online" da página inicial mostra quantas pessoas estão com o site aberto agora, contadas por um Worker da Cloudflare; atualizar a página ou abrir outra aba não conta a mesma pessoa duas vezes.
+- **Estou fazendo agora:** quando nada está em andamento na estante, mostra o último item terminado, no passado ("→ vi Carrie").
 - **Identidade nova, "Caderno de Save":** o site e O Jogador viram um fichário só, com a mesma paleta e as mesmas fontes. O conteúdo continua papel; o que é interface (salvar, abrir uma ficha, escolher) vira janela de computador antigo.
   - **Cores:** saem o preto e o branco puros. O texto passa a ser tinta sépia, as folhas ficam cor de papel e a mesa vira papel almaço. Entram o amarelo d'O Jogador (botão principal e marca-texto) e o verde musgo. A margem do caderno pautado fica vinho, e a pauta, num azul mais suave.
   - **Janelas** com a barra vinho, no lugar do azul do Windows 98, e cinzas puxados para o marrom do papel. A ficha da estante também abre numa janela, com nome de arquivo ("dark_matter.txt") e o tipo e as datas na barra de baixo.

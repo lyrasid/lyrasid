@@ -34,7 +34,10 @@ if (saudacao) {
 // página inicial: "N online", contado pelo worker em workers/online (escondido se ele não responder)
 const online = document.querySelector(".online");
 if (online) {
-  const id = crypto.randomUUID();
+  // o mesmo id em toda visita deste navegador: atualizar a página ou abrir outra aba não soma mais um
+  let id;
+  try { id = localStorage.getItem("online-id") || (localStorage.setItem("online-id", crypto.randomUUID()), localStorage.getItem("online-id")); } catch (e) {}
+  id ??= crypto.randomUUID();
   const avisar = () => document.hidden || fetch(online.dataset.url + "?id=" + id)
     .then((r) => r.json())
     .then(({ online: n }) => { online.textContent = n + " online"; online.hidden = false; })
