@@ -16,7 +16,7 @@ links:
 blocos:
   - type: texto
     texto: |-
-      # Ficha técnica
+      ### Ficha técnica
 
       - Produção A Ciência Explica
       - Roteiro: Gabriel Meira, Leandro Lobo, Rosana Ferreira e Sidcley Lyra
