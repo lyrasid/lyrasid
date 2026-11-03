@@ -23,6 +23,14 @@ blocos:
 
       Em todas as frentes que atuamos, seja no site ou nos podcasts, nos comprometemos em produzir e transmitir conteúdos de qualidade, sempre informando as fontes e as possíveis leituras de apoio, porque em épocas de _fake news_, checar as fontes é fundamental!
     ao_lado: false
+  - type: texto
+    texto: |-
+      > _“Divulgar para atender à ‘fome individual de ciência’ (…)_
+      > _Divulgar para atender à necessidade imperiosa de conhecer uma das linguagens importantes do mundo moderno (…)_
+      > _Divulgar para atrair novos valores para a ciência.”_
+      > 
+      > **_==José Reis, 1985==_**
+    ao_lado: false
   - type: imagem
     ao_lado: false
     imagem: /midia/user-campaign-about-desc_IMG_8294_cut-20201025_11242307.webp
@@ -30,8 +38,8 @@ blocos:
     titulo: ''
     ano: ''
     descricao: Oi, somo a Luiza Toledo e Sidcley Lyra, co-fundadores do site A Ciência Explica. Somos microbiologias, divulgadores científicos e voluntários nesse caminhada.
-    lado: esquerda
-    largura: ''
+    lado: direita
+    largura: 67
   - type: texto
     texto: |-
       ## **Linha do tempo**
@@ -57,14 +65,12 @@ blocos:
       ### **2020**
 
       Lançamos a web-série [**Cientista no Carona**](https://lyrasid.github.io/lyrasid/divulgacao-cientifica/#cientista-no-carona) no YouTube onde queremos mostrar que quem trabalha com ciência vai muito além de estereótipos estabelecidos no imaginário popular. Em 5 episódios, conversamos com 4 convidadas sobre suas vidas, enquanto acompanhamos seus hobbies e trabalhos.
-    ao_lado: false
-  - type: texto
-    texto: |-
-      > _“Divulgar para atender à ‘fome individual de ciência’ (…)_
-      > _Divulgar para atender à necessidade imperiosa de conhecer uma das linguagens importantes do mundo moderno (…)_
-      > _Divulgar para atrair novos valores para a ciência.”_
-      > 
-      > **_==José Reis, 1985==_**
+
+      ### Finalização do projeto
+
+      Com a chegada da pandemia de COVID-19, com todas as incertezas geradas nesse período e a dedicação em projetos relacionados diretamente com a pandemia, a Ciência Explica foi perdendo forças até ser finalizada.
+
+      Hoje, perdemos todo o conteúdo do site e o domínio.
     ao_lado: false
 ordem: 1
 oculto: false
