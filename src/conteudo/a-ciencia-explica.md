@@ -34,11 +34,11 @@ blocos:
     largura: ''
   - type: texto
     texto: |-
-      # **Linha do tempo**
+      ## **Linha do tempo**
 
       ### 
 
-      **2017**
+      ### **2017**
 
       O site **A Ciência Explica** foi criado pelos colegas de classe, Luiza e Sidcley. Dois graduandos em microbiologia com vontade de levar para fora o que estava sendo desenvolvido nos laboratórios do subsolo do CCS/UFRJ.
 
