@@ -5,7 +5,9 @@ categoria: eventos produzidos
 ano: 2018-2019
 local: Praia do Leme
 resumo: ''
-links: []
+links:
+  - texto: Praia do Leme recebe exposição norte-americana sobre epidemias
+    url: https://web.archive.org/web/20260515223127/https://revistagalileu.globo.com/Sociedade/noticia/2019/02/praia-do-leme-recebe-exposicao-norte-americana-sobre-epidemias.html
 blocos:
   - type: texto
     texto: |-
@@ -14,7 +16,6 @@ blocos:
       A exposição é uma adaptação reduzida da exposição produzida originalmente pelo Museu Nacional de História Natural do Instituto Smithsonian, dos Estados Unidos, agora para o público brasileiro. E nada mais brasileiro do que a praia!
 
       Como resultado de uma parceria com a Sociedade Americana para Microbiologia, o site A Ciência Explica, o Podcast Microbiando, o projeto DivulgaMicro, pesquisadores da Universidade Federal do Rio de Janeiro e da Universidade Federal Fluminense e a prefeitura da cidade do Rio de Janeiro parte da exposição original foi exposta na praia do Leme, ao lado do Forte do Leme entre os dias 15 de dezembro de 2018 até 29 de fevereiro de 2019.
-
 
       ABERTURA
       15 DEZ. 9H-17H
