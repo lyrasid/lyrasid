@@ -1,8 +1,10 @@
 ---
-title: A Ciência comunicando com a sociedade (UFMG)
+title: A Ciência comunicando com a sociedade
 pagina: divulgacao-cientifica
 categoria: fui fonte
 ano: '2020'
+local: UFMG
+resumo: ''
 links:
   - texto: A Ciência comunicando com a sociedade
     url: https://www3.ufmg.br/comunicacao/noticias/a-ciencia-comunicando-com-a-sociedade
