@@ -3,8 +3,8 @@ title: Pint of Science 2026 - Barretos
 pagina: divulgacao-cientifica
 categoria: eventos produzidos
 ano: '2026'
-ordem: 2
-oculto: false
+local: Barretos, São Paulo
+resumo: ''
 links:
   - texto: Site do Pint of Science - Barretos
     url: https://www.pintofscience.com.br/events/barretos/
@@ -16,4 +16,6 @@ blocos:
       - Participei colaborando no design, comunicação e elaborando a pesquisa/artigo
       - Pesquisa de público e relato de caso em desenvolvimento
     ao_lado: false
+ordem: 2
+oculto: false
 ---
