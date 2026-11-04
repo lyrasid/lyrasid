@@ -1,7 +1,7 @@
 ---
 title: Estabelecimentos que podem funcionar e os cuidados na hora de ir às compras; ouça o podcast
 pagina: divulgacao-cientifica
-categoria: ''
+categoria: fui fonte
 ano: '2020'
 local: Em Quarentena - podcast especial da Agência Mural de Jornalismo das Periferias
 resumo: |-
