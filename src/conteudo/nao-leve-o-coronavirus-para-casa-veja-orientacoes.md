@@ -1,7 +1,7 @@
 ---
 title: Não leve o coronavírus para casa; veja orientações
 pagina: divulgacao-cientifica
-categoria: ''
+categoria: fui fonte
 ano: '2020'
 local: Agência Mural de Jornalismo da Periferia
 resumo: |-
