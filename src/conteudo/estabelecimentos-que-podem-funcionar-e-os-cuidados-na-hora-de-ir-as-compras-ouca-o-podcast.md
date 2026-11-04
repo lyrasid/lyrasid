@@ -9,7 +9,9 @@ resumo: |-
 
   --
   Durante a pandemia, fui fonte como microbiologista para a Agência Mural, jornalismo dedicado para comunicar com a periferia.
-links: []
+links:
+  - texto: Estabelecimentos que podem funcionar e os cuidados na hora de ir às compras; ouça o podcast
+    url: https://agenciamural.org.br/podcast/estabelecimentos-quarentena-grande-sp/
 blocos: []
 ordem: null
 oculto: false
