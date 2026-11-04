@@ -1,9 +1,9 @@
 ---
-title: Ciência Hoje
+title: Matérias para a Revista Ciência Hoje
 pagina: divulgacao-cientifica
 categoria: textos
 ano: 2019-2021
-local: ''
+local: Revista Ciência Hoje
 resumo: ''
 links: []
 blocos:
