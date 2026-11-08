@@ -5,7 +5,7 @@ autor: Paula Pope Ramos
 ano: '2024'
 nota: 5
 inicio: 2026-11-02
-data: ''
+data: 2026-11-02
 pausas: []
 de_novo: false
 favorito: false
