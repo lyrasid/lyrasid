@@ -5,7 +5,7 @@ autor: Game Freak
 ano: '1998'
 inicio: 2026-10-01
 pausas: []
-de_novo: false
+de_novo: true
 favorito: false
 capa: ''
 comentario: ''

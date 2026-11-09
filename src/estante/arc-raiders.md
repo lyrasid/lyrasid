@@ -5,7 +5,7 @@ autor: Embark Studios
 ano: '2025'
 inicio: 2026-10-01
 pausas: []
-de_novo: false
+de_novo: true
 favorito: false
 capa: ''
 comentario: ''
