@@ -3,7 +3,7 @@ title: Pokémon Amarelo
 tipo: jogo
 autor: Game Freak
 ano: '1998'
-nota: null
+nota: 4
 inicio: 2026-10-01
 data: ''
 pausas: []
