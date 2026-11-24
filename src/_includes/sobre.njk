@@ -12,6 +12,30 @@ layout: base.njk
     {{ mostrarBlocos(blocos, page.inputPath | arquivo) }}
   </header>
 
+  {#- ferias.exe: contagem regressiva até a data do painel. Os números são calculados pelo site.js
+      com o relógio de quem visita; sem JavaScript, fica a data escrita. #}
+  {%- set c = contagem %}
+  {% if c and c.mostrar !== false and (c.data | dataIso) %}
+  <section class="janela-fixa contagem" aria-labelledby="contagem-titulo" data-data="{{ c.data | dataIso }}"{% if c.inicio | dataIso %} data-inicio="{{ c.inicio | dataIso }}"{% endif %} data-fim="{{ c.fim or 'Chegou!' }}">
+    <div class="janela-barra">
+      <h2 class="janela-titulo" id="contagem-titulo">ferias.exe</h2>
+      <span class="janela-botoes" aria-hidden="true"><span>_</span><span>□</span></span>
+    </div>
+    <div class="janela-corpo">
+      <p class="contagem-rotulo">contagem regressiva</p>
+      <p class="contagem-nome">{{ c.titulo }}</p>
+      <p class="contagem-dias"><b class="contagem-num" data-parte="dias">–</b> <span data-parte="rotulo">dias</span></p>
+      <div class="contagem-partes" aria-hidden="true">
+        <div><b data-parte="h">--</b><span>horas</span></div>
+        <div><b data-parte="m">--</b><span>min</span></div>
+        <div><b data-parte="s">--</b><span>seg</span></div>
+      </div>
+      {% if c.inicio | dataIso %}<div class="contagem-barra" role="progressbar" aria-label="Quanto já passou" aria-valuemin="0" aria-valuemax="100"><i></i></div>{% endif %}
+    </div>
+    <div class="janela-status"><span>até <time datetime="{{ c.data | dataIso }}">{{ c.data | dataBr }}</time></span><span class="contagem-pct"></span></div>
+  </section>
+  {% endif %}
+
   <section class="inicio-secao" aria-labelledby="abra-uma-pasta">
     <h2 class="aba-titulo" id="abra-uma-pasta"><span class="aba-num">01</span>Abra uma pasta</h2>
     <ul class="area-pastas inicio-pastas">

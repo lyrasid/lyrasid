@@ -2,6 +2,10 @@
 
 O que mudou no site, do mais novo para o mais antigo. Só entram mudanças no funcionamento e na aparência; textos, fotos e itens da estante editados pelo painel ficam de fora (estão no [histórico de commits](https://github.com/lyrasid/lyrasid/commits/main)).
 
+## Versão 0.9 · 24.11.2026
+
+- **Contagem regressiva na página inicial:** a janela ferias.exe, logo abaixo da apresentação, mostra quantos dias, horas, minutos e segundos faltam para as férias, com uma barra de progresso desde o começo da contagem. No dia, vira "Boas férias, Sid!". Título, datas e mensagem final ficam no painel, em "Sobre mim → Contagem regressiva", que também tem a opção de esconder a janela.
+
 ## Versão 0.8 · 02.11.2026
 
 - **Estatísticas e "online" de verdade:** o site passa a contar visitas pelo GoatCounter (sem cookies). O "N online" da página inicial mostra quantas pessoas estão com o site aberto agora, contadas por um Worker da Cloudflare; atualizar a página ou abrir outra aba não conta a mesma pessoa duas vezes.

@@ -3,6 +3,12 @@ layout: sobre.njk
 title: Sidcley Lyra
 foto: ''
 papel: quadriculado
+contagem:
+  mostrar: true
+  titulo: Férias do Sid
+  data: 2026-12-11
+  inicio: 2026-11-23
+  fim: Boas férias, Sid!
 blocos:
   - type: texto
     texto: Sou divulgador científico, criativo e microbiologista não praticante. Carioca, dando uma volta no interior de SP. Aqui ficam os textos, as fotos, as receitas e o que ando ==lendo, jogando e plantando==.

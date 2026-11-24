@@ -46,6 +46,49 @@ if (online) {
   setInterval(avisar, 30000);
 }
 
+// página inicial: ferias.exe, contagem regressiva até a data do painel (meia-noite, no fuso de quem visita)
+const contagem = document.querySelector(".contagem");
+if (contagem) {
+  const meiaNoite = (iso) => { const [a, m, d] = iso.split("-").map(Number); return new Date(a, m - 1, d); };
+  const alvo = meiaNoite(contagem.dataset.data);
+  const inicio = contagem.dataset.inicio ? meiaNoite(contagem.dataset.inicio) : null;
+  const parte = (nome) => contagem.querySelector(`[data-parte="${nome}"]`);
+  const barra = contagem.querySelector(".contagem-barra");
+  const pct = contagem.querySelector(".contagem-pct");
+  const dois = (n) => String(n).padStart(2, "0");
+  let relogio;
+  const tique = () => {
+    const agora = new Date();
+    const falta = alvo - agora;
+    let progresso = 100;
+    if (falta <= 0) {
+      contagem.classList.add("chegou");
+      parte("dias").textContent = "🎉";
+      parte("rotulo").textContent = contagem.dataset.fim;
+      ["h", "m", "s"].forEach((p) => (parte(p).textContent = "00"));
+      clearInterval(relogio);
+    } else {
+      const seg = Math.floor(falta / 1000);
+      // dias de calendário: vira à meia-noite, como numa folhinha
+      const hoje = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
+      const dias = Math.round((alvo - hoje) / 86400000);
+      parte("dias").textContent = dias;
+      parte("rotulo").textContent = dias === 1 ? "dia" : "dias";
+      parte("h").textContent = dois(Math.floor((seg % 86400) / 3600));
+      parte("m").textContent = dois(Math.floor((seg % 3600) / 60));
+      parte("s").textContent = dois(seg % 60);
+      if (inicio) progresso = Math.min(100, Math.max(0, ((agora - inicio) / (alvo - inicio)) * 100));
+    }
+    if (barra) {
+      barra.firstElementChild.style.width = progresso.toFixed(1) + "%";
+      barra.setAttribute("aria-valuenow", Math.round(progresso));
+      pct.textContent = Math.floor(progresso) + "%";
+    }
+  };
+  tique();
+  relogio = setInterval(tique, 1000);
+}
+
 // página inicial: novidades.txt minimiza (fica só a barra de título, no mesmo lugar) e maximiza (todas as entradas)
 const novidades = document.querySelector(".novidades");
 if (novidades) {

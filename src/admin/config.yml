@@ -551,6 +551,18 @@ collections:
           - { name: title, label: Nome, widget: string }
           - { name: foto, label: Foto, widget: image, required: false }
           - *papel
+          - name: contagem
+            label: Contagem regressiva
+            widget: object
+            collapsed: true
+            required: false
+            hint: "Janela ferias.exe na página inicial, com os dias, horas, minutos e segundos que faltam."
+            fields:
+              - { name: mostrar, label: Mostrar na página inicial, widget: boolean, default: true }
+              - { name: titulo, label: Título, widget: string, hint: "Ex.: Férias do Sid" }
+              - { name: data, label: Data do evento, widget: datetime, type: date, format: YYYY-MM-DD }
+              - { name: inicio, label: Começo da contagem, widget: datetime, type: date, format: YYYY-MM-DD, required: false, hint: "A barra de progresso vai daqui até a data do evento. Em branco, a barra some." }
+              - { name: fim, label: Mensagem quando chegar o dia, widget: string, required: false, default: "Chegou!" }
           - *blocos_comuns
           - *adesivos
       - name: redes

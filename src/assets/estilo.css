@@ -916,6 +916,26 @@ main > .post-it { max-width: 36rem; margin-bottom: 2.5rem; rotate: -.6deg; }
 .post-it-data { margin: 0 0 .5rem; font-family: var(--f-sis); font-size: 1rem; color: var(--tinta-2); text-transform: uppercase; }
 .post-it-data a { color: inherit; }
 
+/* ferias.exe: contagem regressiva logo abaixo da apresentação, numa janela fixa */
+.contagem { max-width: 24rem; rotate: -.6deg; }
+.contagem .janela-botoes span { cursor: default; }
+.contagem .janela-corpo { padding: 1rem 1.25rem 1.1rem; text-align: center; }
+.contagem p { margin: 0; }
+.contagem-rotulo { font-family: var(--f-sis); font-size: 1.05rem; letter-spacing: .06em; text-transform: uppercase; color: var(--musgo); }
+.contagem-nome { font-family: "Schoolbell", cursive; font-size: 1.5rem; line-height: 1.2; }
+.contagem .contagem-dias { display: flex; align-items: baseline; justify-content: center; gap: .5rem; margin: .2rem 0 .6rem; font-family: var(--f-sis); font-size: 1.4rem; color: var(--tinta-2); }
+.contagem-num { font-weight: 400; font-size: 5rem; line-height: .9; color: var(--vinho); font-variant-numeric: tabular-nums; }
+.contagem-partes { display: flex; gap: .5rem; }
+.contagem-partes div { flex: 1; padding: .35rem .2rem .3rem; background: var(--papel-claro); box-shadow: var(--relevo-fundo); }
+.contagem-partes b { display: block; font-family: var(--f-sis); font-size: 2rem; font-weight: 400; line-height: 1; font-variant-numeric: tabular-nums; }
+.contagem-partes span { font-family: var(--f-sis); font-size: .95rem; color: var(--tinta-2); text-transform: uppercase; }
+/* barra de progresso de instalador antigo: blocos verdes num trilho afundado */
+.contagem-barra { height: 1.1rem; margin-top: .9rem; padding: 3px; background: var(--papel); box-shadow: var(--relevo-fundo); }
+.contagem-barra i { display: block; width: 0; height: 100%; background: repeating-linear-gradient(90deg, var(--musgo) 0 .6rem, transparent .6rem .75rem); transition: width .6s; }
+.contagem .janela-status span:last-child { flex: 0 0 4rem; text-align: right; }
+.contagem.chegou .contagem-num { font-size: 3.5rem; }
+.contagem.chegou .contagem-dias { flex-direction: column; align-items: center; font-family: "Schoolbell", cursive; color: var(--tinta); }
+
 /* atalhos de programa (Hábitos, Vida em semanas): ícone em pixel com a setinha de atalho */
 .atalhos { display: flex; flex-wrap: wrap; gap: 1.25rem 1rem; margin: 0; padding: 0; list-style: none; }
 .atalho { display: grid; justify-items: center; gap: .35rem; width: 8rem; padding: .5rem; color: var(--tinta); text-align: center; text-decoration: none; }
