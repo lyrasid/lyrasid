@@ -4,7 +4,7 @@ O que mudou no site, do mais novo para o mais antigo. Só entram mudanças no fu
 
 ## Versão 0.10 · 27.11.2026
 
-- **Post-it do "agora" mais enxuto:** na página inicial, mostra só os títulos dos tópicos; os detalhes continuam em "ler tudo →", na página Now.
+- **Post-it do "agora" mais enxuto:** na página inicial, mostra só os títulos dos tópicos, em lista e na letra do texto; os detalhes continuam em "ler tudo →", na página Now.
 
 ## Versão 0.9 · 24.11.2026
 

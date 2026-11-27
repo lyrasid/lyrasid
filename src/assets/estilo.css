@@ -967,7 +967,8 @@ h1 + .caminho { margin-top: -1rem; }
 /* na página inicial o post-it mostra só os títulos (o texto todo fica em /now/);
    postagem sem título nenhum continua aparecendo inteira */
 .inicio-mesa .post-it .texto:has(:is(h1, h2, h3, h4, h5, h6)) > :not(h1, h2, h3, h4, h5, h6) { display: none; }
-.inicio-mesa .post-it :is(h1, h2, h3, h4, h5, h6) { margin: 0 0 .5rem; }
+.inicio-mesa .post-it .texto { padding-left: 1.1rem; }
+.inicio-mesa .post-it :is(h1, h2, h3, h4, h5, h6) { display: list-item; margin: 0 0 .35rem; font: inherit; }
 .inicio-mesa .post-it li > :is(ul, ol) { display: none; }
 .inicio-mesa .post-it :is(ul, ol) { padding-left: 1.2rem; }
 .post-it-mais { margin: .6rem 0 0; font-family: var(--f-sis); font-size: 1rem; text-align: right; }
