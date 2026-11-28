@@ -4,6 +4,7 @@ O que mudou no site, do mais novo para o mais antigo. Só entram mudanças no fu
 
 ## Versão 0.10 · 27.11.2026
 
+- **Vida em semanas com aniversários:** todo 21 de junho já vivido aparece sozinho como acontecimento ("Aniversário de 10 anos"), sem precisar cadastrar um por um.
 - **Post-it do "agora" mais enxuto:** na página inicial, mostra só os títulos dos tópicos, em lista e na letra do texto; os detalhes continuam em "ler tudo →", na página Now.
 
 ## Versão 0.9 · 24.11.2026

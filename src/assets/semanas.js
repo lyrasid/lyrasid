@@ -38,6 +38,11 @@ const TOTAL = ANOS * 52;
 
 // ---------- acontecimentos por semana ----------
 const pessoais = (vida.acontecimentos ?? []).filter((a) => a.data).map((a) => ({ ...a, onde: "eu" }));
+// aniversários até hoje entram sozinhos; um acontecimento já gravado no dia (com detalhe) fica no lugar
+for (let k = 1; aniversario(k) <= HOJE; k++) {
+  const data = vida.nascimento.replace(/^\d+/, NA + k);
+  if (!pessoais.some((a) => a.data === data)) pessoais.push({ data, titulo: `Aniversário de ${k} ano${k > 1 ? "s" : ""}`, onde: "eu" });
+}
 const todos = [...pessoais, ...mundo].filter((a) => dia(a.data) >= aniversario(0)).sort((a, b) => dia(a.data) - dia(b.data));
 function acontecimentosDa(i, mostrar) {
   const { inicio, fim } = periodoDa(i);
